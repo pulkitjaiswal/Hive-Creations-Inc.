@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Hive</title>
+<link href="css/main.css" rel="stylesheet" type="text/css" />
+<script src="js/jquery_v1.8.0.js"></script>
+<script src="js/main.js"></script>
+</head>
+
+<body>
+	<div id="headerDiv">
+		<div id="hiveLogo">
+        HIVE
+        </div>
+        <div id="searchBarDiv">
+        	<input type="text" id="searchBar" value="search.." />
+      </div>
+	</div>
+	<div id="mainWindow">
+		<div id="mainWindowToolbar">
+        	<img src="img/menu bar/menubar.png" id="menuBarBackImg"/>
+        </div>
+        <div id="profileBox">
+            <img src="img/profile box/pic hexagon user.png" id="profileImage" />
+            <input type="button" onClick="setNewFriends();" value="Set amount of friends" style="top:200px; position:absolute;">
+            <input type="text" id="setFriends" style="top:200px; left:175px; position:absolute; width:15px;" >
+        </div>
+        <div id="mainInnerWindow">
+        	The amazing stuff goes here
+        </div>
+    </div>
+
+	
+	<script>
+		stuffOnLoad();
+	</script>
+</body>
+</html>
