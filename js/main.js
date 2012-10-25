@@ -2,7 +2,8 @@
 var wantedMarginsBetweenBoxes = 30;
 var amountOfFriends = 0;
 window.onresize = alignStuff;
-
+var messageBoxHasBeenMovedOut = false;
+var messageBoxIsMoving = false;
 
 function stuffOnLoad(){
 		alignStuff();
@@ -27,6 +28,8 @@ function alignStuff(){
 	}
 	$("#profileBox").css("left", $("#mainWindowToolbar").position().left+$("#mainWindowToolbar").width()+wantedMarginsBetweenBoxes);
 	$("#mainInnerWindow").css("left", $("#profileBox").position().left+$("#profileBox").outerWidth(true)+wantedMarginsBetweenBoxes);
+
+	setMessageIcon();
 }
 
 //Places the menubar and the divs ontop of it
@@ -108,3 +111,55 @@ function setNewFriends(){
 	var newAmountOfFriends = $("#setFriends").val();
 	profileImage(newAmountOfFriends);
 }
+
+function setMessageIcon(){
+	var icon = $("#messageIcon");
+	var messageBox = $("#messageDiv");
+	icon.css({"top" : $("#mainWindowToolbar").offset().top+20, "left" : $(window).width()-icon.width()});
+	messageBox.css({"top" : icon.offset().top, "left" : icon.offset().left+icon.outerWidth(true)});
+	messageBox.hide();
+}
+
+function showMessageBox(){
+	var icon = $("#messageIcon");
+	var messageBox = $("#messageDiv");
+	console.log("in");
+	icon.animate({"left" : "-="+messageBox.outerWidth(true)}, 500);
+	messageBox.animate({"left" : "-="+messageBox.outerWidth(true)}, 500);
+	messageBox.show();
+}
+
+function hideMessageBox(){
+	var icon = $("#messageIcon");
+	var messageBox = $("#messageDiv");
+	console.log("out");
+	icon.animate({"left" : "+="+messageBox.outerWidth(true)}, 500);
+	messageBox.animate({"left" : "+="+messageBox.outerWidth(true)}, 500);
+	messageBox.fadeOut(0);
+}
+
+function toogleMessageBoxIsMoving(){
+	messageBoxIsMoving = !messageBoxIsMoving;
+}
+
+$(document).ready(function() {
+    $('div').hover(function() { 
+        var isOverId = (this.id);
+		if(isOverId=="messageIcon"||isOverId=="messageDiv"){
+			if(!messageBoxHasBeenMovedOut&&!messageBoxIsMoving){
+				toogleMessageBoxIsMoving();
+				showMessageBox();
+				messageBoxHasBeenMovedOut=true;
+				setTimeout(function(){toogleMessageBoxIsMoving()}, 500);
+			}
+		}
+		else{
+			if(messageBoxHasBeenMovedOut&&!messageBoxIsMoving){
+				toogleMessageBoxIsMoving();
+				hideMessageBox();
+				messageBoxHasBeenMovedOut=false;
+				setTimeout(function(){toogleMessageBoxIsMoving()}, 500);
+			}
+		}
+    });
+});

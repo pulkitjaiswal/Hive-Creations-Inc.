@@ -26,24 +26,26 @@
 	position: absolute;
 	left: 0px;
 }
+#menuBarBackImg{
+	height: 263px;
+}
 #profileBox{
-	width: 193px;
+	width: 173px;
 	height: 294px;
 	-border-radius: 1em;
 	-border: solid #0066FF 1px;
 	position: absolute;
-	padding: 40px 20px 20px 20px;
+	padding: 40px 40px 20px 20px;
 	background-image: url(../img/profile%20box/profile%20box%20USE%20THIS%20ONE.png);
 	background-repeat: no-repeat;
 }
 #mainInnerWindow{
-	width: 469px;
+	width: 449px;
 	height: 499px;
 	position: absolute;
 	background-image:url(../img/honey%20jar/honey%20jar%20box%20USE%20THIS%20ONE.png);
 	background-repeat: no-repeat;
-	background-position: left top;
-	padding: 40px 20px 20px 20px;
+	padding: 40px 40px 20px 20px;
 	overflow: none;
 	-border-radius: 1em;
 	-border: solid #0066FF 1px;
@@ -53,6 +55,24 @@
 	float: left;
 	width: 72px;
 	height: 83px;
+}
+#messageIcon{
+	background-image: url(../img/messaging/message%20symbol.png);
+	background-repeat: no-repeat;
+	position: absolute;
+	-border: solid black 1px;
+	width: 54px;
+	height: 45px;
+	float: right;
+	border-radius: 2em 0em 0em 2em;
+}
+#messageDiv{
+	position: absolute;
+	width: 220px;
+	height: 350px;
+	padding: 10px;
+	border: solid black 1px;
+	float: right;
 }
 .transparentMenuBarDiv{
 	width: 37px;
