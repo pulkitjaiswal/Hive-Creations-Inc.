@@ -9,6 +9,7 @@ function stuffOnLoad(){
 		alignStuff();
 		placeMenuBar();
 		profileImage(4);
+
 }
 
 //Aligns the different divs
@@ -28,10 +29,14 @@ function alignStuff(){
 	}
 	$("#profileBox").css("left", $("#mainWindowToolbar").position().left+$("#mainWindowToolbar").width()+wantedMarginsBetweenBoxes);
 	$("#mainInnerWindow").css("left", $("#profileBox").position().left+$("#profileBox").outerWidth(true)+wantedMarginsBetweenBoxes);
-
 	setMessageIcon();
+	setBackground()
 }
 
+function setBackground(){
+	var mainDiv = $("#backgroundDiv");
+	mainDiv.css({"width" : $(window).width(), "height" : $(window).height()-mainDiv.position().top});
+}
 //Places the menubar and the divs ontop of it
 function placeMenuBar(){
 	var amountOfMenuButtons = 5;
