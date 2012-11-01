@@ -1,4 +1,3 @@
-
 var wantedMarginsBetweenBoxes = 30;
 var amountOfFriends = 0;
 window.onresize = alignStuff;
@@ -9,7 +8,10 @@ function stuffOnLoad(){
 		alignStuff();
 		placeMenuBar();
 		profileImage(4);
-
+		profileName("Daniel Almquist", "Stockholm");
+		profileCompanyBoxes(8);
+		placeSearchDiv();
+		$("#headerBanner").css("top", $("#headerBanner").position().top-20);//temporary
 }
 
 //Aligns the different divs
@@ -19,18 +21,24 @@ function alignStuff(){
 	var mainWindowSideMargins = (windowWidth-mainWindowWidth)/2;
 	if(mainWindowSideMargins >= 0){
 		$("#mainWindow").css("margin", "0px " + mainWindowSideMargins + "px");
-		$("#hiveLogo").css("left", mainWindowSideMargins);
+		$("#headerBanner").css("left", mainWindowSideMargins);
 		$("#searchBarDiv").css("left", windowWidth-mainWindowSideMargins-$("#searchBarDiv").width());
 	}
 	else{
 		$("#mainWindow").css("margin", "0px 0px");
-		$("#hiveLogo").css("left", "0px");
+		$("#headerBanner").css("left", "0px");
 		$("#searchBarDiv").css("left", mainWindowWidth-$("#searchBarDiv").width());
 	}
 	$("#profileBox").css("left", $("#mainWindowToolbar").position().left+$("#mainWindowToolbar").width()+wantedMarginsBetweenBoxes);
 	$("#mainInnerWindow").css("left", $("#profileBox").position().left+$("#profileBox").outerWidth(true)+wantedMarginsBetweenBoxes);
 	setMessageIcon();
 	setBackground()
+}
+
+function placeSearchDiv(){
+	var searchBar = $("#searchBarDiv");
+	var header = $("#headerBanner");
+	searchBar.css("top", header.position().top + header.outerHeight(true) - 70);
 }
 
 function setBackground(){
@@ -86,7 +94,7 @@ function placeMenuBar(){
 	$("#transparentMenuBarDiv4").hover(
 	function(){
 		var buttonIcon = $('<img src="img/menu bar/menu bar functions/help_bubble_with_text.png" id="menubarHelpButtonIcon" class="menubarButtonIcon"/>').appendTo("#mainWindowToolbar");
-		buttonIcon.css({"left" : $("#transparentMenuBarDiv4").position().left+$("#transparentMenuBarDiv4").width()+"px", "top" : $("#transparentMenuBarDiv4").position().top+$("#transparentMenuBarDiv4").height()/4+"px"});
+		buttonIcon.css({"left" : $("#transparentMenuBarDiv4").position().left+$("#transparentMenuBarDiv4").width()+"px","top" : $("#transparentMenuBarDiv4").position().top+$("#transparentMenuBarDiv4").height()/4+"px"});
 	},
 	function(){
 		$('#menubarHelpButtonIcon').remove();
@@ -102,19 +110,38 @@ function profileImage(friends){
 	for(var i = 0; i < amountOfFriends; i++){
 		var friendImg = $('<img src="img/profile box/pic hexagon friends.png" class="friendProfileImg"/>').appendTo("#profileBox");
 		friendImg.attr("id", "friendProfileImg"+i);
-		var left = profileImg.position().left+profileImg.width()-friendImg.width()/2+2+friendImg.width()*i+(i%2)*4-Math.floor(i/2)*(friendImg.width()+15);
-		var top = profileImg.position().top+profileImg.height()-friendImg.height()/3-Math.floor(i/2)*(friendImg.height()-6);
-		friendImg.css({"left" : left+"px", "top" : top+"px"});
-		}
+		var startPosLeft = profileImg.position().left+profileImg.width()-friendImg.width()/2+2;
+		var startPosTop = profileImg.position().top+profileImg.height()-friendImg.height()/2+3;
+		friendImg.css({"left" : startPosLeft + friendImg.width()*i+(i%2)*4-Math.floor(i/2)*(friendImg.width()+16),
+			"top" : startPosTop - Math.floor(i/2)*(friendImg.height()-6)});
+	}
 }
 
-//Sets the new amount of friends
+function profileName(name, location){
+	var nameBox = $("#profileNameDiv");
+	var profileImg = $("#profileImage");
+	nameBox.css({"top": profileImg.position().top + profileImg.outerHeight(true) + 50, "width" : $("#profileBox").width()});
+	$("#profilaNameInDiv").append(name).show().css("font-weight", "bold");
+	$("#profileLocationInDiv").append(location).show().css({"position" : "absolute", "left" : "+=2"})
+}
+
+//Sets the new amount of friends, shall later take amount of friends as in argument
 function setNewFriends(){
 	for(var i = 0; i < amountOfFriends; i++){
 		$("#friendProfileImg"+i).remove();
 	}
 	var newAmountOfFriends = $("#setFriends").val();
 	profileImage(newAmountOfFriends);
+}
+
+function profileCompanyBoxes(amount){ //How to get the images?
+	var startTopPos = $("#profileNameDiv").position().top + $("#profileNameDiv").outerHeight(true)+20;
+	var startLeftPos = $("#profileNameDiv").position().left;
+	for(var i = 0; i < amount; i++){
+		var div = $("<div class='profileCompanyImg'></div>").appendTo("#profileBox");
+		div.attr("id", "profileCompanyImgDiv"+i);
+		div.css({"left" : startLeftPos + (i%4)*($(".profileCompanyImg").width()+4+1/3) , "top" : startTopPos + Math.floor(i/4)*($(".profileCompanyImg").height()+4+1/3), "background" : "gray"});
+	}
 }
 
 function setMessageIcon(){
@@ -147,6 +174,7 @@ function toogleMessageBoxIsMoving(){
 	messageBoxIsMoving = !messageBoxIsMoving;
 }
 
+//For detecting where the mouse is
 $(document).ready(function() {
     $('div').hover(function() { 
         var isOverId = (this.id);
