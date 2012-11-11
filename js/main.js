@@ -7,6 +7,7 @@ var messageBoxIsMoving = false;
 function stuffOnLoad(){
 		alignStuff();
 		placeMenuBar();
+		setRoundDivOnMainWindow();
 		profileImage(4);
 		profileName("Daniel Almquist", "Stockholm");
 		profileCompanyBoxes(8);
@@ -52,6 +53,7 @@ function placeMenuBar(){
 		var div = $("<div class='transparentMenuBarDiv'></div>").appendTo("#mainWindowToolbar");
 		div.attr("id", "transparentMenuBarDiv"+i);
 		div.css({"left" : $("#menuBarBackImg").position().left, "top" : $("#menuBarBackImg").position().top+i*56.7});
+		div.click(animateMainWindow);
 	}
 	
 	//TO BE REPLACED WITH A FOR LOOP
@@ -143,6 +145,26 @@ function profileCompanyBoxes(amount){ //How to get the images?
 		div.css({"left" : startLeftPos + (i%4)*($(".profileCompanyImg").width()+4+1/3) , "top" : startTopPos + Math.floor(i/4)*($(".profileCompanyImg").height()+4+1/3), "background" : "gray"});
 	}
 }
+
+//For placing the a round div over the honey jar in the main window
+function setRoundDivOnMainWindow(){
+				 var mainWindow = $("#mainInnerWindow");
+				 var div = $("<div class='transparentMenuBarDiv'></div>").appendTo("#mainInnerWindow");
+				 div.attr("id", "roundDivMainWindow");
+				 var left = mainWindow.outerWidth(true)-div.width();
+				 div.css({"left" : left, "top" : 0, "opacity" :0});
+				 div.click(animateMainWindow);
+}
+
+function animateMainWindow(){
+				var mainWindow = $("#mainInnerWindow");
+		    var curHeight = mainWindow.height();
+   			var curWidth = mainWindow.width()
+				console.log("width" + curWidth + " height" + curHeight);
+        mainWindow.animate({height: 0, width: curWidth, opacity: "toggle"}, { queue:true, duration:500 });
+        mainWindow.animate({height: curHeight, width: curWidth, opacity: "toggle"}, { queue:true, duration:500 });
+      	return false;
+  }
 
 function setMessageIcon(){
 	var icon = $("#messageIcon");
