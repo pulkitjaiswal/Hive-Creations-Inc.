@@ -3,6 +3,10 @@ var amountOfFriends = 0;
 window.onresize = alignStuff;
 var messageBoxHasBeenMovedOut = false;
 var messageBoxIsMoving = false;
+var millisUntilMainWindowStartsToShowAfterAnimation = 500;
+var toolbarLinks = ["mainwindow.html", "hiveway.html", "mainwindow.html", "privacy_settings.html", "help.html"];
+var currentShownInMainWindow = 0;
+var mainWindowIsMoving = false;
 
 function stuffOnLoad(){
 		alignStuff();
@@ -13,9 +17,10 @@ function stuffOnLoad(){
 		profileCompanyBoxes(8);
 		placeSearchDiv();
 		$("#headerBanner").css("top", $("#headerBanner").position().top-20);//temporary
+		$("#mainInnerWindowTextArea").load("mainwindow_resources/mainwindow.html");//Sets the content in the main window
 }
 
-//Aligns the different divs
+//Aligns the different divs when the window is resized
 function alignStuff(){
 	var windowWidth = $(window).width();
 	var mainWindowWidth = $("#mainWindow").width();
@@ -33,7 +38,7 @@ function alignStuff(){
 	$("#profileBox").css("left", $("#mainWindowToolbar").position().left+$("#mainWindowToolbar").width()+wantedMarginsBetweenBoxes);
 	$("#mainInnerWindow").css("left", $("#profileBox").position().left+$("#profileBox").outerWidth(true)+wantedMarginsBetweenBoxes);
 	setMessageIcon();
-	setBackground()
+	setBackground();
 }
 
 function placeSearchDiv(){
@@ -53,7 +58,8 @@ function placeMenuBar(){
 		var div = $("<div class='transparentMenuBarDiv'></div>").appendTo("#mainWindowToolbar");
 		div.attr("id", "transparentMenuBarDiv"+i);
 		div.css({"left" : $("#menuBarBackImg").position().left, "top" : $("#menuBarBackImg").position().top+i*56.7});
-		div.click(animateMainWindow);
+		div.data("number", i);
+		div.click(toolbarClicked);
 	}
 	
 	//TO BE REPLACED WITH A FOR LOOP
@@ -86,7 +92,7 @@ function placeMenuBar(){
 	
 	$("#transparentMenuBarDiv3").hover(
 	function(){
-		var buttonIcon = $('<img src="img/menu bar/menu bar functions/hiveway_bubble.png" id="menubar3ButtonIcon" class="menubarButtonIcon"/>').appendTo("#mainWindowToolbar");
+		var buttonIcon = $('<img src="img/menu bar/menu bar functions/tools_bubble_with_text.png" id="menubar3ButtonIcon" class="menubarButtonIcon"/>').appendTo("#mainWindowToolbar");
 		buttonIcon.css({"left" : $("#transparentMenuBarDiv3").position().left+$("#transparentMenuBarDiv3").width()+"px", "top" : $("#transparentMenuBarDiv3").position().top+$("#transparentMenuBarDiv3").height()/4+"px"});
 	},
 	function(){
@@ -153,19 +159,36 @@ function setRoundDivOnMainWindow(){
 				 div.attr("id", "roundDivMainWindow");
 				 var left = mainWindow.outerWidth(true)-div.width();
 				 div.css({"left" : left, "top" : 0, "opacity" :0});
-				 div.click(animateMainWindow);
+				 div.data("number", 0); //sets the same id as the first button in the toolbar
+				 div.click(toolbarClicked);
 }
 
+//For animating the main window
 function animateMainWindow(){
-				var mainWindow = $("#mainInnerWindow");
-		    var curHeight = mainWindow.height();
-   			var curWidth = mainWindow.width()
-				console.log("width" + curWidth + " height" + curHeight);
-        mainWindow.animate({height: 0, width: curWidth, opacity: "toggle"}, { queue:true, duration:500 });
-        mainWindow.animate({height: curHeight, width: curWidth, opacity: "toggle"}, { queue:true, duration:500 });
+		var mainWindow = $("#mainInnerWindow");
+		var curHeight = mainWindow.height();
+   		var curWidth = mainWindow.width()
+		console.log("width" + curWidth + " height" + curHeight);
+        mainWindow.animate({height: 0, width: curWidth, opacity: "toggle"}, { queue:true, duration: millisUntilMainWindowStartsToShowAfterAnimation }).delay(100);
+        mainWindow.animate({height: curHeight, width: curWidth, opacity: "toggle"}, 500, toggleMainWindowMoving);
       	return false;
   }
 
+//Function for when a item on the toolbar is clicked
+function toolbarClicked(){
+	var number = $(this).data("number");
+	if(number==currentShownInMainWindow || mainWindowIsMoving){
+		return;
+	}
+	toggleMainWindowMoving();
+	currentShownInMainWindow = number;
+	animateMainWindow();
+	setTimeout(function(){
+		$("#mainInnerWindowTextArea").load("mainwindow_resources/" + toolbarLinks[number]).delay(millisUntilMainWindowStartsToShowAfterAnimation);
+	}, millisUntilMainWindowStartsToShowAfterAnimation);
+}
+
+//Positions the message icon
 function setMessageIcon(){
 	var icon = $("#messageIcon");
 	var messageBox = $("#messageDiv");
@@ -174,6 +197,7 @@ function setMessageIcon(){
 	messageBox.hide();
 }
 
+//Shows the message box
 function showMessageBox(){
 	var icon = $("#messageIcon");
 	var messageBox = $("#messageDiv");
@@ -183,6 +207,7 @@ function showMessageBox(){
 	messageBox.show();
 }
 
+//Hides the message box
 function hideMessageBox(){
 	var icon = $("#messageIcon");
 	var messageBox = $("#messageDiv");
@@ -192,8 +217,13 @@ function hideMessageBox(){
 	messageBox.fadeOut(0);
 }
 
+//Toggles if the message box is moving
 function toogleMessageBoxIsMoving(){
 	messageBoxIsMoving = !messageBoxIsMoving;
+}
+
+function toggleMainWindowMoving(){
+	mainWindowIsMoving = !mainWindowIsMoving;
 }
 
 //For detecting where the mouse is

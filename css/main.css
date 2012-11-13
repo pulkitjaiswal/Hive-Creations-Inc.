@@ -20,6 +20,10 @@ img {
 }
  /*END */
 
+ body{
+ 	overflow: hidden;
+ }
+
 #headerDiv{
 	background: white;
 	clear: both;
