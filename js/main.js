@@ -5,6 +5,7 @@ var messageBoxHasBeenMovedOut = false;
 var messageBoxIsMoving = false;
 var millisUntilMainWindowStartsToShowAfterAnimation = 500;
 var toolbarLinks = ["mainwindow.html", "hiveway.html", "mainwindow.html", "privacy_settings.html", "help.html"];
+var toolbarBubbleIcons = ["img/menu bar/menu bar functions/hiveway_bubble.png", "img/menu bar/menu bar functions/hiveway_bubble_with_text.png", "img/menu bar/menu bar functions/hiveway_bubble.png", "img/menu bar/menu bar functions/tools_bubble_with_text.png", "img/menu bar/menu bar functions/help_bubble_with_text.png"];
 var currentShownInMainWindow = 0;
 var mainWindowIsMoving = false;
 
@@ -60,54 +61,17 @@ function placeMenuBar(){
 		div.css({"left" : $("#menuBarBackImg").position().left, "top" : $("#menuBarBackImg").position().top+i*56.7});
 		div.data("number", i);
 		div.click(toolbarClicked);
+		$("#transparentMenuBarDiv"+i).hover(
+			function(event){
+				var buttonIcon = $('<img src="' + toolbarBubbleIcons[$(this).data("number")] + '" class="menubarButtonIcon"/>').appendTo("#mainWindowToolbar");
+				buttonIcon.css({"left" : $("#"+event.target.id).position().left+$("#"+event.target.id).width(), "top" : $("#"+event.target.id).position().top+$("#"+event.target.id).height()/4});
+			},
+			function(){
+				$('.menubarButtonIcon').remove();
+			});
 	}
 	
-	//TO BE REPLACED WITH A FOR LOOP
-	$("#transparentMenuBarDiv0").hover(
-	function(){
-		var buttonIcon = $('<img src="img/menu bar/menu bar functions/hiveway_bubble.png" id="menubarHoneyButtonIcon" class="menubarButtonIcon"/>').appendTo("#mainWindowToolbar");
-		buttonIcon.css({"left" : $("#transparentMenuBarDiv0").position().left+$("#transparentMenuBarDiv0").width()+"px", "top" : $("#transparentMenuBarDiv0").position().top+$("#transparentMenuBarDiv0").height()/4+"px"});
-	},
-	function(){
-		$('#menubarHoneyButtonIcon').remove();
-	});
 	
-	$("#transparentMenuBarDiv1").hover(
-	function(){
-		var buttonIcon = $('<img src="img/menu bar/menu bar functions/hiveway_bubble_with_text.png" id="menubarHivewayButtonIcon" class="menubarButtonIcon"/>').appendTo("#mainWindowToolbar");
-		buttonIcon.css({"left" : $("#transparentMenuBarDiv1").position().left+$("#transparentMenuBarDiv1").width()+"px", "top" : $("#transparentMenuBarDiv1").position().top+$("#transparentMenuBarDiv1").height()/4+"px"});
-	},
-	function(){
-		$('#menubarHivewayButtonIcon').remove();
-	});
-	
-	$("#transparentMenuBarDiv2").hover(
-	function(){
-		var buttonIcon = $('<img src="img/menu bar/menu bar functions/hiveway_bubble.png" id="menubar2ButtonIcon" class="menubarButtonIcon"/>').appendTo("#mainWindowToolbar");
-		buttonIcon.css({"left" : $("#transparentMenuBarDiv2").position().left+$("#transparentMenuBarDiv2").width()+"px", "top" : $("#transparentMenuBarDiv2").position().top+$("#transparentMenuBarDiv2").height()/4+"px"});
-	},
-	function(){
-		$('#menubar2ButtonIcon').remove();
-	});
-	
-	$("#transparentMenuBarDiv3").hover(
-	function(){
-		var buttonIcon = $('<img src="img/menu bar/menu bar functions/tools_bubble_with_text.png" id="menubar3ButtonIcon" class="menubarButtonIcon"/>').appendTo("#mainWindowToolbar");
-		buttonIcon.css({"left" : $("#transparentMenuBarDiv3").position().left+$("#transparentMenuBarDiv3").width()+"px", "top" : $("#transparentMenuBarDiv3").position().top+$("#transparentMenuBarDiv3").height()/4+"px"});
-	},
-	function(){
-		$('#menubar3ButtonIcon').remove();
-	});
-	
-	$("#transparentMenuBarDiv4").hover(
-	function(){
-		var buttonIcon = $('<img src="img/menu bar/menu bar functions/help_bubble_with_text.png" id="menubarHelpButtonIcon" class="menubarButtonIcon"/>').appendTo("#mainWindowToolbar");
-		buttonIcon.css({"left" : $("#transparentMenuBarDiv4").position().left+$("#transparentMenuBarDiv4").width()+"px","top" : $("#transparentMenuBarDiv4").position().top+$("#transparentMenuBarDiv4").height()/4+"px"});
-	},
-	function(){
-		$('#menubarHelpButtonIcon').remove();
-	});
-	//END FOR LOOP
 }
 
 //Places the profile image, and the images of the friends
