@@ -1,5 +1,38 @@
 <html>
+<head>
+<link href="css/privacy_settings_popup.css" rel="stylesheet" type="text/css" />
+<script src="js/privacy_settings_popup.js"></script>
+</head>
 <body>
-Billing
+	<div id="popupBody">
+		<div id="popupInputBox">
+			<div class="popupInputArea">
+				<span class="popupInputLable">Billing name: </span>
+				<input id="popupBillingName" type"text" size="40">
+			</div>
+			<div class="popupInputArea">
+				<span class="popupInputLable">Streat: </span>
+				<input id="popupBillingStreat" type"text" size="60">
+			</div>
+			<div class="popupInputArea">
+				<span class="popupInputLable">State: </span>
+				<input id="popupBillingState" type"text" size="15">
+			</div>
+			<div class="popupInputArea">
+				<span class="popupInputLable">Country: </span>
+				<input id="popupBillingCountry" type"text" size="20">
+			</div>
+			<div class="popupInputArea">
+				<span class="popupInputLable">Zip: </span>
+				<input id="popupBillingZip" type"text" size="5">
+			</div>
+			<div class="popupInputArea">
+				<input id="popupBillingSubmit" type"button" value="Submit">
+			</div>
+		</div>
+	</div>
+	<script>
+		fitPopupToParrent();
+	</script>
 </body>
 </html>

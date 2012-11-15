@@ -2,6 +2,7 @@ $("#creditCardInfo").data("placeInList", 0).click(listItemClicked);
 $("#billingAddress").data("placeInList", 1).click(listItemClicked);
 $("#shippingAddress").data("placeInList", 2).click(listItemClicked);
 $("#deleteAccount").data("placeInList", 3).click(listItemClicked);
+$("#saveChangesButton").click(saveButtonClick);
 var itemsInList =["creditCardInfo.html", "billingAddress.html", "shippingAddress.html", "deleteAccount.html"]
 var firstTimeClicked = false;
 
@@ -9,15 +10,12 @@ var firstTimeClicked = false;
 function listItemClicked(){
 	firstTimeClicked = true;
 	div=$("#inputDiv");
-	console.log($(this).data("placeInList"));
 	div.load("mainwindow_resources/privacy_settings/" + itemsInList[$(this).data("placeInList")]);
 	var offsetLeftToMainWindow = $("#mainInnerWindow").offset().left;
 	var offsetTopToMainWindow = $("#mainInnerWindow").offset().top;
-	console.log("Left " + offsetLeftToMainWindow);
-	console.log("Top " + offsetTopToMainWindow);
 	div.css({"left": $("#backgroundDiv").width()*0.25-offsetLeftToMainWindow, "top": $("#backgroundDiv").height()*0.25-offsetTopToMainWindow});
 	div.css({"width": $("#backgroundDiv").width()*0.5, "height": $("#backgroundDiv").height()*0.6});
-	div.show();
+	div.fadeIn(200);
 	detectClickOutside();
 }
 
@@ -26,9 +24,17 @@ function detectClickOutside(event){
 		$(window).click(detectClickOutside);
 		return;
 	}
-	if(event.target.id != "inputDiv" && !firstTimeClicked){
+	var innerXPos = event.pageX-$("#inputDiv").offset().left;
+	var innerYPos = event.pageY-$("#inputDiv").offset().top;
+	var xIsIn = (innerXPos>=0)&&(innerXPos<=$("#inputDiv").innerWidth());
+	var yIsIn = (innerYPos>=0)&&(innerYPos<=$("#inputDiv").innerHeight());
+	if((!xIsIn || !yIsIn) && !firstTimeClicked){
 		$(window).unbind("click", detectClickOutside);
-		$("#inputDiv").hide();
+		$("#inputDiv").fadeOut(200);
 	}
 	firstTimeClicked = false;
+}
+
+function saveButtonClick(){
+	toolbarClicked(0);
 }

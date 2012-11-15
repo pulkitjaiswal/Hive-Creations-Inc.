@@ -138,9 +138,14 @@ function animateMainWindow(){
       	return false;
   }
 
-//Function for when a item on the toolbar is clicked
-function toolbarClicked(){
-	var number = $(this).data("number");
+//Function for when a item on the toolbar is clicked, can simulate a click on a element in toolbar by sending that items nr in the toolbar 
+function toolbarClicked(outsideNumb){
+	if(outsideNumb.type !="click"){
+		var number = outsideNumb;
+	}
+	else{
+		var number = $(this).data("number");
+	}
 	if(number==currentShownInMainWindow || mainWindowIsMoving){
 		return;
 	}
