@@ -6,29 +6,55 @@
 <body>
 	<div id="popupBody">
 		<div id="popupInputBox">
-			<div class="popupInputArea">
-				<span class="popupInputLable">Billing name: </span>
-				<input id="popupBillingName" type"text" size="40">
-			</div>
-			<div class="popupInputArea">
-				<span class="popupInputLable">Streat: </span>
-				<input id="popupBillingStreat" type"text" size="60">
-			</div>
-			<div class="popupInputArea">
-				<span class="popupInputLable">State: </span>
-				<input id="popupBillingState" type"text" size="15">
-			</div>
-			<div class="popupInputArea">
-				<span class="popupInputLable">Country: </span>
-				<input id="popupBillingCountry" type"text" size="20">
-			</div>
-			<div class="popupInputArea">
-				<span class="popupInputLable">Zip: </span>
-				<input id="popupBillingZip" type"text" size="5">
-			</div>
-			<div class="popupInputArea">
-				<input id="popupBillingSubmit" type"button" value="Submit">
-			</div>
+			<table>
+				<tr>
+					<td>
+						<span class="popupInputLable">Billing name: </span>
+					</td>
+					<td>
+						<input id="popupBillingName" class="popupTextInputArea" type"text" size="40">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<span class="popupInputLable">Streat: </span>
+					</td>
+					<td>
+						<input id="popupBillingStreat" class="popupTextInputArea" type"text" size="60">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<span class="popupInputLable">State: </span>
+					</td>
+					<td>
+						<input id="popupBillingState" class="popupTextInputArea" type"text" size="15">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<span class="popupInputLable">Country: </span>
+					</td>
+					<td>
+						<input id="popupBillingCountry" class="popupTextInputArea" type"text" size="20">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<span class="popupInputLable">Zip: </span>
+					</td>
+					<td>
+						<input id="popupBillingZip" class="popupTextInputArea" type"text" size="5">
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>
+						<span id="addAnotherBillingInfo">+ Add another one</span>
+					</td>
+				</tr>
+			</table>
+			<button id="popupBillingSubmit" type"button">Submit</button>
 		</div>
 	</div>
 	<script>

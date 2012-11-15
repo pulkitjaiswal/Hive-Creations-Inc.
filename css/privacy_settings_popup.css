@@ -4,3 +4,19 @@
  	height: 80%;
  	padding: 0px;
  }
+ #popupBillingSubmit{
+ 	position: absolute;
+ }
+ .popupTextInputArea{
+	border: 1px solid black;
+	border-radius: 1em;
+	padding: 0px 4px;
+	width: 200px;
+	height: 20px;
+}
+.popupInputArea{
+	padding: 5px;
+	margin: 5px;
+	margin: 0 auto;
+	clear: both;
+}
