@@ -23,6 +23,7 @@ function stuffOnLoad(){
 
 //Aligns the different divs when the window is resized
 function alignStuff(){
+	console.log("ALIGN");
 	var windowWidth = $(window).width();
 	var mainWindowWidth = $("#mainWindow").width();
 	var mainWindowSideMargins = (windowWidth-mainWindowWidth)/2;
@@ -49,6 +50,7 @@ function placeSearchDiv(){
 }
 
 function setBackground(){
+	console.log("Background changed");
 	var mainDiv = $("#backgroundDiv");
 	mainDiv.css({"width" : $(window).width(), "height" : $(window).height()-mainDiv.position().top});
 }

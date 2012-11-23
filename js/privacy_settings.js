@@ -13,8 +13,8 @@ function listItemClicked(){
 	div.load("mainwindow_resources/privacy_settings/" + itemsInList[$(this).data("placeInList")]);
 	var offsetLeftToMainWindow = $("#mainInnerWindow").offset().left;
 	var offsetTopToMainWindow = $("#mainInnerWindow").offset().top;
-	div.css({"left": $("#backgroundDiv").width()*0.25-offsetLeftToMainWindow, "top": $("#backgroundDiv").height()*0.25-offsetTopToMainWindow});
-	div.css({"width": $("#backgroundDiv").width()*0.5, "height": $("#backgroundDiv").height()*0.6});
+	div.css({"left": $("#backgroundDiv").width()*0.3-offsetLeftToMainWindow, "top": $("#backgroundDiv").height()*0.25-offsetTopToMainWindow});
+	div.css({"width": $("#backgroundDiv").width()*0.4, "height": $("#backgroundDiv").height()*0.75});
 	div.fadeIn(200);
 	detectClickOutside();
 }
@@ -26,8 +26,8 @@ function detectClickOutside(event){
 	}
 	var innerXPos = event.pageX-$("#inputDiv").offset().left;
 	var innerYPos = event.pageY-$("#inputDiv").offset().top;
-	var xIsIn = (innerXPos>=0)&&(innerXPos<=$("#inputDiv").innerWidth());
-	var yIsIn = (innerYPos>=0)&&(innerYPos<=$("#inputDiv").innerHeight());
+	var xIsIn = (innerXPos>=0)&&(innerXPos<=$("#popupBody").innerWidth());
+	var yIsIn = (innerYPos>=0)&&(innerYPos<=$("#popupBody").innerHeight());
 	if((!xIsIn || !yIsIn) && !firstTimeClicked){
 		$(window).unbind("click", detectClickOutside);
 		$("#inputDiv").fadeOut(200);

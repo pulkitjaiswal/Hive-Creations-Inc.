@@ -2,14 +2,77 @@
 <head>
 <link href="css/privacy_settings_popup.css" rel="stylesheet" type="text/css" />
 <script src="js/privacy_settings_popup.js"></script>
-
+<style type="text/css">
+	.ui-datepicker-calendar {
+    display: none;
+    }
+ </style>
+</head>
+<body>
+	<html>
+<head>
+<link href="css/privacy_settings_popup.css" rel="stylesheet" type="text/css" />
+<script src="js/privacy_settings_popup.js"></script>
 </head>
 <body>
 	<div id="popupBody">
-		Credir card
+		Here already enterd credit cards will be shown
+		<div id="accordion">
+    		<h3>Add credit card</h3>
+			<div id="popupInputBox">
+				<table>
+					<tr>
+						<td>
+							<span class="popupInputLable">Card holder Name: </span>
+						</td>
+						<td>
+							<input id="popupCreditCardName" class="popupTextInputArea" type="text" size="40">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<span class="popupInputLable">Card Number: </span>
+						</td>
+						<td>
+							<input id="popupCreditCardNumber" class="popupTextInputArea" type="text" size="16" maxlength="16">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<span class="popupInputLable">Experation Date: </span>
+							
+						</td>
+						<td>
+							<input id="popupCreditCardExpDate" class="popupTextInputArea date-picker" type="date" size="8">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<span class="popupInputLable">Security Code: </span>
+						</td>
+						<td>
+							<input id="popupBillingCountry" class="popupTextInputArea" type="text" size="4" maxlength="3">
+						</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>
+							<button class ="popupSubmitButton" id="popupCreditCardSubmit" type"button">Submit</button>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
 	</div>
 	<script>
 		fitPopupToParrent();
+		$(function() {
+	        $("#accordion").accordion({
+	            collapsible: true,
+	            active: false,
+	            heightStyle: "content"
+	        });
+	    });
 	</script>
 </body>
 </html>

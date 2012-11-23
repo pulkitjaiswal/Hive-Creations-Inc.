@@ -6,10 +6,70 @@
 </head>
 <body>
 	<div id="popupBody">
-		Address
+		Here user will be able to chose one of the billing addresses as shipping address
+		<div id="accordion">
+    		<h3>Add shipping address</h3>
+			<div id="popupInputBox">
+				<table>
+					<tr>
+						<td>
+							<span class="popupInputLable">Name: </span>
+						</td>
+						<td>
+							<input id="popupShippingName" class="popupTextInputArea" type="text" size="40">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<span class="popupInputLable">Street: </span>
+						</td>
+						<td>
+							<input id="popupShippingStreat" class="popupTextInputArea" type="text" size="45">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<span class="popupInputLable">State: </span>
+						</td>
+						<td>
+							<input id="popupShippingState" class="popupTextInputArea" type="text" size="15">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<span class="popupInputLable">Country: </span>
+						</td>
+						<td>
+							<input id="popupShippingCountry" class="popupTextInputArea" type="text" size="20">
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<span class="popupInputLable">Zip: </span>
+						</td>
+						<td>
+							<input id="popupShippingZip" class="popupTextInputArea" type="text" size="5">
+						</td>
+					</tr>
+					<tr>
+						<td></td>
+						<td>
+							<button class ="popupSubmitButton" id="popupShippingSubmit" type"button">Submit</button>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
 	</div>
 	<script>
 		fitPopupToParrent();
+		$(function() {
+	        $("#accordion").accordion({
+	            collapsible: true,
+	            active: false,
+	            heightStyle: "content"
+	        });
+	    });
 	</script>
 </body>
 </html>

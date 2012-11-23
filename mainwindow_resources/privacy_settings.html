@@ -19,7 +19,24 @@
 		</li>
 		<input type="button" id="saveChangesButton" value="Save"/>
 	</ul>
+	<div id="chBackground">
+		Change background!
+	</div>
 	<div id="inputDiv">
 	</div>
+	<script type="text/javascript">
+		function chBackgroundClick(){
+			firstTimeClicked = true;
+			div=$("#inputDiv");
+			div.load("mainwindow_resources/user_settings/changeBackground.html");
+			var offsetLeftToMainWindow = $("#mainInnerWindow").offset().left;
+			var offsetTopToMainWindow = $("#mainInnerWindow").offset().top;
+			div.css({"left": $("#backgroundDiv").width()*0.3-offsetLeftToMainWindow, "top": $("#backgroundDiv").height()*0.25-offsetTopToMainWindow});
+			div.css({"width": $("#backgroundDiv").width()*0.4, "height": $("#backgroundDiv").height()*0.75});
+			div.fadeIn(200);
+			detectClickOutside();
+		}
+		$("#chBackground").click(chBackgroundClick);
+	</script>
 	</body>
 </html>
