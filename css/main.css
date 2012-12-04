@@ -71,6 +71,7 @@ img {
 	width:40px;
 	position: absolute;
 	left: 0px;
+	overflow: visible;
 }
 #menuBarBackImg{
 	height: 263px;
@@ -139,6 +140,12 @@ img {
 	position:absolute;
 	float: left;
 	z-index: 1;
+}
+.menubarButtonIconExtraDiv{
+	width: 25px;
+	height: 25px;
+	border-radius: 12px;
+	position: absolute;
 }
 .friendProfileImg{
 	position: absolute;

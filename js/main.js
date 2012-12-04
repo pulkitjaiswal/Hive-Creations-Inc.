@@ -4,8 +4,9 @@ window.onresize = alignStuff;
 var messageBoxHasBeenMovedOut = false;
 var messageBoxIsMoving = false;
 var millisUntilMainWindowStartsToShowAfterAnimation = 500;
-var toolbarLinks = ["mainwindow.html", "hiveway.html", "mainwindow.html", "privacy_settings.html", "help.html"];
-var toolbarBubbleIcons = ["img/menu bar/menu bar functions/hiveway_bubble.png", "img/menu bar/menu bar functions/hiveway_bubble_with_text.png", "img/menu bar/menu bar functions/hiveway_bubble.png", "img/menu bar/menu bar functions/tools_bubble_with_text.png", "img/menu bar/menu bar functions/help_bubble_with_text.png"];
+var toolbarLinks = ["mainwindow.html", "hiveway.html", ["edit_user_settings.html","mainwindow.html"], "mainwindow.html", "help.html"];
+var menubarToolsPosition = 2;
+var toolbarBubbleIcons = ["img/menu bar/menu bar functions/hiveway_bubble.png", "img/menu bar/menu bar functions/hiveway_bubble_with_text.png", "img/menu bar/menu bar functions/tools_popup.png", "img/menu bar/menu bar functions/hiveway_bubble.png", "img/menu bar/menu bar functions/help_bubble_with_text.png"];
 var currentShownInMainWindow = 0;
 var mainWindowIsMoving = false;
 
@@ -65,15 +66,47 @@ function placeMenuBar(){
 		div.click(toolbarClicked);
 		$("#transparentMenuBarDiv"+i).hover(
 			function(event){
-				var buttonIcon = $('<img src="' + toolbarBubbleIcons[$(this).data("number")] + '" class="menubarButtonIcon"/>').appendTo("#mainWindowToolbar");
-				buttonIcon.css({"left" : $("#"+event.target.id).position().left+$("#"+event.target.id).width(), "top" : $("#"+event.target.id).position().top+$("#"+event.target.id).height()/4});
+				var itemNumberHovered = $(this).data("number");
+				var leftPos = $("#"+event.target.id).position().left+$("#"+event.target.id).width();
+				var topPos = $("#"+event.target.id).position().top+$("#"+event.target.id).height()/4;
+				//For the tools item popout
+				if(itemNumberHovered==menubarToolsPosition){
+					var buttonIcon = $('<div class="menubarButtonIcon"><img src="' + toolbarBubbleIcons[itemNumberHovered] + '"/></div>').appendTo("#mainWindowToolbar");
+					buttonIcon.css({"left" : leftPos, "top" : topPos});
+					$(this).css({"width": "+=86", "z-index": 2});
+					placeMenubarButtonIconExtraDivs($(this));
+				}
+				else{
+					var buttonIcon = $('<div class="menubarButtonIcon"><img src="' + toolbarBubbleIcons[itemNumberHovered] + '"/></div>').appendTo("#mainWindowToolbar");
+					buttonIcon.css({"left" : leftPos, "top" : topPos});
+				}		
 			},
-			function(){
-				$('.menubarButtonIcon').remove();
-			});
+			function(event){
+				//For the tools item popout
+				if($(this).data("number")==menubarToolsPosition){
+					$(this).css({"width": "-=86", "z-index": 0});
+					$('.menubarButtonIcon').remove();
+					$('.menubarButtonIconExtraDiv').remove();
+				}
+				else{
+					$('.menubarButtonIcon').remove();
+				}
+				
+			}
+		);
 	}
-	
-	
+}
+
+//Places the extra divs for tools
+function placeMenubarButtonIconExtraDivs(item){
+	for(var i = 0; i < 2; i++){
+		var div = $('<div class="menubarButtonIconExtraDiv"></div>').appendTo($(item));
+		div.data("number", item.data("number")*10+i);
+		var leftPos = $(item).position().left+$(item).width()-66+42*i;
+		var topPos = $(item).height()/4;
+		div.css({"left": leftPos, "top": topPos});
+		div.click(toolbarClicked);
+	}
 }
 
 //Places the profile image, and the images of the friends
@@ -120,43 +153,55 @@ function profileCompanyBoxes(amount){ //How to get the images?
 
 //For placing the a round div over the honey jar in the main window
 function setRoundDivOnMainWindow(){
-				 var mainWindow = $("#mainInnerWindow");
-				 var div = $("<div class='transparentMenuBarDiv'></div>").appendTo("#mainInnerWindow");
-				 div.attr("id", "roundDivMainWindow");
-				 var left = mainWindow.outerWidth(true)-div.width();
-				 div.css({"left" : left, "top" : 0, "opacity" :0});
-				 div.data("number", 0); //sets the same id as the first button in the toolbar
-				 div.click(toolbarClicked);
+	 var mainWindow = $("#mainInnerWindow");
+	 var div = $("<div class='transparentMenuBarDiv'></div>").appendTo("#mainInnerWindow");
+	 div.attr("id", "roundDivMainWindow");
+	 var left = mainWindow.outerWidth(true)-div.width();
+	 div.css({"left" : left, "top" : 0, "opacity" :0});
+	 div.data("number", 0); //sets the same id as the first button in the toolbar
+	 div.click(toolbarClicked);
 }
 
 //For animating the main window
 function animateMainWindow(){
-		var mainWindow = $("#mainInnerWindow");
-		var curHeight = mainWindow.height();
-   		var curWidth = mainWindow.width()
-		console.log("width" + curWidth + " height" + curHeight);
-        mainWindow.animate({height: 0, width: curWidth, opacity: "toggle"}, { queue:true, duration: millisUntilMainWindowStartsToShowAfterAnimation }).delay(100);
-        mainWindow.animate({height: curHeight, width: curWidth, opacity: "toggle"}, 500, toggleMainWindowMoving);
-      	return false;
+	var mainWindow = $("#mainInnerWindow");
+	var curHeight = mainWindow.height();
+	var curWidth = mainWindow.width();
+	console.log("width" + curWidth + " height" + curHeight);
+    mainWindow.animate({height: 0, width: curWidth, opacity: "toggle"}, { queue:true, duration: millisUntilMainWindowStartsToShowAfterAnimation }).delay(100);
+    mainWindow.animate({height: curHeight, width: curWidth, opacity: "toggle"}, 500, toggleMainWindowMoving);
+  	return false;
   }
 
 //Function for when a item on the toolbar is clicked, can simulate a click on a element in toolbar by sending that items nr in the toolbar 
 function toolbarClicked(outsideNumb){
+	console.log(outsideNumb);
 	if(outsideNumb.type !="click"){
 		var number = outsideNumb;
 	}
 	else{
 		var number = $(this).data("number");
 	}
-	if(number==currentShownInMainWindow || mainWindowIsMoving){
+	if(number==currentShownInMainWindow || mainWindowIsMoving || number==menubarToolsPosition){
 		return;
 	}
 	toggleMainWindowMoving();
 	currentShownInMainWindow = number;
 	animateMainWindow();
-	setTimeout(function(){
-		$("#mainInnerWindowTextArea").load("mainwindow_resources/" + toolbarLinks[number]).delay(millisUntilMainWindowStartsToShowAfterAnimation);
-	}, millisUntilMainWindowStartsToShowAfterAnimation);
+	console.log(number);
+	//One of the user tools that contains more then one option has been pressed
+	if(number>=10){
+		var outerNumber = Math.floor(number/10);
+		var innerNumber = number-10*outerNumber;
+		setTimeout(function(){
+			$("#mainInnerWindowTextArea").load("mainwindow_resources/" + toolbarLinks[outerNumber][innerNumber]).delay(millisUntilMainWindowStartsToShowAfterAnimation);
+		}, millisUntilMainWindowStartsToShowAfterAnimation);
+	}
+	else{
+		setTimeout(function(){
+			$("#mainInnerWindowTextArea").load("mainwindow_resources/" + toolbarLinks[number]).delay(millisUntilMainWindowStartsToShowAfterAnimation);
+		}, millisUntilMainWindowStartsToShowAfterAnimation);
+	}
 }
 
 //Positions the message icon
