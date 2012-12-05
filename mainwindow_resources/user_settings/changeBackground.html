@@ -1,16 +1,24 @@
-s<html>
+<!doctype html>
+<html>
 <head>
-	<link href="css/privacy_settings_popup.css" rel="stylesheet" type="text/css" />
-	<script src="js/privacy_settings_popup.js"></script>
-	<script src="js/user_settings.js"></script>
+	<link href="css/settings_popup.css" rel="stylesheet" type="text/css" />
+	<script src="js/user_settings_popup.js"></script>
 </head>
 <body>
 	<div id="popupBody">
 		<span>Input url to background: </span><input type="text" size="40" id="backgroundUrl" /> <br />
 		<button type="button" id="changeBackgroundSubmit">Change</button>
+		<button type="button" id="changeBackgroundToDefault">Default</button>
+		<button type="button" onClick="setExampleImage()">Example image</button>
 	</div>
 	<script>
 		fitPopupToParrent();
+		$("#changeBackgroundSubmit").click(setNewBackgroundImage);
+		$("#changeBackgroundToDefault").click(setDefaultBackgroundImage);
+		function setExampleImage(){
+			$("#backgroundUrl").val("http://www.freedomwallpaper.com/nature-wallpaper/nature-hd-wallpapers-water.jpg");
+			setNewBackgroundImage();
+		}
 	</script>
 </body>
 </html>

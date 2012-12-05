@@ -4,22 +4,35 @@ window.onresize = alignStuff;
 var messageBoxHasBeenMovedOut = false;
 var messageBoxIsMoving = false;
 var millisUntilMainWindowStartsToShowAfterAnimation = 500;
-var toolbarLinks = ["mainwindow.html", "hiveway.html", ["edit_user_settings.html","mainwindow.html"], "mainwindow.html", "help.html"];
+var toolbarLinks = ["mainwindow.html", "hiveway.html", ["user_settings.html","privacy_settings.html"], "mainwindow.html", "help.html"];
 var menubarToolsPosition = 2;
 var toolbarBubbleIcons = ["img/menu bar/menu bar functions/hiveway_bubble.png", "img/menu bar/menu bar functions/hiveway_bubble_with_text.png", "img/menu bar/menu bar functions/tools_popup.png", "img/menu bar/menu bar functions/hiveway_bubble.png", "img/menu bar/menu bar functions/help_bubble_with_text.png"];
 var currentShownInMainWindow = 0;
 var mainWindowIsMoving = false;
 
 function stuffOnLoad(){
-		alignStuff();
-		placeMenuBar();
-		setRoundDivOnMainWindow();
-		profileImage(4);
-		profileName("Daniel Almquist", "Stockholm");
-		profileCompanyBoxes(8);
-		placeSearchDiv();
-		$("#headerBanner").css("top", $("#headerBanner").position().top-20);//temporary
-		$("#mainInnerWindowTextArea").load("mainwindow_resources/mainwindow.html");//Sets the content in the main window
+	//Sets the background image
+	if(typeof(Storage)!=="undefined"){
+		var imgIsSet = localStorage.getItem("customBackgroundSet");
+		if(imgIsSet === null){
+
+		}				
+		else if( imgIsSet == "true"){
+			$("#backgroundDiv").css("background-image", "url('" + localStorage.customBackgroundUrl + "')");
+		}
+	}
+	else{
+		//Unimplemented as of now
+	}
+	alignStuff();
+	placeMenuBar();
+	setRoundDivOnMainWindow();
+	profileImage(4);
+	profileName("Daniel Almquist", "Stockholm");
+	profileCompanyBoxes(8);
+	placeSearchDiv();
+	$("#headerBanner").css("top", $("#headerBanner").position().top-20);//temporary
+	$("#mainInnerWindowTextArea").load("mainwindow_resources/mainwindow.html");//Sets the content in the main window
 }
 
 //Aligns the different divs when the window is resized
@@ -167,7 +180,6 @@ function animateMainWindow(){
 	var mainWindow = $("#mainInnerWindow");
 	var curHeight = mainWindow.height();
 	var curWidth = mainWindow.width();
-	console.log("width" + curWidth + " height" + curHeight);
     mainWindow.animate({height: 0, width: curWidth, opacity: "toggle"}, { queue:true, duration: millisUntilMainWindowStartsToShowAfterAnimation }).delay(100);
     mainWindow.animate({height: curHeight, width: curWidth, opacity: "toggle"}, 500, toggleMainWindowMoving);
   	return false;
@@ -175,7 +187,6 @@ function animateMainWindow(){
 
 //Function for when a item on the toolbar is clicked, can simulate a click on a element in toolbar by sending that items nr in the toolbar 
 function toolbarClicked(outsideNumb){
-	console.log(outsideNumb);
 	if(outsideNumb.type !="click"){
 		var number = outsideNumb;
 	}
@@ -188,7 +199,6 @@ function toolbarClicked(outsideNumb){
 	toggleMainWindowMoving();
 	currentShownInMainWindow = number;
 	animateMainWindow();
-	console.log(number);
 	//One of the user tools that contains more then one option has been pressed
 	if(number>=10){
 		var outerNumber = Math.floor(number/10);
@@ -217,7 +227,6 @@ function setMessageIcon(){
 function showMessageBox(){
 	var icon = $("#messageIcon");
 	var messageBox = $("#messageDiv");
-	console.log("in");
 	icon.animate({"left" : "-="+messageBox.outerWidth(true)}, 500);
 	messageBox.animate({"left" : "-="+messageBox.outerWidth(true)}, 500);
 	messageBox.show();
@@ -227,7 +236,6 @@ function showMessageBox(){
 function hideMessageBox(){
 	var icon = $("#messageIcon");
 	var messageBox = $("#messageDiv");
-	console.log("out");
 	icon.animate({"left" : "+="+messageBox.outerWidth(true)}, 500);
 	messageBox.animate({"left" : "+="+messageBox.outerWidth(true)}, 500);
 	messageBox.fadeOut(0);
