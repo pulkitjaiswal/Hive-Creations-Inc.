@@ -56,6 +56,7 @@ function alignStuff(){
 	setMessageIcon();
 	setBackground();
 }
+	
 
 function placeSearchDiv(){
 	var searchBar = $("#searchBarDiv");
@@ -155,12 +156,14 @@ function setNewFriends(){
 }
 
 function profileCompanyBoxes(amount){ //How to get the images?
+	var tempComppanyImages = ["poloLogo.png", "starbucksLogo.png", "hmLogo.png", "levisLogo.png", "lacostLogo.png", "gapLogo.png", "microsoftLogo.png", "nikeLogo.png"];
 	var startTopPos = $("#profileNameDiv").position().top + $("#profileNameDiv").outerHeight(true)+20;
 	var startLeftPos = $("#profileNameDiv").position().left;
 	for(var i = 0; i < amount; i++){
 		var div = $("<div class='profileCompanyImg'></div>").appendTo("#profileBox");
 		div.attr("id", "profileCompanyImgDiv"+i);
-		div.css({"left" : startLeftPos + (i%4)*($(".profileCompanyImg").width()+4+1/3) , "top" : startTopPos + Math.floor(i/4)*($(".profileCompanyImg").height()+4+1/3), "background" : "gray"});
+		div.css({"left" : startLeftPos + (i%4)*($(".profileCompanyImg").width()+4+1/3) , "top" : startTopPos + Math.floor(i/4)*($(".profileCompanyImg").height()+4+1/3),
+			"background-image": "url('img/tempImages/" + tempComppanyImages[i] + "')"});
 	}
 }
 
