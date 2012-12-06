@@ -65,7 +65,6 @@ function placeSearchDiv(){
 }
 
 function setBackground(){
-	console.log("Background changed");
 	var mainDiv = $("#backgroundDiv");
 	mainDiv.css({"width" : $(window).width(), "height" : $(window).height()-mainDiv.position().top});
 }
@@ -127,10 +126,12 @@ function placeMenubarButtonIconExtraDivs(item){
 function profileImage(friends){
 	amountOfFriends = friends;
 	var profileImg = $("#profileImage");
+	profileImg.css("background-image", "url('img/profile box/pic hexagon user.png')");
 	profileImg.css({"left" : "30px"});
 	for(var i = 0; i < amountOfFriends; i++){
-		var friendImg = $('<img src="img/profile box/pic hexagon friends.png" class="friendProfileImg"/>').appendTo("#profileBox");
+		var friendImg = $('<div class="friendProfileImg"></div>').appendTo("#profileBox");
 		friendImg.attr("id", "friendProfileImg"+i);
+		friendImg.css("background-image", "url('img/profile box/pic hexagon friends.png')");
 		var startPosLeft = profileImg.position().left+profileImg.width()-friendImg.width()/2+2;
 		var startPosTop = profileImg.position().top+profileImg.height()-friendImg.height()/2+3;
 		friendImg.css({"left" : startPosLeft + friendImg.width()*i+(i%2)*4-Math.floor(i/2)*(friendImg.width()+16),
@@ -157,11 +158,13 @@ function setNewFriends(){
 
 function profileCompanyBoxes(amount){ //How to get the images?
 	var tempComppanyImages = ["poloLogo.png", "starbucksLogo.png", "hmLogo.png", "levisLogo.png", "lacostLogo.png", "gapLogo.png", "microsoftLogo.png", "nikeLogo.png"];
+	var tempCompanyNames = ["Polo", "Starbucks", "H&M", "Levi's", "Lacost", "GAP", "Microsoft", "Nike"];
 	var startTopPos = $("#profileNameDiv").position().top + $("#profileNameDiv").outerHeight(true)+20;
 	var startLeftPos = $("#profileNameDiv").position().left;
 	for(var i = 0; i < amount; i++){
 		var div = $("<div class='profileCompanyImg'></div>").appendTo("#profileBox");
 		div.attr("id", "profileCompanyImgDiv"+i);
+		div.attr("title", tempCompanyNames[i]);
 		div.css({"left" : startLeftPos + (i%4)*($(".profileCompanyImg").width()+4+1/3) , "top" : startTopPos + Math.floor(i/4)*($(".profileCompanyImg").height()+4+1/3),
 			"background-image": "url('img/tempImages/" + tempComppanyImages[i] + "')"});
 	}
