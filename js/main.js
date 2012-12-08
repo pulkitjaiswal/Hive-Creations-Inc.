@@ -126,7 +126,8 @@ function placeMenubarButtonIconExtraDivs(item){
 function profileImage(friends){
 	amountOfFriends = friends;
 	var profileImg = $("#profileImage");
-	profileImg.css("background-image", "url('img/profile box/pic hexagon user.png')");
+	//profileImg.css("background-image", "url('img/profile box/pic hexagon user.png')");
+	profileImg.css("background-image", "url('img/profile box/tempProfImage.png')");
 	profileImg.css({"left" : "30px"});
 	for(var i = 0; i < amountOfFriends; i++){
 		var friendImg = $('<div class="friendProfileImg"></div>').appendTo("#profileBox");
