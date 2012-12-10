@@ -38,3 +38,16 @@ function detectClickOutside(event){
 function saveButtonClick(){
 	toolbarClicked(0);
 }
+
+$(".settingsListItem").hover(
+	function(event){
+		if($(event.target).attr("class")!="settingsListItem"){
+			$(event.target).parent().children(".settingsListItemImage").css("background-size", "23px");
+		}
+		else{
+			$(event.target).children(".settingsListItemImage").css("background-size", "23px");			
+		}
+	},
+	function(event){
+		$(".settingsListItemImage").css("background-size", "30px")
+	});

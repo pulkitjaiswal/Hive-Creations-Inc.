@@ -1,25 +1,29 @@
 <!doctype html>
 <html>
 	<head>
-	<link href="css/privacy_settings.css" rel="stylesheet" type="text/css" />
+	<link href="css/settings.css" rel="stylesheet" type="text/css" />
 	<script src="js/privacy_settings.js"></script>
 	</head>
 	<body>
-	<ul id="contentList">
-		<li id="creditCardInfo">
-		Edit credit card info
-		</li>
-		<li id="billingAddress">
-			Edit billing address
-		</li>
-		<li id="shippingAddress">
-			Edit shipping address
-		</li>
-		<li id="deleteAccount">
-			Delete Account
-		</li>
+	<div id="contentList">
+		<div class="settingsListItem" id="creditCardInfo">
+			<div class="settingsListItemImage"> </div>
+			<p>Edit credit card info</p>
+		</div>
+		<div class="settingsListItem" id="billingAddress">
+			<div class="settingsListItemImage"> </div>
+			<p>Edit billing address</p>
+		</div>
+		<div class="settingsListItem" id="shippingAddress">
+			<div class="settingsListItemImage"> </div>
+			<p>Edit shipping address</p>
+		</div>
+		<div class="settingsListItem" id="deleteAccount">
+			<div class="settingsListItemImage"> </div>
+			<p>Delete Account</p>
+		</div>
 		<input type="button" id="saveChangesButton" value="Save"/>
-	</ul>
+	</div>
 	<div id="inputDiv"></div>
 	</div>
 	</body>
