@@ -49,6 +49,13 @@ img {
 	background: url(../img/search%20bar.png) no-repeat center center;
 	padding: 4px 4px 3px 30px;
 }
+#logoutText{
+	position: absolute;
+	float: right;
+	color: orange;
+	font-size: 1em;
+	text-decoration: underline;
+}
 #backgroundDiv{
 	background: url(../img/background.jpg) no-repeat center center;
 	position: absolute;

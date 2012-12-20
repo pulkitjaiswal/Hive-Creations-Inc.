@@ -31,8 +31,13 @@ function stuffOnLoad(){
 	profileName("Daniel Almquist", "Stockholm");
 	profileCompanyBoxes(8);
 	placeSearchDiv();
+	placeLogoutText();
 	$("#headerBanner").css("top", $("#headerBanner").position().top-20);//temporary
 	$("#mainInnerWindowTextArea").load("mainwindow_resources/mainwindow.html");//Sets the content in the main window
+	$("#logoutText").mousedown(function(){
+		setOpacityOnEmelent(this, 0.5);
+	});
+	$("#logoutText").mouseup(logUserOut);
 }
 
 //Aligns the different divs when the window is resized
@@ -53,6 +58,7 @@ function alignStuff(){
 	}
 	$("#profileBox").css("left", $("#mainWindowToolbar").position().left+$("#mainWindowToolbar").width()+wantedMarginsBetweenBoxes);
 	$("#mainInnerWindow").css("left", $("#profileBox").position().left+$("#profileBox").outerWidth(true)+wantedMarginsBetweenBoxes);
+	$("#logoutText").css("left", $("#searchBarDiv").position().left+$("#searchBarDiv").width()+15);
 	setMessageIcon();
 	setBackground();
 }
@@ -62,6 +68,10 @@ function placeSearchDiv(){
 	var searchBar = $("#searchBarDiv");
 	var header = $("#headerBanner");
 	searchBar.css("top", header.position().top + header.outerHeight(true) - 70);
+}
+
+function placeLogoutText(){
+	$("#logoutText").css("top", $("#searchBarDiv").position().top);
 }
 
 function setBackground(){
@@ -279,3 +289,12 @@ $(document).ready(function() {
 		}
     });
 });
+
+function setOpacityOnEmelent(id, amount){
+	$(id).css({"opacity" : amount, "filter" : "alpha(opacity=" +amount+")"});
+}
+
+function logUserOut(){
+	setOpacityOnEmelent(this, 1);
+	alert("Do logout stuff in php");
+}
