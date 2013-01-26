@@ -56,15 +56,20 @@ function alignStuff(){
 		$("#headerBanner").css("left", "0px");
 		$("#searchBarDiv").css("left", mainWindowWidth-$("#searchBarDiv").width());
 	}
+<<<<<<< HEAD
 	if($("#profileBox").is(":visible")){
 		$("#profileBox").css("left", $("#mainWindowToolbar").position().left+$("#mainWindowToolbar").width()+wantedMarginsBetweenBoxes);
 		$("#mainInnerWindow").css("left", $("#profileBox").position().left+$("#profileBox").outerWidth(true)+wantedMarginsBetweenBoxes);
 	}
-	$("#logoutText").css("left", $("#searchBarDiv").position().left+$("#searchBarDiv").width()+15);
 	else{
 		$("#mainInnerWindow").css("left", $("#mainWindowToolbar").position().left+$("#mainWindowToolbar").outerWidth(true)+wantedMarginsBetweenBoxes);
 	}
 	
+=======
+	$("#profileBox").css("left", $("#mainWindowToolbar").position().left+$("#mainWindowToolbar").width()+wantedMarginsBetweenBoxes);
+	$("#mainInnerWindow").css("left", $("#profileBox").position().left+$("#profileBox").outerWidth(true)+wantedMarginsBetweenBoxes);
+	$("#logoutText").css("left", $("#searchBarDiv").position().left+$("#searchBarDiv").width()+15);
+>>>>>>> 5876d29abc42fbdd691412c7418c54c0c05ca73e
 	setMessageIcon();
 	setBackground();
 }
@@ -303,17 +308,10 @@ $(document).ready(function() {
 				setTimeout(function(){toogleMessageBoxIsMoving()}, 500);
 			}
 		}
+<<<<<<< HEAD
 	});
 });
 
-function setOpacityOnEmelent(id, amount){
-	$(id).css({"opacity" : amount, "filter" : "alpha(opacity=" +amount+")"});
-}
-
-function logUserOut(){
-	setOpacityOnEmelent(this, 1);
-	alert("Do logout stuff in php");
-}
 //Removes profile box and sets setings mode
 function toggleSettingsMode(){
 	var mainWindowDiv = $("#mainInnerWindow");
@@ -332,4 +330,16 @@ function toggleSettingsMode(){
 function toggleProfileBoxVisibility(){
 	$("#profileBox").toggle();
 	alignStuff();
+=======
+    });
+});
+
+function setOpacityOnEmelent(id, amount){
+	$(id).css({"opacity" : amount, "filter" : "alpha(opacity=" +amount+")"});
+}
+
+function logUserOut(){
+	setOpacityOnEmelent(this, 1);
+	alert("Do logout stuff in php");
+>>>>>>> 5876d29abc42fbdd691412c7418c54c0c05ca73e
 }
