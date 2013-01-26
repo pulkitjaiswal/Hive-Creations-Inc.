@@ -56,15 +56,16 @@ function alignStuff(){
 		$("#headerBanner").css("left", "0px");
 		$("#searchBarDiv").css("left", mainWindowWidth-$("#searchBarDiv").width());
 	}
+	
 	if($("#profileBox").is(":visible")){
 		$("#profileBox").css("left", $("#mainWindowToolbar").position().left+$("#mainWindowToolbar").width()+wantedMarginsBetweenBoxes);
 		$("#mainInnerWindow").css("left", $("#profileBox").position().left+$("#profileBox").outerWidth(true)+wantedMarginsBetweenBoxes);
 	}
-	$("#logoutText").css("left", $("#searchBarDiv").position().left+$("#searchBarDiv").width()+15);
 	else{
 		$("#mainInnerWindow").css("left", $("#mainWindowToolbar").position().left+$("#mainWindowToolbar").outerWidth(true)+wantedMarginsBetweenBoxes);
 	}
-	
+
+	$("#logoutText").css("left", $("#searchBarDiv").position().left+$("#searchBarDiv").width()+15);
 	setMessageIcon();
 	setBackground();
 }
