@@ -51,8 +51,14 @@ function alignStuff(){
 		$("#headerBanner").css("left", "0px");
 		$("#searchBarDiv").css("left", mainWindowWidth-$("#searchBarDiv").width());
 	}
-	$("#profileBox").css("left", $("#mainWindowToolbar").position().left+$("#mainWindowToolbar").width()+wantedMarginsBetweenBoxes);
-	$("#mainInnerWindow").css("left", $("#profileBox").position().left+$("#profileBox").outerWidth(true)+wantedMarginsBetweenBoxes);
+	if($("#profileBox").is(":visible")){
+		$("#profileBox").css("left", $("#mainWindowToolbar").position().left+$("#mainWindowToolbar").width()+wantedMarginsBetweenBoxes);
+		$("#mainInnerWindow").css("left", $("#profileBox").position().left+$("#profileBox").outerWidth(true)+wantedMarginsBetweenBoxes);
+	}
+	else{
+		$("#mainInnerWindow").css("left", $("#mainWindowToolbar").position().left+$("#mainWindowToolbar").outerWidth(true)+wantedMarginsBetweenBoxes);
+	}
+	
 	setMessageIcon();
 	setBackground();
 }
@@ -144,8 +150,8 @@ function profileName(name, location){
 	var nameBox = $("#profileNameDiv");
 	var profileImg = $("#profileImage");
 	nameBox.css({"top": profileImg.position().top + profileImg.outerHeight(true) + 50, "width" : $("#profileBox").width()});
-	$("#profilaNameInDiv").append(name).show().css("font-weight", "bold");
-	$("#profileLocationInDiv").append(location).show().css({"position" : "absolute", "left" : "+=2"})
+	$("#profilaNameInDiv").append(name).show().css("font-weight", "bold").addClass("hiveOrangeText");
+	$("#profileLocationInDiv").append(location).show().css({"position" : "absolute", "left" : "+=2"}).addClass("hiveOrangeText");
 }
 
 //Sets the new amount of friends, shall later take amount of friends as in argument
@@ -187,9 +193,9 @@ function animateMainWindow(){
 	var mainWindow = $("#mainInnerWindow");
 	var curHeight = mainWindow.height();
 	var curWidth = mainWindow.width();
-    mainWindow.animate({height: 0, width: curWidth, opacity: "toggle"}, { queue:true, duration: millisUntilMainWindowStartsToShowAfterAnimation }).delay(100);
-    mainWindow.animate({height: curHeight, width: curWidth, opacity: "toggle"}, 500, toggleMainWindowMoving);
-  	return false;
+	mainWindow.animate({height: 0, width: curWidth, opacity: "toggle"}, { queue:true, duration: millisUntilMainWindowStartsToShowAfterAnimation }).delay(100);
+	mainWindow.animate({height: curHeight, width: curWidth, opacity: "toggle"}, 500, toggleMainWindowMoving);
+	return false;
   }
 
 //Function for when a item on the toolbar is clicked, can simulate a click on a element in toolbar by sending that items nr in the toolbar 
@@ -203,21 +209,31 @@ function toolbarClicked(outsideNumb){
 	if(number==currentShownInMainWindow || mainWindowIsMoving || number==menubarToolsPosition){
 		return;
 	}
-	toggleMainWindowMoving();
+	
 	currentShownInMainWindow = number;
-	animateMainWindow();
+	
 	//One of the user tools that contains more then one option has been pressed
 	if(number>=10){
 		var outerNumber = Math.floor(number/10);
 		var innerNumber = number-10*outerNumber;
-		setTimeout(function(){
-			$("#mainInnerWindowTextArea").load("mainwindow_resources/" + toolbarLinks[outerNumber][innerNumber]).delay(millisUntilMainWindowStartsToShowAfterAnimation);
-		}, millisUntilMainWindowStartsToShowAfterAnimation);
+		$("#mainInnerWindowTextArea").load("mainwindow_resources/" + toolbarLinks[outerNumber][innerNumber]).delay(millisUntilMainWindowStartsToShowAfterAnimation);
+		if($("#profileBox").is(":visible")){
+			toggleSettingsMode();
+		}
 	}
 	else{
-		setTimeout(function(){
+		if($("#profileBox").is(":visible")){
+			toggleMainWindowMoving();
+			animateMainWindow();
+			setTimeout(function(){
 			$("#mainInnerWindowTextArea").load("mainwindow_resources/" + toolbarLinks[number]).delay(millisUntilMainWindowStartsToShowAfterAnimation);
-		}, millisUntilMainWindowStartsToShowAfterAnimation);
+				}, millisUntilMainWindowStartsToShowAfterAnimation);
+		}
+		else{
+			toggleSettingsMode();
+			$("#mainInnerWindowTextArea").load("mainwindow_resources/" + toolbarLinks[number]);
+
+		}
 	}
 }
 
@@ -259,8 +275,8 @@ function toggleMainWindowMoving(){
 
 //For detecting where the mouse is
 $(document).ready(function() {
-    $('div').hover(function() { 
-        var isOverId = (this.id);
+	$('div').hover(function() { 
+		var isOverId = (this.id);
 		if(isOverId=="messageIcon"||isOverId=="messageDiv"){
 			if(!messageBoxHasBeenMovedOut&&!messageBoxIsMoving){
 				toogleMessageBoxIsMoving();
@@ -277,5 +293,25 @@ $(document).ready(function() {
 				setTimeout(function(){toogleMessageBoxIsMoving()}, 500);
 			}
 		}
-    });
+	});
 });
+
+//Removes profile box and sets setings mode
+function toggleSettingsMode(){
+	var mainWindowDiv = $("#mainInnerWindow");
+	toggleProfileBoxVisibility();
+	var fileName = mainWindowDiv.css("background-image");
+	var patt=/\"|\'|\)/g;
+	if(fileName.split('/').pop().replace(patt,'')=="honey%20jar%20box%20USE%20THIS%20ONE.png"){
+		mainWindowDiv.css("background-image", "url('img/settings/settings_box_outline.png')");
+	}
+	else{
+		mainWindowDiv.css("background-image", "url('img/honey%20jar/honey%20jar%20box%20USE%20THIS%20ONE.png')");
+	}
+}
+
+//Hides or shows the profile box, re aligns the main window acordingly
+function toggleProfileBoxVisibility(){
+	$("#profileBox").toggle();
+	alignStuff();
+}
