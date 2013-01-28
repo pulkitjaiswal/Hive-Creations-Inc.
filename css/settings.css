@@ -10,6 +10,12 @@
 #contentList{
 	padding: 4px;
 }
+#profileImageSettings{
+	position: absolute;
+	float: left;
+	width: 72px;
+	height: 83px;
+}
  .settingsListItem{
 	height: 32px;
 	margin: 10px 0px;

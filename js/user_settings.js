@@ -1,53 +1,20 @@
-$("#changeProfilePhoto").data("placeInList", 0).click(listItemClicked);
-$("#managaHive").data("placeInList", 1).click(listItemClicked);
-$("#manageBrands").data("placeInList", 2).click(listItemClicked);
-$("#chBackground").data("placeInList", 3).click(listItemClicked);
-$("#saveChangesButton").click(saveButtonClick);
-var itemsInList =["changeProfilePhoto.html", "managaHive.html", "manageBrands.html", "changeBackground.html"];
-var firstTimeClicked = false;
-
-
-function listItemClicked(){
-	firstTimeClicked = true;
-	div=$("#inputDiv");
-	div.load("mainwindow_resources/user_settings/" + itemsInList[$(this).data("placeInList")]);
-	var offsetLeftToMainWindow = $("#mainInnerWindow").offset().left;
-	var offsetTopToMainWindow = $("#mainInnerWindow").offset().top;
-	div.css({"left": $("#backgroundDiv").width()*0.3-offsetLeftToMainWindow, "top": $("#backgroundDiv").height()*0.25-offsetTopToMainWindow});
-	div.css({"width": $("#backgroundDiv").width()*0.4, "height": $("#backgroundDiv").height()*0.75});
-	div.fadeIn(200);
-	detectClickOutside();
-}
-
-function detectClickOutside(event){
-	if(event == null){
-		$(window).click(detectClickOutside);
-		return;
+//Places the profile image, and the images of the friends
+function profileImageSettings(friends){
+	amountOfFriends = friends;
+	var profileImg = $("#profileImageSettings");
+	//profileImg.css("background-image", "url('img/profile box/pic hexagon user.png')");
+	var left = profileImg.offset().left;
+	var top = profileImg.offset().top;
+	profileImg.css({"background-image": "url('img/profile box/tempProfImage.png')"});
+	profileImg.css({"left" : "30px"});
+	for(var i = 0; i < amountOfFriends; i++){
+		console.log(i);
+		var friendImg = $('<div class="friendProfileImg"></div>').appendTo(profileImg);
+		friendImg.attr("id", "friendProfileImgSettings"+i);
+		friendImg.css("background-image", "url('img/profile box/pic hexagon friends.png')");
+		var startPosLeft = profileImg.position().left+friendImg.width()/2+9;
+		var startPosTop = profileImg.position().top+friendImg.height()/2+5;
+		friendImg.css({"left" : startPosLeft + friendImg.width()*i+(i%2)*4-Math.floor(i/2)*(friendImg.width()+16),
+			"top" : startPosTop - Math.floor(i/2)*(friendImg.height()-6)});
 	}
-	var innerXPos = event.pageX-$("#inputDiv").offset().left;
-	var innerYPos = event.pageY-$("#inputDiv").offset().top;
-	var xIsIn = (innerXPos>=0)&&(innerXPos<=$("#popupBody").innerWidth());
-	var yIsIn = (innerYPos>=0)&&(innerYPos<=$("#popupBody").innerHeight());
-	if((!xIsIn || !yIsIn) && !firstTimeClicked){
-		$(window).unbind("click", detectClickOutside);
-		$("#inputDiv").fadeOut(200);
-	}
-	firstTimeClicked = false;
 }
-
-function saveButtonClick(){
-	toolbarClicked(0);
-}
-
-$(".settingsListItem").hover(
-	function(event){
-		if($(event.target).attr("class")!="settingsListItem"){
-			$(event.target).parent().children(".settingsListItemImage").css("background-size", "23px");
-		}
-		else{
-			$(event.target).children(".settingsListItemImage").css("background-size", "23px");			
-		}
-	},
-	function(event){
-		$(".settingsListItemImage").css("background-size", "30px")
-	});

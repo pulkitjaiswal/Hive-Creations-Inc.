@@ -228,8 +228,9 @@ function toolbarClicked(outsideNumb){
 		var outerNumber = Math.floor(number/10);
 		var innerNumber = number-10*outerNumber;
 		$("#mainInnerWindowTextArea").load("mainwindow_resources/" + toolbarLinks[outerNumber][innerNumber]).delay(millisUntilMainWindowStartsToShowAfterAnimation);
+		setMainWindowBackgroundImage();
 		if($("#profileBox").is(":visible")){
-			toggleSettingsMode();
+			toggleProfileBoxVisibility();
 		}
 	}
 	else{
@@ -241,9 +242,9 @@ function toolbarClicked(outsideNumb){
 				}, millisUntilMainWindowStartsToShowAfterAnimation);
 		}
 		else{
-			toggleSettingsMode();
+			setMainWindowBackgroundImage();
+			toggleProfileBoxVisibility();
 			$("#mainInnerWindowTextArea").load("mainwindow_resources/" + toolbarLinks[number]);
-
 		}
 	}
 }
@@ -315,18 +316,23 @@ function logUserOut(){
 	setOpacityOnEmelent(this, 1);
 	alert("Do logout stuff in php");
 }
-//Removes profile box and sets setings mode
-function toggleSettingsMode(){
+//Sets the main window background
+function setMainWindowBackgroundImage(){
 	var mainWindowDiv = $("#mainInnerWindow");
-	toggleProfileBoxVisibility();
-	var fileName = mainWindowDiv.css("background-image");
-	var patt=/\"|\'|\)/g;
-	if(fileName.split('/').pop().replace(patt,'')=="honey%20jar%20box%20USE%20THIS%20ONE.png"){
-		mainWindowDiv.css("background-image", "url('img/settings/settings_box_outline.png')");
+	var img = new Image()
+	if(currentShownInMainWindow==20){
+		img.src = 'img/settings/settings_box_outline2.png';
+		mainWindowDiv.css("background-image", "url(" + img.src +")");
+	}
+	else if(currentShownInMainWindow==21){
+		img.src = 'img/settings/settings_box_outline.png';
+		mainWindowDiv.css("background-image", "url(" + img.src +")");
 	}
 	else{
-		mainWindowDiv.css("background-image", "url('img/honey%20jar/honey%20jar%20box%20USE%20THIS%20ONE.png')");
+		img.src = 'img/honey%20jar/honey%20jar%20box%20USE%20THIS%20ONE.png';
+		mainWindowDiv.css("background-image", "url(" + img.src +")");
 	}
+	mainWindowDiv.css({"width": img.width, "height": img.height});
 }
 
 //Hides or shows the profile box, re aligns the main window acordingly
