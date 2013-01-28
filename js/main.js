@@ -319,7 +319,10 @@ function logUserOut(){
 //Sets the main window background
 function setMainWindowBackgroundImage(){
 	var mainWindowDiv = $("#mainInnerWindow");
-	var img = new Image()
+	var img = new Image();
+	img.onload = function(){
+		$("#mainInnerWindow").css({"width": img.width, "height": img.height});
+	};	
 	if(currentShownInMainWindow==20){
 		img.src = 'img/settings/settings_box_outline2.png';
 		mainWindowDiv.css("background-image", "url(" + img.src +")");
@@ -332,7 +335,6 @@ function setMainWindowBackgroundImage(){
 		img.src = 'img/honey%20jar/honey%20jar%20box%20USE%20THIS%20ONE.png';
 		mainWindowDiv.css("background-image", "url(" + img.src +")");
 	}
-	mainWindowDiv.css({"width": img.width, "height": img.height});
 }
 
 //Hides or shows the profile box, re aligns the main window acordingly
