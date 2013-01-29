@@ -321,7 +321,7 @@ function setMainWindowBackgroundImage(){
 	var mainWindowDiv = $("#mainInnerWindow");
 	var img = new Image();
 	img.onload = function(){
-		$("#mainInnerWindow").css({"width": img.width, "height": img.height});
+		$("#mainInnerWindow").css({"width": img.width-60, "height": img.height});
 	};	
 	if(currentShownInMainWindow==20){
 		img.src = 'img/settings/settings_box_outline2.png';

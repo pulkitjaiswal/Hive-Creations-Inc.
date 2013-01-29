@@ -172,4 +172,21 @@ img {
 }
 .hiveOrangeText{
 	color: orange;
+	font-size: 1em;
+}
+.hiveListHeader{
+	font-weight: bold;
+	font-size: 1.5em;
+}
+.hiveList{
+	margin-left: 0.5em;
+  	list-style: none;
+  	padding-top: 1em;
+}
+.hiveList li{
+	padding-bottom: 1em;
+}
+.hiveBracketTextButton{
+	font-weight: bold;
+	font-size: 1.1em;
 }

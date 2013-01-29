@@ -16,6 +16,9 @@
 	width: 72px;
 	height: 83px;
 }
+#profileSettingsText{
+	position: absolute;
+}
  .settingsListItem{
 	height: 32px;
 	margin: 10px 0px;
