@@ -18,19 +18,48 @@
 }
 #profileSettingsText{
 	position: absolute;
+	width: 224px;
 }
- .settingsListItem{
+#profileSettingsThemesBox{
+	clear: both;
+	position: absolute;
+	top: 275px;
+}
+#profileSettingsThemesPredefined{
+	clear: both;
+	position: absolute;
+}
+#profileSettingsThemesUser{
+	clear: both;
+	position: absolute;
+}
+.settingsListItem{
 	height: 32px;
 	margin: 10px 0px;
- }
- .settingsListItemImage{
+}
+.settingsListItemImage{
  	background: url(../img/menu%20bar/menubar_blue_ball.png) no-repeat center center;
 	background-size: 30px;
  	height: 30px;
  	width: 30px;
  	float: left;
  	padding-right: 10px;
- }
- .settingsListItem p{
+}
+.settingsListItem p{
 	padding-top: 4px;
- }
+}
+.profileSettingsThemesLeft{
+	float: left;
+	width: 255px;
+}
+.profileSettingsThemesRight{
+	position: absolute;
+	left: 265px;
+	width: 214px;
+}
+.profileSettingsThemesClass{
+	width: 255px;
+	height: 30px;
+	background: url(../img/settings/background_image_lineup.png) no-repeat center center;
+	position: absolute;
+}
