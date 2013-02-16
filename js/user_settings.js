@@ -1,10 +1,14 @@
 //Places the profile image, and the images of the friends
 //amountOfFriends taken from global variable declared in main.js
+$("#hiveSearchResultBox").keyup(function(){searchForHiveInput();});
+var previouslyAddedHeightToHiveResultBox = 0;
+
 
 function settingsOnLoad(){
 profileImageSettings();
 positionUserSettingsText();
 placeSettingsThemes(["img/settings/background_image_lineup.png","img/settings/background_image_lineup.png","img/settings/background_image_lineup.png","img/settings/background_image_lineup.png"]);
+positionHiveSearchResult();
 }
 
 function profileImageSettings(){
@@ -69,4 +73,73 @@ function placeSettingsThemes(themesArray){
 	var rightBottomText = $("<div class='hiveOrangeText'></div>").appendTo(rightDiv);
 	rightBottomText.html("<span class='hiveBracketTextButton'>[Upload]</span> your own photos");
 	rightBottomText.css({"position": "absolute", "top": previousPos+40});
+}
+
+function positionHiveSearchResult(){
+	var div = $("#hiveSearchResultBox");
+	div.css({"left": $("#mainInnerWindow").outerWidth(true)+10, "top": 20});
+}
+
+function searchForHiveInput(){
+	var searchInput = $("#inputSearchHive").val();
+	var results = searchForHive(searchInput);
+	updateHiveResultList(results);
+}
+
+function searchForHive(searchInput){
+	//TODO get result form the server
+	var result = new Array();
+	for (var j = 0; j <Math.ceil(Math.random()*5); j++) {
+		var hiveMembers = new Array();
+		for(var i = 0; i<Math.ceil(Math.random()*5); i++){
+			hiveMembers[i] = new Object();
+			hiveMembers[i].hive = searchInput+ " "+j;
+			hiveMembers[i].firstName = "Daniel "+i;
+			hiveMembers[i].lastName = "Almquist";
+		}
+		result[j] = new hiveObject(searchInput+ " "+j, hiveMembers.length, hiveMembers);
+	}
+	return result;
+}
+
+function hiveObject(hiveName,amountOfMembers,members)
+{
+	this.hiveName=hiveName;
+	this.amountOfMembers=amountOfMembers;
+	var membersArray = new Array();
+	for(var i = 0; i<amountOfMembers; i++){
+			membersArray[i] = new Object();
+			membersArray[i].firstName = "Daniel "+i;
+			membersArray[i].lastName = "Almquist";
+	}
+	this.members = membersArray;
+}
+
+//Takes an Array of hiveObjects
+function updateHiveResultList(results){
+	clearResultTable();
+	$(".hiveResultTableEntry").remove();
+	var tbody = $("#hiveResultTable");
+    if (tbody == null){
+    	return;
+    }
+    console.log(results.length);
+	for (var r = 0; r < results.length; r++) {
+        var trow = $("<tr>");
+        var hive = "<span class = 'hiveResultTableHiveName hiveListHeader hiveOrangeText'>" + results[r].hiveName + "</span>";
+        for(var i = 0; i < results[r].amountOfMembers; i++){
+        	hive = hive + "<br /><span class = 'hiveResultTablePersonName hiveOrangeText'>" + results[r].members[i].firstName + " " + results[r].members[i].lastName + "</span>"
+        }
+        trow.addClass("hiveResultTableEntry");
+        trow.html(hive+"<br />");
+        trow.appendTo(tbody);
+    } 
+    var newTableHeight = tbody.height();
+    var sizeToAdd = newTableHeight-previouslyAddedHeightToHiveResultBox;
+    console.log(sizeToAdd);
+    $("#hiveSearchResultBox").css("height", "+=" +sizeToAdd);
+    previouslyAddedHeightToHiveResultBox = newTableHeight;
+}
+function clearResultTable(){
+	var tbody = $("#hiveResultTable");
 }

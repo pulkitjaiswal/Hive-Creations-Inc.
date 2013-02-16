@@ -33,6 +33,30 @@
 	clear: both;
 	position: absolute;
 }
+#hiveSearchResultBox{
+	background-image: url(../img/settings/hive_result_box.png);
+	background-repeat: no-repeat;
+	width: 237px;
+	height: 65px;
+	overflow: visible;
+	background-size: 100% 100%;
+	position: absolute;
+}
+#inputSearchHive{
+	background-image: url(../img/settings/search_field.png);
+	border: none;
+	width: 181px;
+	height: 16px;
+	padding-left: 2px;
+	position: absolute;
+	left: 40px;
+	top: 20px;
+}
+#hiveResultTable{
+	position: absolute;
+	left: 40px;
+	top: 40px;
+}
 .settingsListItem{
 	height: 32px;
 	margin: 10px 0px;
