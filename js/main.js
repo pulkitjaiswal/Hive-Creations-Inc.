@@ -42,7 +42,6 @@ function stuffOnLoad(){
 
 //Aligns the different divs when the window is resized
 function alignStuff(){
-	console.log("ALIGN");
 	var windowWidth = $(window).width();
 	var mainWindowWidth = $("#mainWindow").width();
 	var mainWindowSideMargins = (windowWidth-mainWindowWidth)/2;
@@ -324,11 +323,11 @@ function setMainWindowBackgroundImage(){
 		$("#mainInnerWindow").css({"width": img.width-60, "height": img.height});
 	};	
 	if(currentShownInMainWindow==20){
-		img.src = 'img/settings/settings_box_outline2.png';
+		img.src = 'img/settings/settings_box_outline.png';
 		mainWindowDiv.css("background-image", "url(" + img.src +")");
 	}
 	else if(currentShownInMainWindow==21){
-		img.src = 'img/settings/settings_box_outline.png';
+		img.src = 'img/settings/user_info_box_outline.png';
 		mainWindowDiv.css("background-image", "url(" + img.src +")");
 	}
 	else{

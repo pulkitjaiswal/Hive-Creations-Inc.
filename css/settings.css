@@ -34,13 +34,39 @@
 	position: absolute;
 }
 #hiveSearchResultBox{
-	background-image: url(../img/settings/hive_result_box.png);
-	background-repeat: no-repeat;
 	width: 237px;
 	height: 65px;
 	overflow: visible;
-	background-size: 100% 100%;
 	position: absolute;
+	z-index: 1;
+}
+#hiveSearchResultBoxTop{
+	background-image: url(../img/settings/hive_result_box_top.png);
+	background-repeat: no-repeat;
+	width: 237px;
+	height: 26px;
+	position: absolute;
+	float: left;
+	z-index: -1;
+}
+#hiveSearchResultBoxBottom{
+	background-image: url(../img/settings/hive_result_box_bottom.png);
+	background-repeat: no-repeat;
+	width: 237px;
+	height: 26px;
+	position: absolute;
+	float: left;
+	z-index: -1;
+}
+#hiveSearchResultBoxMiddle{
+	background-image: url(../img/settings/hive_result_box_middle.png);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	width: 237px;
+	height: 24px;
+	position: absolute;
+	float: left;
+	z-index: -1;
 }
 #inputSearchHive{
 	background-image: url(../img/settings/search_field.png);
@@ -56,21 +82,6 @@
 	position: absolute;
 	left: 40px;
 	top: 40px;
-}
-.settingsListItem{
-	height: 32px;
-	margin: 10px 0px;
-}
-.settingsListItemImage{
- 	background: url(../img/menu%20bar/menubar_blue_ball.png) no-repeat center center;
-	background-size: 30px;
- 	height: 30px;
- 	width: 30px;
- 	float: left;
- 	padding-right: 10px;
-}
-.settingsListItem p{
-	padding-top: 4px;
 }
 .profileSettingsThemesLeft{
 	float: left;
