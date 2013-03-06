@@ -83,6 +83,21 @@
 	left: 40px;
 	top: 40px;
 }
+.settingsListItem{
+	height: 32px;
+	margin: 10px 0px;
+}
+.settingsListItemImage{
+ 	background: url(../img/menu%20bar/menubar_blue_ball.png) no-repeat center center;
+	background-size: 30px;
+ 	height: 30px;
+ 	width: 30px;
+ 	float: left;
+ 	padding-right: 10px;
+}
+.settingsListItem p{
+	padding-top: 4px;
+}
 .profileSettingsThemesLeft{
 	float: left;
 	width: 255px;

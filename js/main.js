@@ -9,6 +9,7 @@ var menubarToolsPosition = 2;
 var toolbarBubbleIcons = ["img/menu bar/menu bar functions/hiveway_bubble.png", "img/menu bar/menu bar functions/hiveway_bubble_with_text.png", "img/menu bar/menu bar functions/tools_popup.png", "img/menu bar/menu bar functions/hiveway_bubble.png", "img/menu bar/menu bar functions/help_bubble_with_text.png"];
 var currentShownInMainWindow = 0;
 var mainWindowIsMoving = false;
+var messageBoxIsShowing = false;
 
 function stuffOnLoad(){
 	//Sets the background image
@@ -25,6 +26,7 @@ function stuffOnLoad(){
 		//Unimplemented as of now
 	}
 	alignStuff();
+	setMessageIcon();
 	placeMenuBar();
 	setRoundDivOnMainWindow();
 	profileImage(4);
@@ -65,7 +67,7 @@ function alignStuff(){
 	}
 
 	$("#logoutText").css("left", $("#searchBarDiv").position().left+$("#searchBarDiv").width()+15);
-	setMessageIcon();
+	alignMessageBox();
 	setBackground();
 }
 	
@@ -252,27 +254,75 @@ function toolbarClicked(outsideNumb){
 function setMessageIcon(){
 	var icon = $("#messageIcon");
 	var messageBox = $("#messageDiv");
-	icon.css({"top" : $("#mainWindowToolbar").offset().top+20, "left" : $(window).width()-icon.width()});
-	messageBox.css({"top" : icon.offset().top, "left" : icon.offset().left+icon.outerWidth(true)});
-	messageBox.hide();
+	icon.click(function(){
+		if(messageBoxIsShowing&&!messageBoxIsMoving){
+			hideMessageBox();
+		}
+		else if(!messageBoxIsMoving){
+			showMessageBox();
+		}
+	});
+	var buttons = ["button_mailbox.png", "button_compose.png", "button_offers.png", "button_direct_trade.png"];
+	for (var i = buttons.length; i >= 0; i--) {
+		var buttonId = $("<div class='buzzBoxButton' id='buzzBoxButtonId" + i + "'></div>").appendTo(messageBox);
+		buttonId.css({"top": i*(10+buttonId.width())+15, "background-image": "url(img/messaging/" + buttons[i] +")"});
+		buttonId.data("buttonNr", i);
+		buttonId.click(function(event){
+			buzzBoxButtonPressed(event);
+		});
+	};
+	var buzzBoxTab = $("<div id='buzzBoxTabDiv'></div>").appendTo(messageBox);
+	buzzBoxTab.css({"left": "+="+buttonId.outerWidth(true)});
+	buttonId.trigger('click');
+}
+
+//function for handling the transitions between the different views in the buzzbox
+function buzzBoxButtonPressed(event){
+	var button = $(event.target);
+	var newBoxBackground = ["/mailbox_tab/tab_mailbox.png", "kek", "kek", "kek"];
+	var img = new Image();
+	img.onload = function(){
+		$("#buzzBoxTabDiv").css({"width": img.width, "height": img.height});
+	};
+	img.src = "img/messaging" + newBoxBackground[button.data("buttonNr")];
+	$("#buzzBoxTabDiv").css("background-image", "url(" + img.src +")");
+	console.log(button.data("buttonNr"));	
+}
+
+function alignMessageBox(){
+	var icon = $("#messageIcon");
+	var messageBox = $("#messageDiv");
+	if(messageBoxIsShowing){
+		icon.css({"top" : $("#mainWindowToolbar").offset().top+20, "left" : $(window).width()-messageBox.outerWidth(true)*1.1-icon.width()});
+		messageBox.css({"top" : icon.offset().top-1, "left" : icon.offset().left+icon.outerWidth(true)});
+	}
+	else{
+		icon.css({"top" : $("#mainWindowToolbar").offset().top+20, "left" : $(window).width()-icon.width()});
+		messageBox.css({"top" : icon.offset().top-1, "left" : icon.offset().left+icon.outerWidth(true)});
+		messageBox.hide();
+	}
 }
 
 //Shows the message box
 function showMessageBox(){
+	toogleMessageBoxIsMoving();
 	var icon = $("#messageIcon");
 	var messageBox = $("#messageDiv");
-	icon.animate({"left" : "-="+messageBox.outerWidth(true)}, 500);
-	messageBox.animate({"left" : "-="+messageBox.outerWidth(true)}, 500);
+	icon.animate({"left" : "-="+messageBox.outerWidth(true)*1.1}, 500);
+	messageBox.animate({"left" : "-="+messageBox.outerWidth(true)*1.1}, 500, function(){toogleMessageBoxIsMoving()});
 	messageBox.show();
+	messageBoxIsShowing = true;
 }
 
 //Hides the message box
 function hideMessageBox(){
+	toogleMessageBoxIsMoving();
 	var icon = $("#messageIcon");
 	var messageBox = $("#messageDiv");
-	icon.animate({"left" : "+="+messageBox.outerWidth(true)}, 500);
-	messageBox.animate({"left" : "+="+messageBox.outerWidth(true)}, 500);
+	icon.animate({"left" : "+="+messageBox.outerWidth(true)*1.1}, 500);
+	messageBox.animate({"left" : "+="+messageBox.outerWidth(true)*1.1}, 500, function(){toogleMessageBoxIsMoving()});
 	messageBox.fadeOut(0);
+	messageBoxIsShowing = false;
 }
 
 //Toggles if the message box is moving
@@ -285,27 +335,27 @@ function toggleMainWindowMoving(){
 }
 
 //For detecting where the mouse is
-$(document).ready(function() {
-	$('div').hover(function() { 
-		var isOverId = (this.id);
-		if(isOverId=="messageIcon"||isOverId=="messageDiv"){
-			if(!messageBoxHasBeenMovedOut&&!messageBoxIsMoving){
-				toogleMessageBoxIsMoving();
-				showMessageBox();
-				messageBoxHasBeenMovedOut=true;
-				setTimeout(function(){toogleMessageBoxIsMoving()}, 500);
-			}
-		}
-		else{
-			if(messageBoxHasBeenMovedOut&&!messageBoxIsMoving){
-				toogleMessageBoxIsMoving();
-				hideMessageBox();
-				messageBoxHasBeenMovedOut=false;
-				setTimeout(function(){toogleMessageBoxIsMoving()}, 500);
-			}
-		}
-	});
-});
+// $(document).ready(function() {
+// 	$('div').hover(function() { 
+// 		var isOverId = (this.id);
+// 		if(isOverId=="messageIcon"||isOverId=="messageDiv"){
+// 			if(!messageBoxHasBeenMovedOut&&!messageBoxIsMoving){
+// 				toogleMessageBoxIsMoving();
+// 				showMessageBox();
+// 				messageBoxHasBeenMovedOut=true;
+// 				setTimeout(function(){toogleMessageBoxIsMoving()}, 500);
+// 			}
+// 		}
+// 		else{
+// 			if(messageBoxHasBeenMovedOut&&!messageBoxIsMoving){
+// 				toogleMessageBoxIsMoving();
+// 				hideMessageBox();
+// 				messageBoxHasBeenMovedOut=false;
+// 				setTimeout(function(){toogleMessageBoxIsMoving()}, 500);
+// 			}
+// 		}
+// 	});
+// });
 
 function setOpacityOnEmelent(id, amount){
 	$(id).css({"opacity" : amount, "filter" : "alpha(opacity=" +amount+")"});
