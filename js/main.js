@@ -265,7 +265,7 @@ function setMessageIcon(){
 	var buttons = ["button_mailbox.png", "button_compose.png", "button_offers.png", "button_direct_trade.png"];
 	for (var i = buttons.length; i >= 0; i--) {
 		var buttonId = $("<div class='buzzBoxButton' id='buzzBoxButtonId" + i + "'></div>").appendTo(messageBox);
-		buttonId.css({"top": i*(10+buttonId.width())+15, "background-image": "url(img/messaging/" + buttons[i] +")"});
+		buttonId.css({"top": i*(5+buttonId.width())+15, "background-image": "url(img/messaging/" + buttons[i] +")"});
 		buttonId.data("buttonNr", i);
 		buttonId.click(function(event){
 			buzzBoxButtonPressed(event);
@@ -279,7 +279,7 @@ function setMessageIcon(){
 //function for handling the transitions between the different views in the buzzbox
 function buzzBoxButtonPressed(event){
 	var button = $(event.target);
-	var newBoxBackground = ["/mailbox_tab/tab_mailbox.png", "kek", "kek", "kek"];
+	var newBoxBackground = ["/mailbox_tab/tab_mailbox.png", "/compose_and_thread_tab/tab_compose.png", "/offers_tab/tab_offers.png", "kg"];
 	var img = new Image();
 	img.onload = function(){
 		$("#buzzBoxTabDiv").css({"width": img.width, "height": img.height});
