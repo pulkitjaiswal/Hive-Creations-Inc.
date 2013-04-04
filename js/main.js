@@ -26,8 +26,8 @@ function stuffOnLoad(){
 	else{
 		//Unimplemented as of now
 	}
-	alignStuff();
 	setMessageIcon();
+	alignStuff();
 	placeMenuBar();
 	setRoundDivOnMainWindow();
 	profileImage(4);
@@ -358,17 +358,33 @@ function buzzBoxButtonPressed(event){
 function showUserConversationsInBuzzBox(){
 	/*
 	Should here get an array containing arrays of names from the server
+	
+	Identifie it with a conversation id?
 	*/
-	var tempConversations = [["Me", "Daniel Almquist"], ["Me", "Austin Helm"], ["Me", "Essi Huotari", "Nishant chemburkar"]];
-	for(var i = 0; i < tempConversations.length*3; i++){
-		addAConversationToBuzzBox(i%tempConversations.length, i);
+	var tempConversations = [["Me", "Daniel Almquist"], ["Me", "Austin Helm"], ["Me", "Essi Huotari", "Nishant Chemburkar"]];
+	for(var i = 0; i < tempConversations.length*6; i++){
+		addAConversationToBuzzBox(tempConversations[Math.floor(Math.random()*3)], i);
 	}
 }
 
 function addAConversationToBuzzBox(arrayOfNames, int_placeInList){
 	var messageContainer = $("#buzzBoxTabDivMessageContainer");
-	var div = $("<div id='buzzBoxConversation" + int_placeInList + "' class='buzzBoxContent buzzBoxConversation'></div>").appendTo(messageContainer);
+	var stringWithNames = "";
+	for(var i = 0; i< arrayOfNames.length; i++){
+		stringWithNames += arrayOfNames[i] + ", ";
+	}
+	stringWithNames = stringWithNames.substring(0, stringWithNames.length-2);
 
+	var div = $("<div id='buzzBoxConversation" + int_placeInList + "' class='hiveOrangeText buzzBoxContent buzzBoxConversation'>"+stringWithNames+"</div>").appendTo(messageContainer);
+	
+	/* NOT WORKING, since the width is depentent on an image, which takes time to load...
+	var paddingAndMarginsToRemove = parseInt($("#buzzBoxTabDivMessageContainer").css('padding-left').replace("px", ""))+parseInt(div.css('padding-left').replace("px", ""))+parseInt(div.css('margin-left').replace("px", ""));
+	div.css({"width": $("#buzzBoxTabDiv").width()-paddingAndMarginsToRemove});*/
+	
+	if(int_placeInList!=0){
+		var prevDiv = $("#buzzBoxConversation" + (int_placeInList-1));
+		div.css({"top": prevDiv.position().top+prevDiv.outerHeight(true), "border-top": "1px solid gray"});
+	}
 }
 //For detecting where the mouse is
 // $(document).ready(function() {
