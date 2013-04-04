@@ -8,6 +8,7 @@ var toolbarLinks = ["mainwindow.html", "hiveway.html", ["user_settings.html","pr
 var menubarToolsPosition = 2;
 var toolbarBubbleIcons = ["img/menu bar/menu bar functions/hiveway_bubble.png", "img/menu bar/menu bar functions/hiveway_bubble_with_text.png", "img/menu bar/menu bar functions/tools_popup.png", "img/menu bar/menu bar functions/hiveway_bubble.png", "img/menu bar/menu bar functions/help_bubble_with_text.png"];
 var currentShownInMainWindow = 0;
+var currentShownBuzzBoxTab = -1;
 var mainWindowIsMoving = false;
 var messageBoxIsShowing = false;
 
@@ -272,21 +273,9 @@ function setMessageIcon(){
 		});
 	};
 	var buzzBoxTab = $("<div id='buzzBoxTabDiv'></div>").appendTo(messageBox);
+	$("<div id='buzzBoxTabDivMessageContainer'></div>").appendTo(buzzBoxTab);
 	buzzBoxTab.css({"left": "+="+buttonId.outerWidth(true)});
-	buttonId.trigger('click');
-}
-
-//function for handling the transitions between the different views in the buzzbox
-function buzzBoxButtonPressed(event){
-	var button = $(event.target);
-	var newBoxBackground = ["/mailbox_tab/tab_mailbox.png", "/compose_and_thread_tab/tab_compose.png", "/offers_tab/tab_offers.png", "kg"];
-	var img = new Image();
-	img.onload = function(){
-		$("#buzzBoxTabDiv").css({"width": img.width, "height": img.height});
-	};
-	img.src = "img/messaging" + newBoxBackground[button.data("buttonNr")];
-	$("#buzzBoxTabDiv").css("background-image", "url(" + img.src +")");
-	console.log(button.data("buttonNr"));	
+	buttonId.trigger('click'); //To show the first message tab
 }
 
 function alignMessageBox(){
@@ -334,6 +323,53 @@ function toggleMainWindowMoving(){
 	mainWindowIsMoving = !mainWindowIsMoving;
 }
 
+//function for handling the transitions between the different views in the buzzbox
+function buzzBoxButtonPressed(event){
+	var button = $(event.target);
+	var buttonNr = button.data("buttonNr");
+	if(currentShownBuzzBoxTab==buttonNr){
+		return;
+	}
+	currentShownBuzzBoxTab = buttonNr;
+	$(".buzzBoxContent").remove(); //Removes all content that is currently in the buzzbox
+	var messageContainer = $("#buzzBoxTabDivMessageContainer");
+	var buzzBoxTabDiv = $("#buzzBoxTabDiv");
+	var newBoxBackground = ["/mailbox_tab/tab_mailbox.png", "/compose_and_thread_tab/tab_compose.png", "/offers_tab/tab_offers.png", "kg"];
+	var img = new Image();
+	img.onload = function(){
+		buzzBoxTabDiv.css({"width": img.width, "height": img.height});
+		messageContainer.css({"width": (buzzBoxTabDiv.width()-5)+20, "height": buzzBoxTabDiv.height()});
+	};
+	img.src = "img/messaging" + newBoxBackground[buttonNr];
+	$("#buzzBoxTabDiv").css("background-image", "url(" + img.src +")");
+	switch(buttonNr){
+	case 0:
+		showUserConversationsInBuzzBox();
+		break;
+	case 1:
+		break;
+	case 2:
+		break;
+	case 3:
+		break;
+	}
+}
+
+function showUserConversationsInBuzzBox(){
+	/*
+	Should here get an array containing arrays of names from the server
+	*/
+	var tempConversations = [["Me", "Daniel Almquist"], ["Me", "Austin Helm"], ["Me", "Essi Huotari", "Nishant chemburkar"]];
+	for(var i = 0; i < tempConversations.length*3; i++){
+		addAConversationToBuzzBox(i%tempConversations.length, i);
+	}
+}
+
+function addAConversationToBuzzBox(arrayOfNames, int_placeInList){
+	var messageContainer = $("#buzzBoxTabDivMessageContainer");
+	var div = $("<div id='buzzBoxConversation" + int_placeInList + "' class='buzzBoxContent buzzBoxConversation'></div>").appendTo(messageContainer);
+
+}
 //For detecting where the mouse is
 // $(document).ready(function() {
 // 	$('div').hover(function() { 

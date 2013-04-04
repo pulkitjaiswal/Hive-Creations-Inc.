@@ -15,13 +15,13 @@ function removePopup(){
 }
 
 function billingSubmit(){
-	//Check all the stuff that has been entered
+	//Check all the stuff that has been entered 
 	removePopup();
 	console.log($("#popupInputBox").width()/2-$("#popupBillingSubmit").width()/2);
 }
 
 function addAnotherBilling(){
-	//Check all the stuff that has been entered
+	// Check all the stuff that has been entered
 	removePopup();
 	//Grabb all the stuff that has been entered
 	$("#inputDiv").fadeIn(400);
