@@ -220,3 +220,36 @@ img {
 	position: absolute;
 	width: 150px;
 }
+.buzzBoxMessageContainer{
+	position: absolute;
+	width: 150px;
+	border-bottom: 1px solid gray;
+	display: inline-block;
+	margin: 5px;
+}
+.chatConversationNames{
+	position: absolute;
+	font-size: 14px;
+	color: rgb(255, 153, 51);
+	background-color: white;
+	padding: 4px 1px 4px 1px;
+	margin: 3px 0px 0px 3px;
+	width: 150px;
+	border-radius: 4px;
+	z-index: 1;
+}
+.chatMessageName{
+	clear: both;
+	width: 100%;
+	margin: 4px;
+	position: absolute;
+	display: inline-block;
+}
+.chatmessageMessage{
+	clear: both;
+	width: 100%;
+	position: absolute;
+	display: block;
+	top: 15px;
+	display: inline-block;
+}

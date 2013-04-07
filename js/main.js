@@ -1,6 +1,5 @@
 var wantedMarginsBetweenBoxes = 30;
 var amountOfFriends = 0;
-window.onresize = alignStuff;
 var messageBoxHasBeenMovedOut = false;
 var messageBoxIsMoving = false;
 var millisUntilMainWindowStartsToShowAfterAnimation = 500;
@@ -11,6 +10,10 @@ var currentShownInMainWindow = 0;
 var currentShownBuzzBoxTab = -1;
 var mainWindowIsMoving = false;
 var messageBoxIsShowing = false;
+var chatListOldestMessagePlacement = 0;
+var chatListNewestMessagePlacement = 0;
+
+window.onresize = alignStuff;
 
 function stuffOnLoad(){
 	//Sets the background image
@@ -331,7 +334,7 @@ function buzzBoxButtonPressed(event){
 		return;
 	}
 	currentShownBuzzBoxTab = buttonNr;
-	$(".buzzBoxContent").remove(); //Removes all content that is currently in the buzzbox
+	emptyTheContentInBuzzBox(); //Removes all content that is currently in the buzzbox
 	var messageContainer = $("#buzzBoxTabDivMessageContainer");
 	var buzzBoxTabDiv = $("#buzzBoxTabDiv");
 	var newBoxBackground = ["/mailbox_tab/tab_mailbox.png", "/compose_and_thread_tab/tab_compose.png", "/offers_tab/tab_offers.png", "kg"];
@@ -355,6 +358,13 @@ function buzzBoxButtonPressed(event){
 	}
 }
 
+function emptyTheContentInBuzzBox(){
+	$(".buzzBoxContent").remove();
+	chatListOldestMessagePlacement = 0;
+	chatListNewestMessagePlacement = 0;
+	currentShownBuzzBoxTab = -1;
+}
+
 function showUserConversationsInBuzzBox(){
 	/*
 	Should here get an array containing arrays of names from the server
@@ -363,11 +373,11 @@ function showUserConversationsInBuzzBox(){
 	*/
 	var tempConversations = [["Me", "Daniel Almquist"], ["Me", "Austin Helm"], ["Me", "Essi Huotari", "Nishant Chemburkar"]];
 	for(var i = 0; i < tempConversations.length*6; i++){
-		addAConversationToBuzzBox(tempConversations[Math.floor(Math.random()*3)], i);
+		addAConversationToBuzzBox(tempConversations[Math.floor(Math.random()*3)], i, 1337);
 	}
 }
 
-function addAConversationToBuzzBox(arrayOfNames, int_placeInList){
+function addAConversationToBuzzBox(arrayOfNames, int_placeInList, conversationID){
 	var messageContainer = $("#buzzBoxTabDivMessageContainer");
 	var stringWithNames = "";
 	for(var i = 0; i< arrayOfNames.length; i++){
@@ -378,6 +388,7 @@ function addAConversationToBuzzBox(arrayOfNames, int_placeInList){
 	var div = $("<div id='buzzBoxConversation" + int_placeInList + "' class='hiveOrangeText buzzBoxContent buzzBoxConversation'>"+stringWithNames+"</div>").appendTo(messageContainer);
 	
 	/* NOT WORKING, since the width is depentent on an image, which takes time to load...
+	
 	var paddingAndMarginsToRemove = parseInt($("#buzzBoxTabDivMessageContainer").css('padding-left').replace("px", ""))+parseInt(div.css('padding-left').replace("px", ""))+parseInt(div.css('margin-left').replace("px", ""));
 	div.css({"width": $("#buzzBoxTabDiv").width()-paddingAndMarginsToRemove});*/
 	
@@ -385,7 +396,55 @@ function addAConversationToBuzzBox(arrayOfNames, int_placeInList){
 		var prevDiv = $("#buzzBoxConversation" + (int_placeInList-1));
 		div.css({"top": prevDiv.position().top+prevDiv.outerHeight(true), "border-top": "1px solid gray"});
 	}
+
+	div.click(function(){
+		emptyTheContentInBuzzBox();
+		showConversationInBuzzBox(conversationID, false, stringWithNames);
+	});
 }
+
+/*Shows the clicked conversation
+Conversation id is used to get conversation from server
+The placeOnTop is for loading older messages and placing them on the top of the message list
+*/
+function showConversationInBuzzBox(int_conversationId, placeOnTop, names){
+
+	/*
+
+	Get conversation from server
+
+	*/
+	tempOthersNames = "Other";
+	$("<div class='buzzBoxContent chatConversationNames'>" + names + "</div>").appendTo($("#buzzBoxTabDivMessageContainer"));
+	var tempConversation = [new chatMessageObject("Hey", "2013-04-06 20:00", false), new chatMessageObject("Hey to u", "2013-04-06 20:00", true), new chatMessageObject("watcha doing?", "2013-04-06 20:00", false),new chatMessageObject("just shoping some", "2013-04-06 20:00", false), new chatMessageObject("oh nice", "2013-04-06 20:00", false)];
+	for(var i = 0; i < tempConversation.length; i++){
+		addChatMessage(tempOthersNames, tempConversation[i], placeOnTop);
+	}
+}
+
+function addChatMessage(name, chatMessageObj, placeOnTop){
+	var messageContainer = $("#buzzBoxTabDivMessageContainer");
+	var chatMessageContainer = $("<div class='hiveOrangeText buzzBoxContent buzzBoxMessageContainer'></div>").appendTo(messageContainer);
+	if(!chatMessageObject.isSelf){
+		name = "Me";
+	}
+	$("<div class='chatMessageName'>" + name + "</div>").appendTo(chatMessageContainer);
+	var test = $("<div class='chatmessageMessage'>" + chatMessageObject.message + "</div>").appendTo(chatMessageContainer);
+
+	if(!placeOnTop){
+		chatMessageContainer.css({"top": chatListNewestMessagePlacement});
+		chatListNewestMessagePlacement += chatMessageContainer.outerHeight()+15;
+	}
+	else{
+
+	}
+
+	$(document).ready(function(){
+		console.log(chatMessageContainer.outerHeight());
+		console.log(test.load);
+	});
+}
+
 //For detecting where the mouse is
 // $(document).ready(function() {
 // 	$('div').hover(function() { 
@@ -442,4 +501,10 @@ function setMainWindowBackgroundImage(){
 function toggleProfileBoxVisibility(){
 	$("#profileBox").toggle();
 	alignStuff();
+}
+
+function chatMessageObject(message, timestap, isSelf){
+		this.message = message;
+		this.timestap = timestap;
+		this.isSelf = isSelf;
 }
