@@ -10,7 +10,6 @@ var currentShownInMainWindow = 0;
 var currentShownBuzzBoxTab = -1;
 var mainWindowIsMoving = false;
 var messageBoxIsShowing = false;
-var chatListOldestMessagePlacement = 0;
 var chatListNewestMessagePlacement = 0;
 
 window.onresize = alignStuff;
@@ -330,6 +329,7 @@ function toggleMainWindowMoving(){
 function buzzBoxButtonPressed(event){
 	var button = $(event.target);
 	var buttonNr = button.data("buttonNr");
+	console.log("current: " + currentShownBuzzBoxTab + "          clicket: " + buttonNr);
 	if(currentShownBuzzBoxTab==buttonNr){
 		return;
 	}
@@ -341,7 +341,7 @@ function buzzBoxButtonPressed(event){
 	var img = new Image();
 	img.onload = function(){
 		buzzBoxTabDiv.css({"width": img.width, "height": img.height});
-		messageContainer.css({"width": (buzzBoxTabDiv.width()-5)+20, "height": buzzBoxTabDiv.height()});
+		messageContainer.css({"width": (buzzBoxTabDiv.width()-5)+20, "height": buzzBoxTabDiv.height()-2});
 	};
 	img.src = "img/messaging" + newBoxBackground[buttonNr];
 	$("#buzzBoxTabDiv").css("background-image", "url(" + img.src +")");
@@ -360,9 +360,8 @@ function buzzBoxButtonPressed(event){
 
 function emptyTheContentInBuzzBox(){
 	$(".buzzBoxContent").remove();
-	chatListOldestMessagePlacement = 0;
 	chatListNewestMessagePlacement = 0;
-	currentShownBuzzBoxTab = -1;
+	$("#buzzBoxTabDivMessageContainer").css({"height": $("#buzzBoxTabDiv").height()-2, "top": 0});
 }
 
 function showUserConversationsInBuzzBox(){
@@ -387,11 +386,6 @@ function addAConversationToBuzzBox(arrayOfNames, int_placeInList, conversationID
 
 	var div = $("<div id='buzzBoxConversation" + int_placeInList + "' class='hiveOrangeText buzzBoxContent buzzBoxConversation'>"+stringWithNames+"</div>").appendTo(messageContainer);
 	
-	/* NOT WORKING, since the width is depentent on an image, which takes time to load...
-	
-	var paddingAndMarginsToRemove = parseInt($("#buzzBoxTabDivMessageContainer").css('padding-left').replace("px", ""))+parseInt(div.css('padding-left').replace("px", ""))+parseInt(div.css('margin-left').replace("px", ""));
-	div.css({"width": $("#buzzBoxTabDiv").width()-paddingAndMarginsToRemove});*/
-	
 	if(int_placeInList!=0){
 		var prevDiv = $("#buzzBoxConversation" + (int_placeInList-1));
 		div.css({"top": prevDiv.position().top+prevDiv.outerHeight(true), "border-top": "1px solid gray"});
@@ -400,6 +394,7 @@ function addAConversationToBuzzBox(arrayOfNames, int_placeInList, conversationID
 	div.click(function(){
 		emptyTheContentInBuzzBox();
 		showConversationInBuzzBox(conversationID, false, stringWithNames);
+		currentShownBuzzBoxTab = -1;
 	});
 }
 
@@ -408,65 +403,93 @@ Conversation id is used to get conversation from server
 The placeOnTop is for loading older messages and placing them on the top of the message list
 */
 function showConversationInBuzzBox(int_conversationId, placeOnTop, names){
-
+	var tabContainer= $("#buzzBoxTabDivMessageContainer");
+	var buzzBoxDiv = $("#buzzBoxTabDiv");
 	/*
 
 	Get conversation from server
 
 	*/
-	tempOthersNames = "Other";
-	$("<div class='buzzBoxContent chatConversationNames'>" + names + "</div>").appendTo($("#buzzBoxTabDivMessageContainer"));
-	var tempConversation = [new chatMessageObject("Hey", "2013-04-06 20:00", false), new chatMessageObject("Hey to u", "2013-04-06 20:00", true), new chatMessageObject("watcha doing?", "2013-04-06 20:00", false),new chatMessageObject("just shoping some", "2013-04-06 20:00", false), new chatMessageObject("oh nice", "2013-04-06 20:00", false)];
+	tempOthersNames = "Other:";
+	var chatNames = $("<div id='chatConversationNames' class='buzzBoxContent'>" + names + "</div>").appendTo(buzzBoxDiv);
+
+	var chatInputBox = $("<input type='text' id='buzzBoxChatInputBox' class='buzzBoxContent'></input>").appendTo(buzzBoxDiv);
+	chatInputBox.css({"top": buzzBoxDiv.height()-chatInputBox.height()-4, "width": buzzBoxDiv.width()-15});
+	tabContainer.css({"height": "-="+(chatInputBox.height()+4)});
+	chatInputBox.keyup(function(event){
+		/*Enter detected*/
+		if(event.keyCode == 13){
+			sendMessage();
+		}
+	});
+
+	tabContainer.css({"height": "-=" + chatNames.outerHeight(), "top": "+=" + chatNames.outerHeight()});
+
+	var tempConversation = [new chatMessageObject("Hey", "2013-04-06 20:00", false), new chatMessageObject("Hey to u", "2013-04-06 20:00", true), new chatMessageObject("watcha doing?", "2013-04-06 20:00", false),new chatMessageObject("just shoping some", "2013-04-06 20:00", true), new chatMessageObject("oh nice", "2013-04-06 20:00", false), new chatMessageObject("yah, it be nice!", "2013-04-06 20:00", true), new chatMessageObject("I bet :)", "2013-04-06 20:00", false), new chatMessageObject("yeah :)", "2013-04-06 20:00", true), new chatMessageObject("test", "2013-04-06 20:00", true), new chatMessageObject("test", "2013-04-06 20:00", false)];
 	for(var i = 0; i < tempConversation.length; i++){
 		addChatMessage(tempOthersNames, tempConversation[i], placeOnTop);
 	}
 }
 
+function sendMessage(){
+	var chatInputBox = $("#buzzBoxChatInputBox");
+	var text = chatInputBox.val();
+	if(text==""){
+		return;
+	}
+	var message = new chatMessageObject(text, "2013-04-06 20:00", true);
+	chatInputBox.blur().val("");
+
+	/*
+	SEND MESSAGE TO SERVER AND PUSH TO OTHERS
+	*/
+
+	addChatMessage(null ,message, false);
+}
+
+/*
+I'm unsure when and how to trigger this function
+I will leave this rather empty for now
+*/
+function retrieveMessageFromOther(){
+
+	/*GET MESSAGE*/
+
+	var message = new chatMessageObject("TEXT", "2013-04-06 20:00", false); //The false at the end is for showing that the message is sent from some one else
+
+	addChatMessage(null ,message, false); //The false here is for adding the message at the bottom of the chat window
+}
+
 function addChatMessage(name, chatMessageObj, placeOnTop){
 	var messageContainer = $("#buzzBoxTabDivMessageContainer");
 	var chatMessageContainer = $("<div class='hiveOrangeText buzzBoxContent buzzBoxMessageContainer'></div>").appendTo(messageContainer);
-	if(!chatMessageObject.isSelf){
-		name = "Me";
+	if(chatMessageObj.isSelf){
+		name = "Me:";
 	}
-	$("<div class='chatMessageName'>" + name + "</div>").appendTo(chatMessageContainer);
-	var test = $("<div class='chatmessageMessage'>" + chatMessageObject.message + "</div>").appendTo(chatMessageContainer);
+	/*To add check for who sent last message, should be a check in userID?*/
+	var chatName = $("<div class='chatMessageName'>" + name + "</div>");
+	var chatMessage = $("<div class='chatmessageMessage'>" + chatMessageObj.message + "</div>");
 
 	if(!placeOnTop){
-		chatMessageContainer.css({"top": chatListNewestMessagePlacement});
-		chatListNewestMessagePlacement += chatMessageContainer.outerHeight()+15;
+		chatName.appendTo(chatMessageContainer);
+		chatMessage.appendTo(chatMessageContainer);
+		chatMessageContainer.css({"height": chatName.outerHeight()+chatMessage.outerHeight(), "top": chatListNewestMessagePlacement});
+		chatListNewestMessagePlacement += chatMessageContainer.outerHeight();
 	}
 	else{
-
+		chatName.appendTo(chatMessageContainer);
+		chatMessage.appendTo(chatMessageContainer);
+		var height = chatName.outerHeight()+chatMessage.outerHeight();
+		console.log(height);
+		chatMessageContainer.css({"height": height});
+		chatMessageContainer.css({"top": -height});
+		$(".buzzBoxMessageContainer").css({"top": "+="+height});
 	}
-
+	
 	$(document).ready(function(){
-		console.log(chatMessageContainer.outerHeight());
-		console.log(test.load);
+		messageContainer.scrollTop(messageContainer.height());
 	});
 }
-
-//For detecting where the mouse is
-// $(document).ready(function() {
-// 	$('div').hover(function() { 
-// 		var isOverId = (this.id);
-// 		if(isOverId=="messageIcon"||isOverId=="messageDiv"){
-// 			if(!messageBoxHasBeenMovedOut&&!messageBoxIsMoving){
-// 				toogleMessageBoxIsMoving();
-// 				showMessageBox();
-// 				messageBoxHasBeenMovedOut=true;
-// 				setTimeout(function(){toogleMessageBoxIsMoving()}, 500);
-// 			}
-// 		}
-// 		else{
-// 			if(messageBoxHasBeenMovedOut&&!messageBoxIsMoving){
-// 				toogleMessageBoxIsMoving();
-// 				hideMessageBox();
-// 				messageBoxHasBeenMovedOut=false;
-// 				setTimeout(function(){toogleMessageBoxIsMoving()}, 500);
-// 			}
-// 		}
-// 	});
-// });
 
 function setOpacityOnEmelent(id, amount){
 	$(id).css({"opacity" : amount, "filter" : "alpha(opacity=" +amount+")"});
