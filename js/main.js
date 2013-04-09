@@ -329,7 +329,6 @@ function toggleMainWindowMoving(){
 function buzzBoxButtonPressed(event){
 	var button = $(event.target);
 	var buttonNr = button.data("buttonNr");
-	console.log("current: " + currentShownBuzzBoxTab + "          clicket: " + buttonNr);
 	if(currentShownBuzzBoxTab==buttonNr){
 		return;
 	}
@@ -350,6 +349,7 @@ function buzzBoxButtonPressed(event){
 		showUserConversationsInBuzzBox();
 		break;
 	case 1:
+		showComposeMessageInBuzzBox();
 		break;
 	case 2:
 		break;
@@ -364,6 +364,9 @@ function emptyTheContentInBuzzBox(){
 	$("#buzzBoxTabDivMessageContainer").css({"height": $("#buzzBoxTabDiv").height()-2, "top": 0});
 }
 
+/*
+			START OF USER CONVERSATION CODE
+*/
 function showUserConversationsInBuzzBox(){
 	/*
 	Should here get an array containing arrays of names from the server
@@ -413,7 +416,7 @@ function showConversationInBuzzBox(int_conversationId, placeOnTop, names){
 	tempOthersNames = "Other:";
 	var chatNames = $("<div id='chatConversationNames' class='buzzBoxContent'>" + names + "</div>").appendTo(buzzBoxDiv);
 
-	var chatInputBox = $("<input type='text' id='buzzBoxChatInputBox' class='buzzBoxContent'></input>").appendTo(buzzBoxDiv);
+	var chatInputBox = $("<input type='text' id='buzzBoxInputBox' class='buzzBoxContent'></input>").appendTo(buzzBoxDiv);
 	chatInputBox.css({"top": buzzBoxDiv.height()-chatInputBox.height()-4, "width": buzzBoxDiv.width()-15});
 	tabContainer.css({"height": "-="+(chatInputBox.height()+4)});
 	chatInputBox.keyup(function(event){
@@ -432,13 +435,13 @@ function showConversationInBuzzBox(int_conversationId, placeOnTop, names){
 }
 
 function sendMessage(){
-	var chatInputBox = $("#buzzBoxChatInputBox");
+	var chatInputBox = $("#buzzBoxInputBox");
 	var text = chatInputBox.val();
 	if(text==""){
 		return;
 	}
 	var message = new chatMessageObject(text, "2013-04-06 20:00", true);
-	chatInputBox.blur().val("");
+	chatInputBox.val("");
 
 	/*
 	SEND MESSAGE TO SERVER AND PUSH TO OTHERS
@@ -480,7 +483,6 @@ function addChatMessage(name, chatMessageObj, placeOnTop){
 		chatName.appendTo(chatMessageContainer);
 		chatMessage.appendTo(chatMessageContainer);
 		var height = chatName.outerHeight()+chatMessage.outerHeight();
-		console.log(height);
 		chatMessageContainer.css({"height": height});
 		chatMessageContainer.css({"top": -height});
 		$(".buzzBoxMessageContainer").css({"top": "+="+height});
@@ -490,6 +492,68 @@ function addChatMessage(name, chatMessageObj, placeOnTop){
 		messageContainer.scrollTop(messageContainer.height());
 	});
 }
+
+/*
+			END OF USER CONVERSATION CODE
+*/
+
+/*
+			START OF COMPOSE MESSAGE CODE
+*/
+
+function showComposeMessageInBuzzBox(){
+	emptyTheContentInBuzzBox();
+	var messageContainer = $("#buzzBoxTabDivMessageContainer");
+	var buzzBoxDiv = $("#buzzBoxTabDiv");
+	var nameInputBox = $("<input type='text' id='buzzBoxInputBox' class='buzzBoxContent'></input>").appendTo(messageContainer);
+	var sendButton = $("<span id='buzzBoxComposeMessageSend' class='buzzBoxContent hiveOrangeText'>Send Message</span>").appendTo(messageContainer);
+	var messageBox = $("<textarea rows='400' cols='40' id='buzzBoxComposeMessageBox' class='buzzBoxContent' spellcheck='true'></textarea>").appendTo(messageContainer);
+	var tempNames = ["Daniel Almquist", "Austin Helm", "Essi Huotari", "Pulkit Jaiswal", "Nishant Chemburkar"];
+
+	nameInputBox.css({"width": buzzBoxDiv.width()-16, "top": 2});
+	nameInputBox.autocomplete({	source: tempNames });
+
+	nameInputBox.on( "autocompleteselect",
+		function() {
+			messageBox.focus();
+			console.log(nameInputBox.val());
+	});	
+
+	sendButton.css({"top": messageContainer.height()-(sendButton.height()+6), "left": buzzBoxDiv.width()/2-sendButton.width()/2});
+	sendButton.mouseup(function(){
+		sendComposedMessage();
+	})
+
+	messageBox.css({"width": nameInputBox.width(), "height": messageContainer.height()-(nameInputBox.position().top+nameInputBox.height()+sendButton.height()+20), "top": nameInputBox.position().top+nameInputBox.height()+4});
+	nameInputBox.focus();
+}
+
+function sendComposedMessage(){
+	var nameInput = $("#buzzBoxInputBox");
+	var textInput = $("#buzzBoxComposeMessageBox");
+
+	var recipient = nameInput.val();
+	if(!recipient){
+		nameInput.focus();
+		return;
+	}
+	var messageText = textInput.val();
+	if(!messageText){
+		textInput.focus();
+		return;
+	}
+	textInput.val("");
+	nameInput.val("");
+	console.log("To: " + recipient);
+	console.log("Message: " + messageText);
+	/*
+		SEND MESSAGE TO SERVER
+	*/
+}
+
+/*
+			END OF COMPOSE MESSAGE CODE
+*/
 
 function setOpacityOnEmelent(id, amount){
 	$(id).css({"opacity" : amount, "filter" : "alpha(opacity=" +amount+")"});
