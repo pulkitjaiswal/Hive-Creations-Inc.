@@ -1,0 +1,20 @@
+#hivewayContainer{
+	position: absolute;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	top: 0px;
+}
+.hivewayBigHex{
+	position: absolute;
+	background-image: url(../img/hiveway/big_hexacon.png);
+	width: 190px;
+	height: 159px;
+	display: block;
+}
+.hivewaySmallHex{
+	position: absolute;
+	background-image: url(../img/hiveway/small_hexacon.png);
+	width: 123px;
+	height: 103px;
+	display: block;
+}

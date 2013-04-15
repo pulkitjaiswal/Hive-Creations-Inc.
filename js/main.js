@@ -8,7 +8,6 @@ var menubarToolsPosition = 2;
 var toolbarBubbleIcons = ["img/menu bar/menu bar functions/hiveway_bubble.png", "img/menu bar/menu bar functions/hiveway_bubble_with_text.png", "img/menu bar/menu bar functions/tools_popup.png", "img/menu bar/menu bar functions/hiveway_bubble.png", "img/menu bar/menu bar functions/help_bubble_with_text.png"];
 var currentShownInMainWindow = 0;
 var currentShownBuzzBoxTab = -1;
-var mainWindowIsMoving = false;
 var messageBoxIsShowing = false;
 var chatListNewestMessagePlacement = 0;
 
@@ -31,7 +30,6 @@ function stuffOnLoad(){
 	setMessageIcon();
 	alignStuff();
 	placeMenuBar();
-	setRoundDivOnMainWindow();
 	profileImage(4);
 	profileName("Daniel Almquist", "Stockholm");
 	profileCompanyBoxes(8);
@@ -72,7 +70,13 @@ function alignStuff(){
 	$("#logoutText").css("left", $("#searchBarDiv").position().left+$("#searchBarDiv").width()+15);
 	alignMessageBox();
 	setBackground();
+
+	//For resize when hiveway is showing
+	if(currentShownInMainWindow==1){
+		resizeHivewayWindow();
+	}
 }
+
 	
 
 function placeSearchDiv(){
@@ -192,27 +196,6 @@ function profileCompanyBoxes(amount){ //How to get the images?
 	}
 }
 
-//For placing the a round div over the honey jar in the main window
-function setRoundDivOnMainWindow(){
-	 var mainWindow = $("#mainInnerWindow");
-	 var div = $("<div class='transparentMenuBarDiv'></div>").appendTo("#mainInnerWindow");
-	 div.attr("id", "roundDivMainWindow");
-	 var left = mainWindow.outerWidth(true)-div.width();
-	 div.css({"left" : left, "top" : 0, "opacity" :0});
-	 div.data("number", 0); //sets the same id as the first button in the toolbar
-	 div.click(toolbarClicked);
-}
-
-//For animating the main window
-function animateMainWindow(){
-	var mainWindow = $("#mainInnerWindow");
-	var curHeight = mainWindow.height();
-	var curWidth = mainWindow.width();
-	mainWindow.animate({height: 0, width: curWidth, opacity: "toggle"}, { queue:true, duration: millisUntilMainWindowStartsToShowAfterAnimation }).delay(100);
-	mainWindow.animate({height: curHeight, width: curWidth, opacity: "toggle"}, 500, toggleMainWindowMoving);
-	return false;
-  }
-
 //Function for when a item on the toolbar is clicked, can simulate a click on a element in toolbar by sending that items nr in the toolbar 
 function toolbarClicked(outsideNumb){
 	if(outsideNumb.type !="click"){
@@ -221,7 +204,7 @@ function toolbarClicked(outsideNumb){
 	else{
 		var number = $(this).data("number");
 	}
-	if(number==currentShownInMainWindow || mainWindowIsMoving || number==menubarToolsPosition){
+	if(number==currentShownInMainWindow || number==menubarToolsPosition){
 		return;
 	}
 	
@@ -232,24 +215,26 @@ function toolbarClicked(outsideNumb){
 		var outerNumber = Math.floor(number/10);
 		var innerNumber = number-10*outerNumber;
 		$("#mainInnerWindowTextArea").load("mainwindow_resources/" + toolbarLinks[outerNumber][innerNumber]).delay(millisUntilMainWindowStartsToShowAfterAnimation);
-		setMainWindowBackgroundImage();
 		if($("#profileBox").is(":visible")){
 			toggleProfileBoxVisibility();
 		}
 	}
 	else{
 		if($("#profileBox").is(":visible")){
-			toggleMainWindowMoving();
-			animateMainWindow();
-			setTimeout(function(){
 			$("#mainInnerWindowTextArea").load("mainwindow_resources/" + toolbarLinks[number]).delay(millisUntilMainWindowStartsToShowAfterAnimation);
-				}, millisUntilMainWindowStartsToShowAfterAnimation);
 		}
 		else{
-			setMainWindowBackgroundImage();
 			toggleProfileBoxVisibility();
 			$("#mainInnerWindowTextArea").load("mainwindow_resources/" + toolbarLinks[number]);
 		}
+	}
+	setMainWindowBackgroundImage();
+
+	/*
+	If hiveway has been showing
+	*/
+	if(number!=1){
+		$("#hivewayContainer").remove();
 	}
 }
 
@@ -321,10 +306,6 @@ function toogleMessageBoxIsMoving(){
 	messageBoxIsMoving = !messageBoxIsMoving;
 }
 
-function toggleMainWindowMoving(){
-	mainWindowIsMoving = !mainWindowIsMoving;
-}
-
 //function for handling the transitions between the different views in the buzzbox
 function buzzBoxButtonPressed(event){
 	var button = $(event.target);
@@ -336,7 +317,7 @@ function buzzBoxButtonPressed(event){
 	emptyTheContentInBuzzBox(); //Removes all content that is currently in the buzzbox
 	var messageContainer = $("#buzzBoxTabDivMessageContainer");
 	var buzzBoxTabDiv = $("#buzzBoxTabDiv");
-	var newBoxBackground = ["/mailbox_tab/tab_mailbox.png", "/compose_and_thread_tab/tab_compose.png", "/offers_tab/tab_offers.png", "kg"];
+	var newBoxBackground = ["/mailbox_tab/tab_mailbox.png", "/compose_and_thread_tab/tab_compose.png", "/offers_tab/tab_offers.png", "/direct_trade_tab/tab_direct_trade.png"];
 	var img = new Image();
 	img.onload = function(){
 		buzzBoxTabDiv.css({"width": img.width, "height": img.height});
@@ -505,7 +486,7 @@ function showComposeMessageInBuzzBox(){
 	emptyTheContentInBuzzBox();
 	var messageContainer = $("#buzzBoxTabDivMessageContainer");
 	var buzzBoxDiv = $("#buzzBoxTabDiv");
-	var nameInputBox = $("<input type='text' id='buzzBoxInputBox' class='buzzBoxContent'></input>").appendTo(messageContainer);
+	var nameInputBox = $("<input type='text' placeholder='To...' id='buzzBoxInputBox' class='buzzBoxContent'></input>").appendTo(messageContainer);
 	var sendButton = $("<span id='buzzBoxComposeMessageSend' class='buzzBoxContent hiveOrangeText'>Send Message</span>").appendTo(messageContainer);
 	var messageBox = $("<textarea rows='400' cols='40' id='buzzBoxComposeMessageBox' class='buzzBoxContent' spellcheck='true'></textarea>").appendTo(messageContainer);
 	var tempNames = ["Daniel Almquist", "Austin Helm", "Essi Huotari", "Pulkit Jaiswal", "Nishant Chemburkar"];
@@ -568,8 +549,9 @@ function setMainWindowBackgroundImage(){
 	var mainWindowDiv = $("#mainInnerWindow");
 	var img = new Image();
 	img.onload = function(){
-		$("#mainInnerWindow").css({"width": img.width-60, "height": img.height});
-	};	
+		mainWindowDiv.css({"width": img.width-60, "height": img.height});
+	};
+	console.log(currentShownInMainWindow);
 	if(currentShownInMainWindow==20){
 		img.src = 'img/settings/settings_box_outline.png';
 		mainWindowDiv.css("background-image", "url(" + img.src +")");
@@ -578,10 +560,26 @@ function setMainWindowBackgroundImage(){
 		img.src = 'img/settings/user_info_box_outline.png';
 		mainWindowDiv.css("background-image", "url(" + img.src +")");
 	}
+	else if(currentShownInMainWindow==1){
+		resizeHivewayWindow();
+	}
 	else{
 		img.src = 'img/honey%20jar/honey%20jar%20box%20USE%20THIS%20ONE.png';
 		mainWindowDiv.css("background-image", "url(" + img.src +")");
 	}
+
+	if(currentShownInMainWindow==1){
+		mainWindowDiv.css({"overflow": "hidden"});
+	}
+	else{
+		mainWindowDiv.css({"overflow": "none"});
+	}
+}
+
+function resizeHivewayWindow(){
+	var mainWindowDiv = $("#mainInnerWindow");
+	var newHeight = $(window).height()-mainWindowDiv.offset().top;
+	mainWindowDiv.css({"width": "100%", "height": newHeight-5-60, "background-image": "none"});
 }
 
 //Hides or shows the profile box, re aligns the main window acordingly

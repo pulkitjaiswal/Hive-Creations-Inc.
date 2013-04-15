@@ -3,6 +3,9 @@
 $("#hiveSearchResultBox").keyup(function(){searchForHiveInput();});
 var previouslyAddedHeightToHiveResultBox = 0;
 
+$(window).ready(function(){
+	settingsOnLoad();
+});
 
 function settingsOnLoad(){
 profileImageSettings();

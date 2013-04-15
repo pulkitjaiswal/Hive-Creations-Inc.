@@ -22,6 +22,7 @@ img {
 
  body{
  	overflow: hidden;
+ 	font-family: verdana;
  }
 
 #headerDiv{
@@ -68,7 +69,7 @@ img {
 	clear: both;
 	width: 1000px;
 	height: auto;
-	position:absolute;
+	position: absolute;
 	margin: 0 auto;	
 	padding: 30px 0px;
 
