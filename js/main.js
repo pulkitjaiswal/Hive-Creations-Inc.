@@ -551,7 +551,6 @@ function setMainWindowBackgroundImage(){
 	img.onload = function(){
 		mainWindowDiv.css({"width": img.width-60, "height": img.height});
 	};
-	console.log(currentShownInMainWindow);
 	if(currentShownInMainWindow==20){
 		img.src = 'img/settings/settings_box_outline.png';
 		mainWindowDiv.css("background-image", "url(" + img.src +")");

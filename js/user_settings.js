@@ -3,10 +3,6 @@
 $("#hiveSearchResultBox").keyup(function(){searchForHiveInput();});
 var previouslyAddedHeightToHiveResultBox = 0;
 
-$(window).ready(function(){
-	settingsOnLoad();
-});
-
 function settingsOnLoad(){
 profileImageSettings();
 positionUserSettingsText();
@@ -149,3 +145,7 @@ function updateHiveResultList(results){
 function clearResultTable(){
 	var tbody = $("#hiveResultTable");
 }
+
+$(window).ready(function(){
+	settingsOnLoad();
+});
