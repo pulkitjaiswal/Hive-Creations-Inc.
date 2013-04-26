@@ -86,6 +86,9 @@ function searchForHiveInput(){
 	updateHiveResultList(results);
 }
 
+/*
+NEEDS SERVER
+*/
 function searchForHive(searchInput){
 	//TODO get result form the server
 	var result = new Array();

@@ -19,6 +19,10 @@ function onHivewayLoad(){
 	placeTheHiveway();
 }
 
+/*
+NEEDS SERVER STUFF
+Should get listings and company adds
+*/
 function placeTheHiveway(){
 	var mainWindowDiv = $("#mainInnerWindow"); 
 	/*
@@ -75,6 +79,7 @@ function addSmallerHex(addedToBottom){
 	}
 }
 
+//Adds more boxes to the bottom of the hiveway
 function addMoreItemsToHiveWay(){ //Should accept more stuff from the server.
 	notUpdatingHiveway = false;
 	for(var i = 0; i<10; i++){

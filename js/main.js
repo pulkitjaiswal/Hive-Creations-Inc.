@@ -25,7 +25,7 @@ function stuffOnLoad(){
 		}
 	}
 	else{
-		//Unimplemented as of now
+		//Unimplemented as of now, might implement cookies here
 	}
 	setMessageIcon();
 	alignStuff();
@@ -182,6 +182,12 @@ function setNewFriends(){
 	profileImage(newAmountOfFriends);
 }
 
+
+/*
+THIS NEEDS SERVER STUFF
+
+need images
+*/
 function profileCompanyBoxes(amount){ //How to get the images?
 	var tempComppanyImages = ["poloLogo.png", "starbucksLogo.png", "hmLogo.png", "levisLogo.png", "lacostLogo.png", "gapLogo.png", "microsoftLogo.png", "nikeLogo.png"];
 	var tempCompanyNames = ["Polo", "Starbucks", "H&M", "Levi's", "Lacost", "GAP", "Microsoft", "Nike"];
@@ -347,6 +353,7 @@ function emptyTheContentInBuzzBox(){
 
 /*
 			START OF USER CONVERSATION CODE
+			THIS PART NEEDS SERVER STUFF
 */
 function showUserConversationsInBuzzBox(){
 	/*
@@ -441,7 +448,7 @@ function retrieveMessageFromOther(){
 
 	var message = new chatMessageObject("TEXT", "2013-04-06 20:00", false); //The false at the end is for showing that the message is sent from some one else
 
-	addChatMessage(null ,message, false); //The false here is for adding the message at the bottom of the chat window
+	addChatMessage(null ,message, false); //The false here is for adding the message at the bottom of the chat window, true will be used when old messages are loaded from the server and placed on top
 }
 
 function addChatMessage(name, chatMessageObj, placeOnTop){
