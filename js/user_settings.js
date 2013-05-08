@@ -128,7 +128,7 @@ function updateHiveResultList(results){
     }
 	for (var r = 0; r < results.length; r++) {
         var trow = $("<tr>");
-        var hive = "<span class = 'hiveResultTableHiveName hiveListHeader hiveOrangeText'>" + results[r].hiveName + "</span>";
+        var hive = "<span class = 'hiveResultTableHiveName hiveListHeader'>" + results[r].hiveName + "</span>";
         for(var i = 0; i < results[r].amountOfMembers; i++){
         	hive = hive + "<br /><span class = 'hiveResultTablePersonName hiveOrangeText'>" + results[r].members[i].firstName + " " + results[r].members[i].lastName + "</span>"
         }

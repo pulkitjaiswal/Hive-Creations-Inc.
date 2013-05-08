@@ -4,6 +4,47 @@
 	overflow-y: scroll;
 	top: 0px;
 }
+#filterContainer{
+	position: fixed;
+	right: 70px;
+	width: 180px;
+	height: 170px;
+	background-color: white;
+	border-radius: 10px;
+}
+#offerContainer{
+	position: fixed;
+	right: 70px;
+	width: 180px;
+	height: 220px;
+	background-color: white;
+	border-radius: 10px;
+}
+.filterInputContainer{
+	position: relative;
+	width: 95%;
+	left: 5%;
+	height: auto;
+	clear: both;
+	display: inline-block;
+}
+.filterInputContainer span{
+	font-size: 12px;
+	margin: 2px;
+	color: gray;
+	display: block;
+}
+.filterInputContainer input{
+	font-size: 12px;
+	background-image: url(../img/hiveway/searchfield.png);
+	width: 145px;
+	height: 14px;
+	margin: 2px;
+	padding-left: 4px;
+	border: none;
+	display: block;
+}
+
 .hivewayBigHex{
 	position: absolute;
 	background-image: url(../img/hiveway/big_hexacon.png);
@@ -17,4 +58,38 @@
 	width: 123px;
 	height: 103px;
 	display: block;
+}
+
+/*
+jCarousel
+ */
+#jcarouselContainer{
+	width: 132px;
+	margin: 10px auto;
+}
+.jcarousel {
+    position: relative;
+    overflow: hidden;
+    /* You need at least a height, adjust this to your needs */
+    height: 60px;
+}
+
+.jcarousel ul {
+    width: 20000em;
+    position: absolute;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.jcarousel li {
+    float: left;
+    margin: 0 2px 0 2px;
+    font-size: 10px;
+}
+.carouselButton{
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	z-index: 1;
 }

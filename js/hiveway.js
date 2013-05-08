@@ -17,6 +17,8 @@ preLoad();
 
 function onHivewayLoad(){
 	placeTheHiveway();
+	placeFilterBox();
+	placeOfferBox();
 }
 
 /*
@@ -49,13 +51,88 @@ function placeTheHiveway(){
 
 }
 
+/**
+ * Places the filter box and initializes it
+ */
+function placeFilterBox(){
+	var container = $("#hivewayContainer");
+	var filterContainer = $("<div id='filterContainer' class='hiveBlueBorder'></div>");
+	filterContainer.css({"top": container.offset().top});
+	filterContainer.appendTo(container);
+	$("<div class='hiveListHeader' style='display:block;position:relative;top:0;left:5%;'>Filter</div>").appendTo(filterContainer);
+	var filterOptions = ["Company", "Brand", "Searchword"];
+	for(i in filterOptions){
+		var inputContainer = $("<div class='filterInputContainer'></div>");
+		$("<span>"+filterOptions[i]+"</span>").appendTo(inputContainer);
+		$("<input id='"+filterOptions[i]+"FilterInput'>").appendTo(inputContainer);
+		inputContainer.appendTo(filterContainer);
+	}
+}
+
+/**
+ * Places the offer box and initializes it
+ */
+function placeOfferBox(){
+	var container = $("#hivewayContainer");
+	var offerContainer = $("<div id='offerContainer' class='hiveBlueBorder'></div>");
+	var filterContainer = $("#filterContainer");
+	offerContainer.css({"top": (filterContainer.offset().top+filterContainer.outerHeight()*1.1)});
+	offerContainer.appendTo(container);
+	$("<div class='hiveListHeader' style='display:block;position:relative;left:5%;'>Offer</div>").appendTo(offerContainer);
+	
+	/*
+	TODO SERVER GET OF POINTS AND IMAGES
+	------------------------------------
+	 */
+	
+	var tempImagesWithText = [["img/tempImages/gapLogo.png", "2.34"], ["img/tempImages/hmLogo.png", "1.24"], ["img/tempImages/levisLogo.png", "4.37"], ["img/tempImages/poloLogo.png", "0.94"], ["img/tempImages/nikeLogo.png", "1.67"], ["img/tempImages/microsoftLogo.png", "2.03"]];
+	
+	/*
+	CAROUSEL
+	*/
+ 	var carouselDiv = $("<div id='jcarouselContainer' class='jcarousel'></div>")
+	var carouselUL = $("<ul></ul>");
+	carouselUL.appendTo(carouselDiv);
+	for(i in tempImagesWithText){
+		$("<li><img src='"+tempImagesWithText[i][0]+"' width='40' height='40' alt='' /><br /><center>"+tempImagesWithText[i][1]+"</center></li>").appendTo(carouselUL);
+	}
+	carouselDiv.appendTo(offerContainer);
+	carouselDiv.jcarousel({
+	});
+	var leftCarouselButton = $("<div id='leftCarouselButton' class='carouselButton'><</div>");
+	var rightCarouselButton = $("<div id='rightCarouselButton' class='carouselButton'>></div>");
+	leftCarouselButton.appendTo(offerContainer);
+	rightCarouselButton.appendTo(offerContainer);
+	leftCarouselButton.css({"top": carouselDiv.position().top+15, "left": 5});
+	rightCarouselButton.css({"top": carouselDiv.position().top+15, "right": 5});
+	var carousel = $('.jcarousel');
+	leftCarouselButton.click(function(){
+		carousel.jcarousel('scroll', '-=1');
+	});
+	rightCarouselButton.click(function(){
+		carousel.jcarousel('scroll', '+=1');
+	});
+	/*
+	END CAROUSEL
+	 */
+	
+	var offerOptions = ["To", "Enter amount"];
+	for(i in offerOptions){
+		var inputContainer = $("<div class='filterInputContainer'></div>");
+		$("<span>"+offerOptions[i]+"</span>").appendTo(inputContainer);
+		$("<input id='"+offerOptions[i]+"OfferInput'>").appendTo(inputContainer);
+		inputContainer.appendTo(offerContainer);
+	}
+
+}
+
 /*
 	addedToBottom is for hiding newly added before compleatly loaded
 */
 function addBigHex(addedToBottom){ //Should accept stuff from server
 	var container = $("#hivewayContainer")
 	var div = $("<div class='hivewayBigHex'><center>" + lastBigHexTopPosition + "</div>").appendTo(container);
-	var leftPos = $("#mainInnerWindow").innerWidth()/2-$(".hivewayBigHex").width()/2-50;
+	var leftPos = $("#mainInnerWindow").innerWidth()/2-$(".hivewayBigHex").width()/2-130;
 	div.css({"top": lastBigHexTopPosition+5, "left": leftPos});
 	lastBigHexTopPosition += 5+div.height();
 	/*if(addedToBottom){
@@ -71,7 +148,7 @@ function addSmallerHex(addedToBottom){
 	var topPos = lastSmallHexTopPositions+159+5; //159 is BigHex height
 	for(var i = 0; i < 2; i++){
 		var div = $("<div class='hivewaySmallHex'></div>").appendTo(container);
-		div.css({"top": topPos, "left": (300+235*i)});
+		div.css({"top": topPos, "left": (220+235*i)});
 		lastSmallHexTopPositions = topPos;
 		/*if(addedToBottom){
 			div.css("display", "none");
@@ -86,6 +163,9 @@ function addMoreItemsToHiveWay(){ //Should accept more stuff from the server.
 		addBigHex(true);
 		addSmallerHex(true);
 	}
+	/*
+	USE AJAX LOAD PLUGIN
+	 */
 	/*var bigHexes = $(".hivewayBigHex");
 	var smallHexes = $(".hivewaySmallHex");
 	bigHexes.bind("ready", function(){

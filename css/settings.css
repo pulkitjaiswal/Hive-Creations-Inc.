@@ -38,7 +38,7 @@
 	height: 65px;
 	overflow: visible;
 	position: absolute;
-	z-index: 1;
+	background-color: transparent;
 }
 #hiveSearchResultBoxTop{
 	background-image: url(../img/settings/hive_result_box_top.png);
@@ -47,7 +47,6 @@
 	height: 26px;
 	position: absolute;
 	float: left;
-	z-index: -1;
 }
 #hiveSearchResultBoxBottom{
 	background-image: url(../img/settings/hive_result_box_bottom.png);
@@ -56,7 +55,6 @@
 	height: 26px;
 	position: absolute;
 	float: left;
-	z-index: -1;
 }
 #hiveSearchResultBoxMiddle{
 	background-image: url(../img/settings/hive_result_box_middle.png);
@@ -66,22 +64,23 @@
 	height: 24px;
 	position: absolute;
 	float: left;
-	z-index: -1;
 }
 #inputSearchHive{
 	background-image: url(../img/settings/search_field.png);
 	border: none;
 	width: 181px;
-	height: 16px;
+	height: 15px;
 	padding-left: 2px;
 	position: absolute;
 	left: 40px;
 	top: 20px;
+	z-index: 1;
 }
 #hiveResultTable{
 	position: absolute;
 	left: 40px;
 	top: 40px;
+	z-index: 1;
 }
 .settingsListItem{
 	height: 32px;
