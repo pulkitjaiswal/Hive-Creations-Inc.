@@ -216,32 +216,33 @@ function toolbarClicked(outsideNumb){
 	
 	currentShownInMainWindow = number;
 	
+	setMainWindowBackgroundImage();
+
 	//One of the user tools that contains more then one option has been pressed
 	if(number>=10){
 		var outerNumber = Math.floor(number/10);
 		var innerNumber = number-10*outerNumber;
-		$("#mainInnerWindowTextArea").load("mainwindow_resources/" + toolbarLinks[outerNumber][innerNumber]).delay(millisUntilMainWindowStartsToShowAfterAnimation);
+		$("#mainInnerWindow").load("mainwindow_resources/" + toolbarLinks[outerNumber][innerNumber]).delay(millisUntilMainWindowStartsToShowAfterAnimation);
 		if($("#profileBox").is(":visible")){
 			toggleProfileBoxVisibility();
 		}
 	}
 	else{
 		if($("#profileBox").is(":visible")){
-			$("#mainInnerWindowTextArea").load("mainwindow_resources/" + toolbarLinks[number]).delay(millisUntilMainWindowStartsToShowAfterAnimation);
+			$("#mainInnerWindow").load("mainwindow_resources/" + toolbarLinks[number]).delay(millisUntilMainWindowStartsToShowAfterAnimation);
 		}
 		else{
 			toggleProfileBoxVisibility();
-			$("#mainInnerWindowTextArea").load("mainwindow_resources/" + toolbarLinks[number]);
+			$("#mainInnerWindow").load("mainwindow_resources/" + toolbarLinks[number]);
 		}
 	}
-	setMainWindowBackgroundImage();
 
 	/*
 	If hiveway has been showing
 	*/
-	if(number!=1){
+	/*if(number!=1){
 		$("#hivewayContainer").remove();
-	}
+	}*/
 }
 
 //Positions the message icon
@@ -578,7 +579,7 @@ function setMainWindowBackgroundImage(){
 		mainWindowDiv.css({"overflow": "hidden"});
 	}
 	else{
-		mainWindowDiv.css({"overflow": "none"});
+		mainWindowDiv.css({"overflow": "visible"});
 	}
 }
 
@@ -599,3 +600,7 @@ function chatMessageObject(message, timestap, isSelf){
 		this.timestap = timestap;
 		this.isSelf = isSelf;
 }
+
+$(window).ready(function(){
+	stuffOnLoad();
+});

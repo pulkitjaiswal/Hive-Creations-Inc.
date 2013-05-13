@@ -30,7 +30,9 @@ function profileImageSettings(){
 function positionUserSettingsText(){
 	var textDiv = $("#profileSettingsText");
 	var textDivWidth = textDiv.width();
-	textDiv.css({"left": $("#mainInnerWindow").width()+parseInt($("#mainInnerWindow").css("padding-left"),10)-textDivWidth});
+	var innerWindow = $("#mainInnerWindow");
+	console.log(innerWindow.width());
+	textDiv.css({"left": innerWindow.width()+parseInt(innerWindow.css("padding-left"),10)-textDivWidth});
 }
 
 //Function for placing the chosable themes, in argument is an array with themes images to show, maximum of four themes

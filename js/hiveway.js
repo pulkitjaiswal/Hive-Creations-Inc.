@@ -11,6 +11,7 @@ function preLoad(){
 	if($("#profileBox").is(":visible")){
 		toggleProfileBoxVisibility();
 	}
+	console.log("preload done");
 }
 preLoad();
 
@@ -19,6 +20,7 @@ function onHivewayLoad(){
 	placeTheHiveway();
 	placeFilterBox();
 	placeOfferBox();
+	console.log("load done");
 }
 
 /*
@@ -129,7 +131,7 @@ function placeOfferBox(){
 /*
 	addedToBottom is for hiding newly added before compleatly loaded
 */
-function addBigHex(addedToBottom){ //Should accept stuff from server
+function addBigHex(addedToBottom, serverStuff){ //Should accept stuff from server
 	var container = $("#hivewayContainer")
 	var div = $("<div class='hivewayBigHex'><center>" + lastBigHexTopPosition + "</div>").appendTo(container);
 	var leftPos = $("#mainInnerWindow").innerWidth()/2-$(".hivewayBigHex").width()/2-130;
@@ -143,11 +145,22 @@ function addBigHex(addedToBottom){ //Should accept stuff from server
 /*
 	addedToBottom is for hiding newly added before compleatly loaded
 */
-function addSmallerHex(addedToBottom){
+function addSmallerHex(addedToBottom, serverStuff){
 	var container = $("#hivewayContainer");
 	var topPos = lastSmallHexTopPositions+159+5; //159 is BigHex height
 	for(var i = 0; i < 2; i++){
-		var div = $("<div class='hivewaySmallHex'></div>").appendTo(container);
+		var div = $("<div class='hivewaySmallHex' id='smallHex"+topPos+"_"+i+"'></div>").appendTo(container);
+		div.hover(function(){
+			console.log(i +"   " +$(("#smallHex"+topPos+"_"+i)));
+			var hoverDiv = $("<div class='hivewayOffersHover'></div>");
+			hoverDiv.appendTo(div);
+			if(i==0){
+				hoverDiv.css({"background-image": "img/hiveway/hiveway_bubble_left.png"})
+			}
+			else{
+				hoverDiv.css({"background-image": "img/hiveway/hiveway_bubble_right.png"})
+			}
+		})
 		div.css({"top": topPos, "left": (220+235*i)});
 		lastSmallHexTopPositions = topPos;
 		/*if(addedToBottom){

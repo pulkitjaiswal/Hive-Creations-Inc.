@@ -50,14 +50,18 @@
 	background-image: url(../img/hiveway/big_hexacon.png);
 	width: 190px;
 	height: 159px;
-	display: block;
 }
 .hivewaySmallHex{
 	position: absolute;
 	background-image: url(../img/hiveway/small_hexacon.png);
 	width: 123px;
 	height: 103px;
-	display: block;
+}
+.hivewayOffersHover{
+	position: absolute;;
+	width: 133px;
+	height: 78px;
+	z-index: 100;
 }
 
 /*
