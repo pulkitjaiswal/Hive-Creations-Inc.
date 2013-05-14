@@ -11,7 +11,6 @@ function preLoad(){
 	if($("#profileBox").is(":visible")){
 		toggleProfileBoxVisibility();
 	}
-	console.log("preload done");
 }
 preLoad();
 
@@ -20,7 +19,6 @@ function onHivewayLoad(){
 	placeTheHiveway();
 	placeFilterBox();
 	placeOfferBox();
-	console.log("load done");
 }
 
 /*
@@ -48,7 +46,7 @@ function placeTheHiveway(){
 		addBigHex(false); //Should pass info gotten from the server, TODO
 	}
 	for(var i = 0; i < size-1; i++){
-		addSmallerHex(false); //Should pass info gotten from the server, TODO
+		addSmallerHexs(false); //Should pass info gotten from the server, TODO
 	}
 
 }
@@ -78,8 +76,8 @@ function placeOfferBox(){
 	var container = $("#hivewayContainer");
 	var offerContainer = $("<div id='offerContainer' class='hiveBlueBorder'></div>");
 	var filterContainer = $("#filterContainer");
-	offerContainer.css({"top": (filterContainer.offset().top+filterContainer.outerHeight()*1.1)});
 	offerContainer.appendTo(container);
+	offerContainer.css({"top": (filterContainer.offset().top+filterContainer.outerHeight()*1.1)});
 	$("<div class='hiveListHeader' style='display:block;position:relative;left:5%;'>Offer</div>").appendTo(offerContainer);
 	
 	/*
@@ -134,9 +132,9 @@ function placeOfferBox(){
 function addBigHex(addedToBottom, serverStuff){ //Should accept stuff from server
 	var container = $("#hivewayContainer")
 	var div = $("<div class='hivewayBigHex'><center>" + lastBigHexTopPosition + "</div>").appendTo(container);
-	var leftPos = $("#mainInnerWindow").innerWidth()/2-$(".hivewayBigHex").width()/2-130;
+	var leftPos = $("#mainInnerWindow").innerWidth()/2-190/2-130; //190 is big hex width
 	div.css({"top": lastBigHexTopPosition+5, "left": leftPos});
-	lastBigHexTopPosition += 5+div.height();
+	lastBigHexTopPosition += 5+159; //159 is big hex height
 	/*if(addedToBottom){
 		div.css("display", "none");
 	}*/
@@ -145,28 +143,39 @@ function addBigHex(addedToBottom, serverStuff){ //Should accept stuff from serve
 /*
 	addedToBottom is for hiding newly added before compleatly loaded
 */
-function addSmallerHex(addedToBottom, serverStuff){
-	var container = $("#hivewayContainer");
+function addSmallerHexs(addedToBottom, serverStuff){
 	var topPos = lastSmallHexTopPositions+159+5; //159 is BigHex height
 	for(var i = 0; i < 2; i++){
-		var div = $("<div class='hivewaySmallHex' id='smallHex"+topPos+"_"+i+"'></div>").appendTo(container);
-		div.hover(function(){
-			console.log(i +"   " +$(("#smallHex"+topPos+"_"+i)));
-			var hoverDiv = $("<div class='hivewayOffersHover'></div>");
-			hoverDiv.appendTo(div);
-			if(i==0){
-				hoverDiv.css({"background-image": "img/hiveway/hiveway_bubble_left.png"})
-			}
-			else{
-				hoverDiv.css({"background-image": "img/hiveway/hiveway_bubble_right.png"})
-			}
-		})
-		div.css({"top": topPos, "left": (220+235*i)});
-		lastSmallHexTopPositions = topPos;
-		/*if(addedToBottom){
-			div.css("display", "none");
-		}*/
+		addSmallerHex(topPos, i);
 	}
+	lastSmallHexTopPositions = topPos;
+}
+
+function addSmallerHex(topPos, nr){
+	var container = $("#hivewayContainer");
+	var div = $("<div class='hivewaySmallHex' id='smallHex"+topPos+"_"+nr+"'></div>").appendTo(container);
+	var timer;
+	div.hover(function(){
+		var hoverDiv = $("<div class='hivewayOffersHover'></div>");
+		hoverDiv.appendTo(div);
+		if(nr==0){
+			hoverDiv.css({"background-image": "url(img/hiveway/hiveway_bubble_left.png)", "left": "-=133", "top": "+=13"}); //133 is bubble width
+		}
+		else{
+			hoverDiv.css({"background-image": "url(img/hiveway/hiveway_bubble_right.png)", "left": "+=124", "top": "+=13"}); //124 is small hex width
+		}
+	}, function(event){
+		timer = setTimeout(function(){
+			div.find($(".hivewayOffersHover")).remove();
+		}, 200);
+	});
+	div.mouseover(function(){
+		clearTimeout(timer);
+	})
+	div.css({"top": topPos, "left": (220+235*nr)});
+	/*if(addedToBottom){
+		div.css("display", "none");
+	}*/
 }
 
 //Adds more boxes to the bottom of the hiveway
@@ -174,7 +183,7 @@ function addMoreItemsToHiveWay(){ //Should accept more stuff from the server.
 	notUpdatingHiveway = false;
 	for(var i = 0; i<10; i++){
 		addBigHex(true);
-		addSmallerHex(true);
+		addSmallerHexs(true);
 	}
 	/*
 	USE AJAX LOAD PLUGIN

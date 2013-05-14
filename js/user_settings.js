@@ -151,6 +151,6 @@ function clearResultTable(){
 	var tbody = $("#hiveResultTable");
 }
 
-$(window).ready(function(){
+$(document).ready(function(){
 	settingsOnLoad();
 });
