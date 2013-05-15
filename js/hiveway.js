@@ -57,7 +57,6 @@ function placeTheHiveway(){
 function placeFilterBox(){
 	var container = $("#hivewayContainer");
 	var filterContainer = $("<div id='filterContainer' class='hiveBlueBorder'></div>");
-	filterContainer.css({"top": container.offset().top});
 	filterContainer.appendTo(container);
 	$("<div class='hiveListHeader' style='display:block;position:relative;top:0;left:5%;'>Filter</div>").appendTo(filterContainer);
 	var filterOptions = ["Company", "Brand", "Searchword"];
@@ -77,7 +76,7 @@ function placeOfferBox(){
 	var offerContainer = $("<div id='offerContainer' class='hiveBlueBorder'></div>");
 	var filterContainer = $("#filterContainer");
 	offerContainer.appendTo(container);
-	offerContainer.css({"top": (filterContainer.offset().top+filterContainer.outerHeight()*1.1)});
+	offerContainer.css({"top": 340});
 	$("<div class='hiveListHeader' style='display:block;position:relative;left:5%;'>Offer</div>").appendTo(offerContainer);
 	
 	/*
@@ -90,7 +89,7 @@ function placeOfferBox(){
 	/*
 	CAROUSEL
 	*/
- 	var carouselDiv = $("<div id='jcarouselContainer' class='jcarousel'></div>")
+ 	var carouselDiv = $("<div id='jcarouselContainerOfferBox' class='jcarousel'></div>")
 	var carouselUL = $("<ul></ul>");
 	carouselUL.appendTo(carouselDiv);
 	for(i in tempImagesWithText){
@@ -105,7 +104,7 @@ function placeOfferBox(){
 	rightCarouselButton.appendTo(offerContainer);
 	leftCarouselButton.css({"top": carouselDiv.position().top+15, "left": 5});
 	rightCarouselButton.css({"top": carouselDiv.position().top+15, "right": 5});
-	var carousel = $('.jcarousel');
+	var carousel = $('#jcarouselContainerOfferBox');
 	leftCarouselButton.click(function(){
 		carousel.jcarousel('scroll', '-=1');
 	});
@@ -151,6 +150,11 @@ function addSmallerHexs(addedToBottom, serverStuff){
 	lastSmallHexTopPositions = topPos;
 }
 
+/**
+ * Adds a smal hex and gives it content
+ * @param {[type]} topPos Position measured from top
+ * @param {[type]} nr     0 is to the left, 1 is to the right
+ */
 function addSmallerHex(topPos, nr){
 	var container = $("#hivewayContainer");
 	var div = $("<div class='hivewaySmallHex' id='smallHex"+topPos+"_"+nr+"'></div>").appendTo(container);
@@ -158,16 +162,19 @@ function addSmallerHex(topPos, nr){
 	div.hover(function(){
 		var hoverDiv = $("<div class='hivewayOffersHover'></div>");
 		hoverDiv.appendTo(div);
-		if(nr==0){
-			hoverDiv.css({"background-image": "url(img/hiveway/hiveway_bubble_left.png)", "left": "-=133", "top": "+=13"}); //133 is bubble width
-		}
-		else{
-			hoverDiv.css({"background-image": "url(img/hiveway/hiveway_bubble_right.png)", "left": "+=124", "top": "+=13"}); //124 is small hex width
-		}
+		hoverDiv.ready(function(){
+			if(nr==0){
+				hoverDiv.css({"background-image": "url(img/hiveway/hiveway_bubble_left.png)", "left": "-=133"}); //133 is bubble width
+			}
+			else{
+				hoverDiv.css({"background-image": "url(img/hiveway/hiveway_bubble_right.png)", "left": "+=124"}); //124 is small hex width
+			}
+		});
+		appendContentToHoverDiv(hoverDiv);
 	}, function(event){
 		timer = setTimeout(function(){
 			div.find($(".hivewayOffersHover")).remove();
-		}, 200);
+		}, 100);
 	});
 	div.mouseover(function(){
 		clearTimeout(timer);
@@ -176,6 +183,42 @@ function addSmallerHex(topPos, nr){
 	/*if(addedToBottom){
 		div.css("display", "none");
 	}*/
+}
+
+/**
+ * Adding content to the small hex hover box
+ * @param  {[Ref]} container Reference to the hover box
+ */
+function appendContentToHoverDiv(container){
+	var tempImagesWithText = [["img/tempImages/gapLogo.png", "2.34"], ["img/tempImages/hmLogo.png", "1.24"], ["img/tempImages/levisLogo.png", "4.37"], ["img/tempImages/poloLogo.png", "0.94"], ["img/tempImages/nikeLogo.png", "1.67"], ["img/tempImages/microsoftLogo.png", "2.03"]];
+	/*
+	CAROUSEL
+	*/
+ 	var carouselDiv = $("<div id='jcarouselContainerHoverBox' class='jcarousel'></div>")
+	var carouselUL = $("<ul></ul>");
+	carouselUL.appendTo(carouselDiv);
+	for(i in tempImagesWithText){
+		$("<li><img src='"+tempImagesWithText[i][0]+"' width='40' height='40' alt='' /><br /><center>"+tempImagesWithText[i][1]+"</center></li>").appendTo(carouselUL);
+	}
+	carouselDiv.appendTo(container);
+	carouselDiv.jcarousel({
+	});
+	var leftCarouselButton = $("<div class='carouselButton'><</div>");
+	var rightCarouselButton = $("<div class='carouselButton'>></div>");
+	leftCarouselButton.appendTo(container);
+	rightCarouselButton.appendTo(container);
+	leftCarouselButton.css({"top": carouselDiv.position().top+15, "left": -1});
+	rightCarouselButton.css({"top": carouselDiv.position().top+15, "right": -1});
+	var carousel = $('#jcarouselContainerHoverBox');
+	leftCarouselButton.click(function(){
+		carousel.jcarousel('scroll', '-=1');
+	});
+	rightCarouselButton.click(function(){
+		carousel.jcarousel('scroll', '+=1');
+	});
+	/*
+	END CAROUSEL
+	 */
 }
 
 //Adds more boxes to the bottom of the hiveway
