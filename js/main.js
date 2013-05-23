@@ -30,7 +30,7 @@ function stuffOnLoad(){
 	setMessageIcon();
 	alignStuff();
 	placeMenuBar();
-	profileImage(4);
+	profileImage();
 	profileName("Daniel Almquist", "Stockholm");
 	profileCompanyBoxes(8);
 	placeSearchDiv();
@@ -135,7 +135,9 @@ function placeMenuBar(){
 	}
 }
 
-//Places the extra divs for tools
+/* 
+Places the extra divs for tools
+*/
 function placeMenubarButtonIconExtraDivs(item){
 	for(var i = 0; i < 2; i++){
 		var div = $('<div class="menubarButtonIconExtraDiv"></div>').appendTo($(item));
@@ -147,9 +149,12 @@ function placeMenubarButtonIconExtraDivs(item){
 	}
 }
 
-//Places the profile image, and the images of the friends
-function profileImage(friends){
-	amountOfFriends = friends;
+/*
+Places the profile image, and the images of the friends
+ */
+function profileImage(){
+	adapter_getProfileInfo(); //TODO
+	amountOfFriends = 4;
 	var profileImg = $("#profileImage");
 	//profileImg.css("background-image", "url('img/profile box/pic hexagon user.png')");
 	profileImg.css("background-image", "url('img/profile box/tempProfImage.png')");
@@ -165,6 +170,9 @@ function profileImage(friends){
 	}
 }
 
+/**
+ * Sets the profile name and location
+ */
 function profileName(name, location){
 	var nameBox = $("#profileNameDiv");
 	var profileImg = $("#profileImage");
@@ -173,7 +181,10 @@ function profileName(name, location){
 	$("#profileLocationInDiv").append(location).show().css({"position" : "absolute", "left" : "+=2"}).addClass("hiveOrangeText");
 }
 
-//Sets the new amount of friends, shall later take amount of friends as in argument
+/*
+Sets the new amount of friends, shall later take amount of friends as in argument
+TEMPORARY!!
+ */
 function setNewFriends(){
 	for(var i = 0; i < amountOfFriends; i++){
 		$("#friendProfileImg"+i).remove();
@@ -189,6 +200,7 @@ THIS NEEDS SERVER STUFF
 need images
 */
 function profileCompanyBoxes(amount){ //How to get the images?
+	adapter_retrievUserFavoriteBrands();
 	var tempComppanyImages = ["poloLogo.png", "starbucksLogo.png", "hmLogo.png", "levisLogo.png", "lacostLogo.png", "gapLogo.png", "microsoftLogo.png", "nikeLogo.png"];
 	var tempCompanyNames = ["Polo", "Starbucks", "H&M", "Levi's", "Lacost", "GAP", "Microsoft", "Nike"];
 	var startTopPos = $("#profileNameDiv").position().top + $("#profileNameDiv").outerHeight(true)+20;
@@ -362,6 +374,7 @@ function showUserConversationsInBuzzBox(){
 	
 	Identifie it with a conversation id?
 	*/
+	adapter_getUserConversations();
 	var tempConversations = [["Me", "Daniel Almquist"], ["Me", "Austin Helm"], ["Me", "Essi Huotari", "Nishant Chemburkar"]];
 	for(var i = 0; i < tempConversations.length*6; i++){
 		addAConversationToBuzzBox(tempConversations[Math.floor(Math.random()*3)], i, 1337);
@@ -402,6 +415,7 @@ function showConversationInBuzzBox(int_conversationId, placeOnTop, names){
 	Get conversation from server
 
 	*/
+	adapter_getUserConversation(conversationID);
 	tempOthersNames = "Other:";
 	var chatNames = $("<div id='chatConversationNames' class='buzzBoxContent'>" + names + "</div>").appendTo(buzzBoxDiv);
 
@@ -435,6 +449,7 @@ function sendMessage(){
 	/*
 	SEND MESSAGE TO SERVER AND PUSH TO OTHERS
 	*/
+	adapter_sendChatMessage();
 
 	addChatMessage(null ,message, false);
 }
@@ -446,7 +461,7 @@ I will leave this rather empty for now
 function retrieveMessageFromOther(){
 
 	/*GET MESSAGE*/
-
+	adapter_retrieveNewChatMessage();
 	var message = new chatMessageObject("TEXT", "2013-04-06 20:00", false); //The false at the end is for showing that the message is sent from some one else
 
 	addChatMessage(null ,message, false); //The false here is for adding the message at the bottom of the chat window, true will be used when old messages are loaded from the server and placed on top
@@ -538,6 +553,8 @@ function sendComposedMessage(){
 	/*
 		SEND MESSAGE TO SERVER
 	*/
+
+	adapter_sendNewComposedMessage(recipient, messageText);
 }
 
 /*
