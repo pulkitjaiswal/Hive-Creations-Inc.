@@ -17,11 +17,11 @@
 	right: 70px;
 	top: 0px;
 	width: 180px;
-	height: 220px;
+	height: 358px;
 	background-color: white;
 	border-radius: 10px;
 }
-.filterInputContainer{
+.hivewayInputContainer{
 	position: relative;
 	width: 95%;
 	left: 5%;
@@ -29,13 +29,13 @@
 	clear: both;
 	display: inline-block;
 }
-.filterInputContainer span{
+.hivewayInputContainer span{
 	font-size: 12px;
 	margin: 2px;
 	color: gray;
 	display: block;
 }
-.filterInputContainer input{
+.hivewayInputContainer input{
 	font-size: 12px;
 	background-image: url(../img/hiveway/searchfield.png);
 	width: 145px;
@@ -100,7 +100,21 @@ jCarousel
 }
 .carouselButton{
 	position: absolute;
-	width: 20px;
-	height: 20px;
+	width: 7px;
+	height: 14px;
 	z-index: 1;
+}
+.leftBlueCarouselButton{
+	background-image: url(../img/hiveway/left_blue_arrow.png);
+}
+.rightBlueCarouselButton{
+	background-image: url(../img/hiveway/right_blue_arrow.png);
+}
+.leftWhiteCarouselButton{
+	background-image: url(../img/hiveway/left_white_arrow.png);
+	background-repeat: no-repeat;
+}
+.rightWhiteCarouselButton{
+	background-image: url(../img/hiveway/right_white_arrow.png);
+	background-repeat: no-repeat;
 }

@@ -18,7 +18,6 @@ preLoad();
 function onHivewayLoad(){
 	placeTheHiveway();
 	placeFilterBox();
-	placeOfferBox();
 }
 
 /*
@@ -61,7 +60,7 @@ function placeFilterBox(){
 	$("<div class='hiveListHeader' style='display:block;position:relative;top:0;left:5%;'>Filter</div>").appendTo(filterContainer);
 	var filterOptions = ["Company", "Brand", "Searchword"];
 	for(i in filterOptions){
-		var inputContainer = $("<div class='filterInputContainer'></div>");
+		var inputContainer = $("<div class='hivewayInputContainer'></div>");
 		$("<span>"+filterOptions[i]+"</span>").appendTo(inputContainer);
 		$("<input id='"+filterOptions[i]+"FilterInput'>").appendTo(inputContainer);
 		inputContainer.appendTo(filterContainer);
@@ -71,14 +70,25 @@ function placeFilterBox(){
 /**
  * Places the offer box and initializes it
  */
-function placeOfferBox(){
+function placeOfferBox(name, item){
+	var offerContainer = $("#offerContainer");
+	if(offerContainer.lenght!=0){
+		offerContainer.remove();
+	}
 	var container = $("#hivewayContainer");
-	var offerContainer = $("<div id='offerContainer' class='hiveBlueBorder'></div>");
+	offerContainer = $("<div id='offerContainer' class='hiveBlueBorder'></div>");
 	var filterContainer = $("#filterContainer");
 	offerContainer.appendTo(container);
 	offerContainer.css({"top": 340});
-	$("<div class='hiveListHeader' style='display:block;position:relative;left:5%;'>Offer</div>").appendTo(offerContainer);
-	
+	$("<div class='hiveListHeader' style='display:block;position:relative;left:5%;'>Offer to</div>").appendTo(offerContainer);
+	$("<div id='offerBoxName' style='display:block;position:relative;left:5%;color:gray;font-weight:bold;'>"+name+"</div>").appendTo(offerContainer);
+	$("<div class='hiveListHeader' style='display:block;position:relative;left:5%;margin-top:8px;'>Get</div>").appendTo(offerContainer);
+	$("<div style='padding:5px;'><img src='"+item.url+"' alt='"+item.name+"'></img><div style='position:relative;display:inline;color:gray;font-weight:bold;top:-10px;left:8px;'>"+item.name+"</div></div>").appendTo(offerContainer);
+	var inputContainer = $("<div class='hivewayInputContainer'></div>");
+	$("<span>Desired amount</span>").appendTo(inputContainer);
+	$("<input id='desiredAmountOfferInput'>").appendTo(inputContainer);
+	inputContainer.appendTo(offerContainer);
+
 	/*
 	TODO SERVER GET OF POINTS AND IMAGES
 	------------------------------------
@@ -98,12 +108,12 @@ function placeOfferBox(){
 	carouselDiv.appendTo(offerContainer);
 	carouselDiv.jcarousel({
 	});
-	var leftCarouselButton = $("<div id='leftCarouselButton' class='carouselButton'><</div>");
-	var rightCarouselButton = $("<div id='rightCarouselButton' class='carouselButton'>></div>");
+	var leftCarouselButton = $("<div id='leftCarouselButton' class='carouselButton leftBlueCarouselButton'></div>");
+	var rightCarouselButton = $("<div id='rightCarouselButton' class='carouselButton rightBlueCarouselButton'></div>");
 	leftCarouselButton.appendTo(offerContainer);
 	rightCarouselButton.appendTo(offerContainer);
-	leftCarouselButton.css({"top": carouselDiv.position().top+15, "left": 5});
-	rightCarouselButton.css({"top": carouselDiv.position().top+15, "right": 5});
+	leftCarouselButton.css({"top": carouselDiv.position().top+20, "left": 5});
+	rightCarouselButton.css({"top": carouselDiv.position().top+20, "right": 5});
 	var carousel = $('#jcarouselContainerOfferBox');
 	leftCarouselButton.click(function(){
 		carousel.jcarousel('scroll', '-=1');
@@ -117,7 +127,7 @@ function placeOfferBox(){
 	
 	var offerOptions = ["To", "Enter amount"];
 	for(i in offerOptions){
-		var inputContainer = $("<div class='filterInputContainer'></div>");
+		var inputContainer = $("<div class='hivewayInputContainer'></div>");
 		$("<span>"+offerOptions[i]+"</span>").appendTo(inputContainer);
 		$("<input id='"+offerOptions[i]+"OfferInput'>").appendTo(inputContainer);
 		inputContainer.appendTo(offerContainer);
@@ -190,7 +200,7 @@ function addSmallerHex(topPos, nr){
  * @param  {[Ref]} container Reference to the hover box
  */
 function appendContentToHoverDiv(container){
-	var tempImagesWithText = [["img/tempImages/gapLogo.png", "2.34"], ["img/tempImages/hmLogo.png", "1.24"], ["img/tempImages/levisLogo.png", "4.37"], ["img/tempImages/poloLogo.png", "0.94"], ["img/tempImages/nikeLogo.png", "1.67"], ["img/tempImages/microsoftLogo.png", "2.03"]];
+	var tempImagesWithText = [["img/tempImages/gapLogo.png", "2.34", "Gap"], ["img/tempImages/hmLogo.png", "1.24", "H&M"], ["img/tempImages/levisLogo.png", "4.37", "Levis"], ["img/tempImages/poloLogo.png", "0.94", "Polo"], ["img/tempImages/nikeLogo.png", "1.67", "Nike"], ["img/tempImages/microsoftLogo.png", "2.03", "Microsoft"]];
 	/*
 	CAROUSEL
 	*/
@@ -198,17 +208,22 @@ function appendContentToHoverDiv(container){
 	var carouselUL = $("<ul></ul>");
 	carouselUL.appendTo(carouselDiv);
 	for(i in tempImagesWithText){
-		$("<li><img src='"+tempImagesWithText[i][0]+"' width='40' height='40' alt='' /><br /><center>"+tempImagesWithText[i][1]+"</center></li>").appendTo(carouselUL);
+		var img = $("<li><img id='"+tempImagesWithText[i][2]+"Image' src='"+tempImagesWithText[i][0]+"' width='40' height='40' alt='' /><br /><center>"+tempImagesWithText[i][1]+"</center></li>").appendTo(carouselUL);
+		img.data("numberInList", i)
+		img.click(function(event){
+			var number = $(this).data("numberInList");
+			placeOfferBox("Daniel Almquist", {url: tempImagesWithText[number][0], name: tempImagesWithText[number][2]});
+		});
 	}
 	carouselDiv.appendTo(container);
 	carouselDiv.jcarousel({
 	});
-	var leftCarouselButton = $("<div class='carouselButton'><</div>");
-	var rightCarouselButton = $("<div class='carouselButton'>></div>");
+	var leftCarouselButton = $("<div class='carouselButton leftWhiteCarouselButton'></div>");
+	var rightCarouselButton = $("<div class='carouselButton rightWhiteCarouselButton'></div>");
 	leftCarouselButton.appendTo(container);
 	rightCarouselButton.appendTo(container);
-	leftCarouselButton.css({"top": carouselDiv.position().top+15, "left": -1});
-	rightCarouselButton.css({"top": carouselDiv.position().top+15, "right": -1});
+	leftCarouselButton.css({"top": carouselDiv.position().top+15, "left": 5});
+	rightCarouselButton.css({"top": carouselDiv.position().top+15, "right": 5});
 	var carousel = $('#jcarouselContainerHoverBox');
 	leftCarouselButton.click(function(){
 		carousel.jcarousel('scroll', '-=1');
