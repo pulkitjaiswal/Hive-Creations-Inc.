@@ -94,7 +94,7 @@ function placeOfferBox(name, item){
 	------------------------------------
 	 */
 	
-	var tempImagesWithText = [["img/tempImages/gapLogo.png", "2.34"], ["img/tempImages/hmLogo.png", "1.24"], ["img/tempImages/levisLogo.png", "4.37"], ["img/tempImages/poloLogo.png", "0.94"], ["img/tempImages/nikeLogo.png", "1.67"], ["img/tempImages/microsoftLogo.png", "2.03"]];
+	var tempImagesWithText = [["img/tempImages/gapLogo.png", "2.34", "Gap"], ["img/tempImages/hmLogo.png", "1.24", "H&M"], ["img/tempImages/levisLogo.png", "4.37", "Levis"], ["img/tempImages/poloLogo.png", "0.94", "Polo"], ["img/tempImages/nikeLogo.png", "1.67", "Nike"], ["img/tempImages/microsoftLogo.png", "2.03", "Microsoft"]];
 	
 	/*
 	CAROUSEL
@@ -103,7 +103,16 @@ function placeOfferBox(name, item){
 	var carouselUL = $("<ul></ul>");
 	carouselUL.appendTo(carouselDiv);
 	for(i in tempImagesWithText){
-		$("<li><img src='"+tempImagesWithText[i][0]+"' width='40' height='40' alt='' /><br /><center>"+tempImagesWithText[i][1]+"</center></li>").appendTo(carouselUL);
+		var img = $("<li><img src='"+tempImagesWithText[i][0]+"' width='40' height='40' alt='' /><br /><center>"+tempImagesWithText[i][1]+"</center></li>").appendTo(carouselUL);
+		img.data("numberInList", i);
+		img.click(function(){
+			var element = $(this);
+			$("#jcarouselContainerOfferBox>ul>li").removeClass("selectedCarouselImage hiveBlueBorder");
+			var number = element.data("numberInList");
+			$("#selectedNameToOffer").html(tempImagesWithText[number][2]);
+			element.addClass("selectedCarouselImage hiveBlueBorder");
+
+		});
 	}
 	carouselDiv.appendTo(offerContainer);
 	carouselDiv.jcarousel({
@@ -124,15 +133,13 @@ function placeOfferBox(name, item){
 	/*
 	END CAROUSEL
 	 */
-	
-	var offerOptions = ["To", "Enter amount"];
-	for(i in offerOptions){
-		var inputContainer = $("<div class='hivewayInputContainer'></div>");
-		$("<span>"+offerOptions[i]+"</span>").appendTo(inputContainer);
-		$("<input id='"+offerOptions[i]+"OfferInput'>").appendTo(inputContainer);
-		inputContainer.appendTo(offerContainer);
-	}
-
+	 $("<div class='hiveListHeader' id='selectedNameToOffer' style='display:block;position:relative;left:5%;color:gray;'></div>").appendTo(offerContainer);
+	var inputContainer = $("<div class='hivewayInputContainer'></div>");
+	$("<span>Enter amount</span>").appendTo(inputContainer);
+	$("<input id='amountOfferInput'>").appendTo(inputContainer);
+	inputContainer.appendTo(offerContainer);
+	var offerButton = $("<div id='hivewayOfferBoxOfferButton' class='hiveOrangeText'>Offer</div>");
+	offerButton.appendTo(offerContainer);
 }
 
 /*
