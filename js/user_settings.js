@@ -1,13 +1,14 @@
 //Places the profile image, and the images of the friends
 //amountOfFriends taken from global variable declared in main.js
-$("#hiveSearchResultBox").keyup(function(){searchForHiveInput();});
+
 var previouslyAddedHeightToHiveResultBox = 0;
 
 function settingsOnLoad(){
 profileImageSettings();
 positionUserSettingsText();
 placeSettingsThemes(["img/settings/background_image_lineup.png","img/settings/background_image_lineup.png","img/settings/background_image_lineup.png","img/settings/background_image_lineup.png"]);
-positionHiveSearchResult();
+//positionHiveSearchResult();
+setButtonFunctionality();
 }
 
 function profileImageSettings(){
@@ -72,20 +73,87 @@ function placeSettingsThemes(themesArray){
 	rightBottomText.css({"position": "absolute", "top": previousPos+40});
 }
 
-function positionHiveSearchResult(){
-	var div = $("#hiveSearchResultBox");
+/*function positionHiveSearchResult(){
+	var div = $("#hiveSettingsSideBox");
 	div.css({"left": $("#mainInnerWindow").outerWidth(true)+10, "top": 20});
-	var topBackgroundImage = $("<div id='hiveSearchResultBoxTop'></div>").appendTo(div);
-	var bottomBackgroundImage = $("<div id='hiveSearchResultBoxBottom'></div>").appendTo(div);
-	var middleBackgroundImage = $("<div id='hiveSearchResultBoxMiddle'></div>").appendTo(div);
+	var topBackgroundImage = $("<div id='hiveSettingsSideBoxTop'></div>").appendTo(div);
+	var bottomBackgroundImage = $("<div id='hiveSettingsSideBoxBottom'></div>").appendTo(div);
+	var middleBackgroundImage = $("<div id='hiveSettingsSideBoxMiddle'></div>").appendTo(div);
 	middleBackgroundImage.css("top", topBackgroundImage.height());
 	bottomBackgroundImage.css("top", (middleBackgroundImage.height()+middleBackgroundImage.position().top));
-}
+}*/
 
 function searchForHiveInput(){
 	var searchInput = $("#inputSearchHive").val();
 	var results = searchForHive(searchInput);
 	updateHiveResultList(results);
+}
+
+function setButtonFunctionality(){
+	$("#changeProfilePicButton").click(changeProfilePicClicked);
+	//$("#createHiveButton").click(createHiveClicked);
+	//$("#editHiveButton").click(editHiveClicked);
+	$("#requestToHiveButton").click(requestToHiveClicked);
+	//$("#addBrandButton").click(addBrandClicked);
+}
+
+function changeProfilePicClicked(){
+	addSideBoxIfNonExisting();
+	$(".settingSideBoxContent").remove();
+	var div = $("#hiveSettingsSideBox");
+	var container = $("<div id='hiveSettingsSideBoxContentContainer' class='settingSideBoxContent hiveOrangeText'></div>");
+	container.appendTo(div);
+	$('<div class="hiveHeader">Edit profile picture</div>').appendTo(container);
+	var browseButton = $("<div id='browseImageButton' class='hiveBracketTextButton'>[Browse]</div>");
+	browseButton.appendTo(container);
+	var fakeInput = $("<input type='file' style='display:none;'></input>");
+	fakeInput.appendTo(container);
+	var pictureFileField = $('<input id="userPictureFileName" placeholder="Browse for image.." type="text"></input>');
+	pictureFileField.appendTo(container);
+	fakeInput.change(function(){
+		pictureFileField.val((fakeInput.val()));
+	});
+	browseButton.click(function(){
+		fakeInput.trigger("click");
+		return false;
+	});
+	pictureFileField.click(function(){
+		fakeInput.trigger("click");
+		return false;
+	});
+
+	var userImage = $("<img id='newUserImage' src='img/settings/new_user_pic_placeholder.png'></img>");
+	userImage.appendTo(container);
+
+	updateSideBoxSize(container);
+}
+
+function requestToHiveClicked(){
+	addSideBoxIfNonExisting();
+	$(".settingSideBoxContent").remove();
+	var div = $("#hiveSettingsSideBox");
+	var searchBox = $('<input id="inputSearchHive" class="settingSideBoxContent" placeholder="Search for hive" type="text"></input>');
+	searchBox.appendTo(div);
+	var table = $('<table id="hiveResultTable" class="settingSideBoxContent"><tbody></tbody></table>');
+	table.appendTo(div);
+	searchBox.keyup(function(){searchForHiveInput();});
+}
+
+function addSideBoxIfNonExisting(){
+	console.log("!11");
+	var div = $("#hiveSettingsSideBox");
+	if(div.length!=0){
+		return;
+	}
+	console.log("!");
+	var div = $("<div id='hiveSettingsSideBox'></div>");
+	div.appendTo($("#profileBoxSettings"));
+	div.css({"left": $("#mainInnerWindow").outerWidth(true)+10, "top": 20});
+	var topBackgroundImage = $("<div id='hiveSettingsSideBoxTop'></div>").appendTo(div);
+	var bottomBackgroundImage = $("<div id='hiveSettingsSideBoxBottom'></div>").appendTo(div);
+	var middleBackgroundImage = $("<div id='hiveSettingsSideBoxMiddle'></div>").appendTo(div);
+	middleBackgroundImage.css("top", topBackgroundImage.height());
+	bottomBackgroundImage.css("top", (middleBackgroundImage.height()+middleBackgroundImage.position().top));
 }
 
 /*
@@ -137,15 +205,18 @@ function updateHiveResultList(results){
         trow.addClass("hiveResultTableEntry");
         trow.html(hive+"<br />");
         trow.appendTo(tbody);
+        updateSideBoxSize(tbody);
     } 
-    var newTableHeight = tbody.height();
-    var sizeToAdd = newTableHeight-previouslyAddedHeightToHiveResultBox;
-    var middleBackgroundImage = $("#hiveSearchResultBoxMiddle");
+}
+
+function updateSideBoxSize(elementInBox){
+	var newTableHeight = elementInBox.height();
+    var sizeToAdd = newTableHeight-previouslyAddedHeightToHiveResultBox;//-$("#hiveSettingsSideBoxTop").height();
+    var middleBackgroundImage = $("#hiveSettingsSideBoxMiddle");
     middleBackgroundImage.css("height", "+=" +sizeToAdd);
     previouslyAddedHeightToHiveResultBox = newTableHeight;
-    var bottomBackgroundImage = $("#hiveSearchResultBoxBottom");
+    var bottomBackgroundImage = $("#hiveSettingsSideBoxBottom");
     bottomBackgroundImage.css("top", (middleBackgroundImage.height()+middleBackgroundImage.position().top));
-
 }
 function clearResultTable(){
 	var tbody = $("#hiveResultTable");

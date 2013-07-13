@@ -228,10 +228,17 @@ img {
 	color: rgb(255, 153, 51);
 	font-size: 13px;
 }
+.hiveHeader{
+	color: rgb(255, 153, 51);
+	font-weight: bold;
+	font-size: 15px;
+	margin: 10px 0px;
+}
 .hiveListHeader{
 	color: rgb(255, 153, 51);
 	font-weight: bold;
 	font-size: 18px;
+	margin: 10px 0px;
 }
 .hiveList{
 	margin-left: 0.5em;
@@ -243,7 +250,7 @@ img {
 }
 .hiveBracketTextButton{
 	font-weight: bold;
-	font-size: 15px;
+	font-size: 13px;
 }
 .buzzBoxButton{
 	width: 22px;

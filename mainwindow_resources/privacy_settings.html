@@ -5,26 +5,10 @@
 	<script src="js/privacy_settings.js"></script>
 	</head>
 	<body>
-	<div id="contentList">
-		<div class="settingsListItem" id="creditCardInfo">
-			<div class="settingsListItemImage"> </div>
-			<p>Edit credit card info</p>
-		</div>
-		<div class="settingsListItem" id="billingAddress">
-			<div class="settingsListItemImage"> </div>
-			<p>Edit billing address</p>
-		</div>
-		<div class="settingsListItem" id="shippingAddress">
-			<div class="settingsListItemImage"> </div>
-			<p>Edit shipping address</p>
-		</div>
-		<div class="settingsListItem" id="deleteAccount">
-			<div class="settingsListItemImage"> </div>
-			<p>Delete Account</p>
-		</div>
-		<input type="button" id="saveChangesButton" value="Save"/>
-	</div>
-	<div id="inputDiv"></div>
+	<div id="contentList" class="hiveOrangeText">
+		<span class="hiveBracketTextButton">[Add]</span> card
+		<div class="hiveListHeader" style="margin-top:20px;">Current cards</div>
+		<div id="cardList"></div>
 	</div>
 	</body>
 </html>

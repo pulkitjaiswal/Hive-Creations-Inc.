@@ -133,7 +133,7 @@ function placeOfferBox(name, item){
 	/*
 	END CAROUSEL
 	 */
-	 $("<div class='hiveListHeader' id='selectedNameToOffer' style='display:block;position:relative;left:5%;color:gray;'></div>").appendTo(offerContainer);
+	 $("<div class='hiveListHeader' id='selectedNameToOffer' style='display:block;position:relative;left:5%;color:gray;'><br/></div>").appendTo(offerContainer);
 	var inputContainer = $("<div class='hivewayInputContainer'></div>");
 	$("<span>Enter amount</span>").appendTo(inputContainer);
 	$("<input id='amountOfferInput'>").appendTo(inputContainer);

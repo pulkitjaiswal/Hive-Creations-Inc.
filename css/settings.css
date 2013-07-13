@@ -33,14 +33,14 @@
 	clear: both;
 	position: absolute;
 }
-#hiveSearchResultBox{
+#hiveSettingsSideBox{
 	width: 237px;
 	height: 65px;
 	overflow: visible;
 	position: absolute;
 	background-color: transparent;
 }
-#hiveSearchResultBoxTop{
+#hiveSettingsSideBoxTop{
 	background-image: url(../img/settings/hive_result_box_top.png);
 	background-repeat: no-repeat;
 	width: 237px;
@@ -48,7 +48,7 @@
 	position: absolute;
 	float: left;
 }
-#hiveSearchResultBoxBottom{
+#hiveSettingsSideBoxBottom{
 	background-image: url(../img/settings/hive_result_box_bottom.png);
 	background-repeat: no-repeat;
 	width: 237px;
@@ -56,7 +56,7 @@
 	position: absolute;
 	float: left;
 }
-#hiveSearchResultBoxMiddle{
+#hiveSettingsSideBoxMiddle{
 	background-image: url(../img/settings/hive_result_box_middle.png);
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
@@ -64,6 +64,14 @@
 	height: 24px;
 	position: absolute;
 	float: left;
+}
+#hiveSettingsSideBoxContentContainer{
+	position: absolute;
+	left: 35px;
+	top: 10px;
+	height: auto;
+	width: 200px;
+	z-index: 1;
 }
 #inputSearchHive{
 	background-image: url(../img/settings/search_field.png);
@@ -81,6 +89,19 @@
 	left: 40px;
 	top: 40px;
 	z-index: 1;
+}
+#userPictureFileName{
+	background-image: url(../img/settings/search_field.png);
+	border: none;
+	width: 181px;
+	height: 15px;
+	padding-left: 2px;
+	margin: 5px 0px;
+}
+#newUserImage{
+	width: 119px;
+	height: 133px;
+	margin: 10px 0px 0px 32px;
 }
 .settingsListItem{
 	height: 32px;
