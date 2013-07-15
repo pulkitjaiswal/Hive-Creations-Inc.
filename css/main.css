@@ -288,3 +288,13 @@ img {
 	display: block;
 	top: 15px;
 }
+.loaderDiv{
+	width: 32px;
+	height: 32px;
+	position: relative;
+	clear: none;
+	margin: 0 auto;
+	z-index: 10000;
+	background: url(../img/ajax-loader.gif) no-repeat center center;
+	display: none;
+}

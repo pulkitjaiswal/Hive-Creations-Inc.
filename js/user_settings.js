@@ -32,7 +32,6 @@ function positionUserSettingsText(){
 	var textDiv = $("#profileSettingsText");
 	var textDivWidth = textDiv.width();
 	var innerWindow = $("#mainInnerWindow");
-	console.log(innerWindow.width());
 	textDiv.css({"left": innerWindow.width()+parseInt(innerWindow.css("padding-left"),10)-textDivWidth});
 }
 
@@ -112,6 +111,7 @@ function changeProfilePicClicked(){
 	pictureFileField.appendTo(container);
 	fakeInput.change(function(){
 		pictureFileField.val((fakeInput.val()));
+		$(".loaderDiv").show();
 	});
 	browseButton.click(function(){
 		fakeInput.trigger("click");
@@ -122,9 +122,14 @@ function changeProfilePicClicked(){
 		return false;
 	});
 
-	var userImage = $("<img id='newUserImage' src='img/settings/new_user_pic_placeholder.png'></img>");
+	var userImage = $("<div id='newUserImageDiv'></div>");
+	$("<img id='newUserImageImg' src='img/settings/new_user_pic_placeholder.png'></img>").appendTo(userImage);
 	userImage.appendTo(container);
+	$("<div>Click and drag the picture to adjust</div>").appendTo(container);
+	$("<div class='loaderDiv'></div>").appendTo(userImage).css({"top": -80, "backgroundImage": "url(img/settings/profile-image-ajax-loader.gif)"});
 
+	$("<div style='margin-top:20px;width:auto;'><span id='saveProfileImageButton' class='hiveBracketTextButton'>[Save]</span></div>").appendTo(container);
+	$("#saveProfileImageButton").click(function(){alert("Save The Image!")});
 	updateSideBoxSize(container);
 }
 
@@ -137,10 +142,10 @@ function requestToHiveClicked(){
 	var table = $('<table id="hiveResultTable" class="settingSideBoxContent"><tbody></tbody></table>');
 	table.appendTo(div);
 	searchBox.keyup(function(){searchForHiveInput();});
+	updateSideBoxSize(table);
 }
 
 function addSideBoxIfNonExisting(){
-	console.log("!11");
 	var div = $("#hiveSettingsSideBox");
 	if(div.length!=0){
 		return;
@@ -190,7 +195,6 @@ function hiveObject(hiveName,amountOfMembers,members)
 
 //Takes an Array of hiveObjects
 function updateHiveResultList(results){
-	clearResultTable();
 	$(".hiveResultTableEntry").remove();
 	var tbody = $("#hiveResultTable");
     if (tbody == null){
@@ -205,21 +209,24 @@ function updateHiveResultList(results){
         trow.addClass("hiveResultTableEntry");
         trow.html(hive+"<br />");
         trow.appendTo(tbody);
-        updateSideBoxSize(tbody);
     } 
+    updateSideBoxSize(tbody);
 }
 
 function updateSideBoxSize(elementInBox){
-	var newTableHeight = elementInBox.height();
-    var sizeToAdd = newTableHeight-previouslyAddedHeightToHiveResultBox;//-$("#hiveSettingsSideBoxTop").height();
+	if(elementInBox){
+		var newTableHeight = elementInBox.height();
+		var sizeToAdd = newTableHeight-previouslyAddedHeightToHiveResultBox;
+	}
+	else{
+		var newTableHeight = $("#hiveSettingsSideBoxContentContainer").height();
+    var sizeToAdd = newTableHeight-previouslyAddedHeightToHiveResultBox-$("#hiveSettingsSideBoxTop").height()-$("#hiveSettingsSideBoxBottom").height();
+	}
     var middleBackgroundImage = $("#hiveSettingsSideBoxMiddle");
     middleBackgroundImage.css("height", "+=" +sizeToAdd);
     previouslyAddedHeightToHiveResultBox = newTableHeight;
     var bottomBackgroundImage = $("#hiveSettingsSideBoxBottom");
     bottomBackgroundImage.css("top", (middleBackgroundImage.height()+middleBackgroundImage.position().top));
-}
-function clearResultTable(){
-	var tbody = $("#hiveResultTable");
 }
 
 $(document).ready(function(){

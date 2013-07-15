@@ -98,10 +98,15 @@
 	padding-left: 2px;
 	margin: 5px 0px;
 }
-#newUserImage{
+#newUserImageDiv{
 	width: 119px;
 	height: 133px;
 	margin: 10px 0px 0px 32px;
+}
+#newUserImageImg{
+	width: 119px;
+	height: 133px;
+	margin: 0 auto;
 }
 .settingsListItem{
 	height: 32px;
