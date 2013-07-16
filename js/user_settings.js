@@ -91,15 +91,13 @@ function searchForHiveInput(){
 function setButtonFunctionality(){
 	$("#changeProfilePicButton").click(changeProfilePicClicked);
 	//$("#createHiveButton").click(createHiveClicked);
-	//$("#editHiveButton").click(editHiveClicked);
+	$("#editHiveButton").click(editHiveClicked);
 	$("#requestToHiveButton").click(requestToHiveClicked);
 	//$("#addBrandButton").click(addBrandClicked);
 }
 
 function changeProfilePicClicked(){
-	addSideBoxIfNonExisting();
-	$(".settingSideBoxContent").remove();
-	var div = $("#hiveSettingsSideBox");
+	var div = getCleanSideBox();
 	var container = $("<div id='hiveSettingsSideBoxContentContainer' class='settingSideBoxContent hiveOrangeText'></div>");
 	container.appendTo(div);
 	$('<div class="hiveHeader">Edit profile picture</div>').appendTo(container);
@@ -122,6 +120,10 @@ function changeProfilePicClicked(){
 		return false;
 	});
 
+	/*
+	GET PROFILE PIC
+
+	 */
 	var userImage = $("<div id='newUserImageDiv'></div>");
 	$("<img id='newUserImageImg' src='img/settings/new_user_pic_placeholder.png'></img>").appendTo(userImage);
 	userImage.appendTo(container);
@@ -133,16 +135,39 @@ function changeProfilePicClicked(){
 	updateSideBoxSize(container);
 }
 
+function editHiveClicked(){
+	var div = getCleanSideBox();
+	var container = $("<div id='hiveSettingsSideBoxContentContainer' class='settingSideBoxContent hiveOrangeText'></div>");
+	container.appendTo(div);
+	$('<div class="hiveHeader">Edit your hive</div>').appendTo(container);
+	/*
+	GET HIVE INFO
+
+	 */
+	var editHiveContainer = $("<div id='editHiveContainer'></div>");
+	editHiveContainer.appendTo(container);
+	var temp = new hiveObject("beez", 3, ["Daniel1", "Daniel2", "Daniel1337"]);
+	$("<div class='hiveResultHiveName'>"+ temp.hiveName +"</div>").appendTo(editHiveContainer);
+	for(i=0; i<temp.amountOfMembers; i++){
+		$("<div class='editHivePersonNames'>"+ temp.members[i].firstName + " " + temp.members[i].lastName  +"</div>").appendTo(editHiveContainer);
+	}
+    updateSideBoxSize(container);
+}
+
 function requestToHiveClicked(){
-	addSideBoxIfNonExisting();
-	$(".settingSideBoxContent").remove();
-	var div = $("#hiveSettingsSideBox");
+	var div = getCleanSideBox();
 	var searchBox = $('<input id="inputSearchHive" class="settingSideBoxContent" placeholder="Search for hive" type="text"></input>');
 	searchBox.appendTo(div);
 	var table = $('<table id="hiveResultTable" class="settingSideBoxContent"><tbody></tbody></table>');
 	table.appendTo(div);
 	searchBox.keyup(function(){searchForHiveInput();});
 	updateSideBoxSize(table);
+}
+
+function getCleanSideBox(){
+	addSideBoxIfNonExisting();
+	$(".settingSideBoxContent").remove();
+	return $("#hiveSettingsSideBox");
 }
 
 function addSideBoxIfNonExisting(){
@@ -202,7 +227,7 @@ function updateHiveResultList(results){
     }
 	for (var r = 0; r < results.length; r++) {
         var trow = $("<tr>");
-        var hive = "<span class = 'hiveResultTableHiveName hiveListHeader'>" + results[r].hiveName + "</span>";
+        var hive = "<span class = 'hiveOrangeText hiveResultHiveName'>" + results[r].hiveName + "</span>";
         for(var i = 0; i < results[r].amountOfMembers; i++){
         	hive = hive + "<br /><span class = 'hiveResultTablePersonName hiveOrangeText'>" + results[r].members[i].firstName + " " + results[r].members[i].lastName + "</span>"
         }

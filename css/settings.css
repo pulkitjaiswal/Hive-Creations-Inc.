@@ -90,6 +90,13 @@
 	top: 40px;
 	z-index: 1;
 }
+#hiveResultTable tbody tr{
+	background: url(../img/settings/small_blue_hexagon.png) no-repeat;
+	background-position: 0px 10px;
+}
+#hiveResultTable tbody tr span{
+	padding-left: 10px;
+}
 #userPictureFileName{
 	background-image: url(../img/settings/search_field.png);
 	border: none;
@@ -107,6 +114,10 @@
 	width: 119px;
 	height: 133px;
 	margin: 0 auto;
+}
+.hiveResultHiveName{
+	font-size: 14px;
+	font-weight: bold;
 }
 .settingsListItem{
 	height: 32px;
