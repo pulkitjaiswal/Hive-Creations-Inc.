@@ -75,6 +75,7 @@ function alignStuff(){
 	if(currentShownInMainWindow==1){
 		resizeHivewayWindow();
 	}
+	checkScreenSize();
 }
 
 	
@@ -234,18 +235,18 @@ function toolbarClicked(outsideNumb){
 	if(number>=10){
 		var outerNumber = Math.floor(number/10);
 		var innerNumber = number-10*outerNumber;
-		$("#mainInnerWindow").load("mainwindow_resources/" + toolbarLinks[outerNumber][innerNumber]).delay(millisUntilMainWindowStartsToShowAfterAnimation);
+		$("#mainInnerWindow").load("mainwindow_resources/" + toolbarLinks[outerNumber][innerNumber]).delay(millisUntilMainWindowStartsToShowAfterAnimation).ready(function(){checkScreenSize();});
 		if($("#profileBox").is(":visible")){
 			toggleProfileBoxVisibility();
 		}
 	}
 	else{
 		if($("#profileBox").is(":visible")){
-			$("#mainInnerWindow").load("mainwindow_resources/" + toolbarLinks[number]).delay(millisUntilMainWindowStartsToShowAfterAnimation);
+			$("#mainInnerWindow").load("mainwindow_resources/" + toolbarLinks[number]).delay(millisUntilMainWindowStartsToShowAfterAnimation).ready(function(){checkScreenSize();});
 		}
 		else{
 			toggleProfileBoxVisibility();
-			$("#mainInnerWindow").load("mainwindow_resources/" + toolbarLinks[number]);
+			$("#mainInnerWindow").load("mainwindow_resources/" + toolbarLinks[number]).ready(function(){checkScreenSize();});
 		}
 	}
 
@@ -597,6 +598,16 @@ function setMainWindowBackgroundImage(){
 	}
 	else{
 		mainWindowDiv.css({"overflow": "visible"});
+	}
+}
+
+function checkScreenSize(){
+	var mainWindow = $("#mainInnerWindow");
+	if($(document).height()<($("#headerDiv").height()+mainWindow.height()+mainWindow.position().top)){
+		$("#backgroundDiv").css("overflow-y", "scroll");
+	}
+	else{
+		$("#backgroundDiv").css("overflow-y", "hidden");
 	}
 }
 

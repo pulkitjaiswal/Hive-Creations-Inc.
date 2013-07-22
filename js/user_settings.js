@@ -105,7 +105,7 @@ function changeProfilePicClicked(){
 	browseButton.appendTo(container);
 	var fakeInput = $("<input type='file' style='display:none;'></input>");
 	fakeInput.appendTo(container);
-	var pictureFileField = $('<input id="userPictureFileName" placeholder="Browse for image.." type="text"></input>');
+	var pictureFileField = $('<input class="settingsSearchBar" placeholder="Browse for image.." type="text"></input>');
 	pictureFileField.appendTo(container);
 	fakeInput.change(function(){
 		pictureFileField.val((fakeInput.val()));
@@ -146,11 +146,20 @@ function editHiveClicked(){
 	 */
 	var editHiveContainer = $("<div id='editHiveContainer'></div>");
 	editHiveContainer.appendTo(container);
-	var temp = new hiveObject("beez", 3, ["Daniel1", "Daniel2", "Daniel1337"]);
+	var temp = new hiveObject("beez", 3, []);
 	$("<div class='hiveResultHiveName'>"+ temp.hiveName +"</div>").appendTo(editHiveContainer);
 	for(i=0; i<temp.amountOfMembers; i++){
-		$("<div class='editHivePersonNames'>"+ temp.members[i].firstName + " " + temp.members[i].lastName  +"</div>").appendTo(editHiveContainer);
+		var person = $("<div class='editHivePersonNames' style='padding-right:14px;'>"+ temp.members[i].firstName + " " + temp.members[i].lastName  +"</div>");
+		person.appendTo(editHiveContainer);
+		var personDeleteButton = $("<div class='hiveMemberDeleteButton' id='deleteHiveMember"+i+"'></div>");
+		personDeleteButton.appendTo(person);
+		personDeleteButton.data("number", i);
+		personDeleteButton.click(function(){console.log("Delete member "+$(this).data("number"));});
 	}
+	$("<div style='font-weight:bold;margin:20px 0px 10px 0px;'>Invite friends to your Hive</div>").appendTo(container);
+	$("<div>Search for friend</div>").appendTo(container);
+	var friendSearchInput = $("<input></input>");
+
     updateSideBoxSize(container);
 }
 

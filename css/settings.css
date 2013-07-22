@@ -97,7 +97,7 @@
 #hiveResultTable tbody tr span{
 	padding-left: 10px;
 }
-#userPictureFileName{
+.settingsSearchBar{
 	background-image: url(../img/settings/search_field.png);
 	border: none;
 	width: 181px;
@@ -114,6 +114,11 @@
 	width: 119px;
 	height: 133px;
 	margin: 0 auto;
+}
+#editHiveContainer{
+	padding-left: 10px;
+	background: url(../img/settings/small_blue_hexagon.png) no-repeat;
+	background-position: 0px 5px;
 }
 .hiveResultHiveName{
 	font-size: 14px;
@@ -148,4 +153,11 @@
 	height: 30px;
 	background: url(../img/settings/background_image_lineup.png) no-repeat center center;
 	position: absolute;
+}
+.hiveMemberDeleteButton{
+	float: right;
+	background: url(../img/settings/remove_member_symbol.png) no-repeat center center;
+	width: 9px;
+	height: 9px;
+	margin: 0px 5px;
 }
