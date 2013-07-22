@@ -416,7 +416,7 @@ function showConversationInBuzzBox(int_conversationId, placeOnTop, names){
 	Get conversation from server
 
 	*/
-	adapter_getUserConversation(conversationID);
+	adapter_getUserConversation(int_conversationId);
 	tempOthersNames = "Other:";
 	var chatNames = $("<div id='chatConversationNames' class='buzzBoxContent'>" + names + "</div>").appendTo(buzzBoxDiv);
 
@@ -607,7 +607,11 @@ function checkScreenSize(){
 		$("#backgroundDiv").css("overflow-y", "scroll");
 	}
 	else{
-		$("#backgroundDiv").css("overflow-y", "hidden");
+		var background = $("#backgroundDiv");
+		background.animate({
+    		scrollTop: 0
+		}, 0);
+		background.css("overflow-y", "hidden");
 	}
 }
 

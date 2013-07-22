@@ -72,16 +72,6 @@ function placeSettingsThemes(themesArray){
 	rightBottomText.css({"position": "absolute", "top": previousPos+40});
 }
 
-/*function positionHiveSearchResult(){
-	var div = $("#hiveSettingsSideBox");
-	div.css({"left": $("#mainInnerWindow").outerWidth(true)+10, "top": 20});
-	var topBackgroundImage = $("<div id='hiveSettingsSideBoxTop'></div>").appendTo(div);
-	var bottomBackgroundImage = $("<div id='hiveSettingsSideBoxBottom'></div>").appendTo(div);
-	var middleBackgroundImage = $("<div id='hiveSettingsSideBoxMiddle'></div>").appendTo(div);
-	middleBackgroundImage.css("top", topBackgroundImage.height());
-	bottomBackgroundImage.css("top", (middleBackgroundImage.height()+middleBackgroundImage.position().top));
-}*/
-
 function searchForHiveInput(){
 	var searchInput = $("#inputSearchHive").val();
 	var results = searchForHive(searchInput);
@@ -156,11 +146,17 @@ function editHiveClicked(){
 		personDeleteButton.data("number", i);
 		personDeleteButton.click(function(){console.log("Delete member "+$(this).data("number"));});
 	}
-	$("<div style='font-weight:bold;margin:20px 0px 10px 0px;'>Invite friends to your Hive</div>").appendTo(container);
-	$("<div>Search for friend</div>").appendTo(container);
-	var friendSearchInput = $("<input></input>");
-
+	$("<div style='font-weight:bold;margin:20px 0px 5px 0px;'>Invite friends to your Hive</div>").appendTo(container);
+	$("<div style='margin-left:2px'>Search for friend</div>").appendTo(container);
+	var friendSearchInput = $("<input class='settingsSearchBar' type='text' placeholder='Search for friend..' style='margin:2px 0px 0px 2px'></input>");
+	friendSearchInput.appendTo(container);
+	var tempNames = ["Daniel Almquist", "Austin Helm", "Essi Huotari", "Pulkit Jaiswal", "Nishant Chemburkar"];
+	friendSearchInput.autocomplete({source: tempNames });
     updateSideBoxSize(container);
+
+    $("<div style='margin:15px 0px 0px 2px'>Send an email invitation</div>").appendTo(container);
+    var emailInvitationInput = $("<input class='settingsSearchBar' type='text' placeholder='Send email invitation..' style='margin:2px 0px 0px 2px'></input>");
+	emailInvitationInput.appendTo(container);
 }
 
 function requestToHiveClicked(){
