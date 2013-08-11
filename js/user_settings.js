@@ -1,14 +1,12 @@
 //Places the profile image, and the images of the friends
 //amountOfFriends taken from global variable declared in main.js
 
-var previouslyAddedHeightToHiveResultBox = 0;
-
 function settingsOnLoad(){
-profileImageSettings();
-positionUserSettingsText();
-placeSettingsThemes(["img/settings/background_image_lineup.png","img/settings/background_image_lineup.png","img/settings/background_image_lineup.png","img/settings/background_image_lineup.png"]);
-//positionHiveSearchResult();
-setButtonFunctionality();
+	profileImageSettings();
+	positionUserSettingsText();
+	placeSettingsThemes(["img/settings/background_image_lineup.png","img/settings/background_image_lineup.png","img/settings/background_image_lineup.png","img/settings/background_image_lineup.png"]);
+	//positionHiveSearchResult();
+	setButtonFunctionality();
 }
 
 function profileImageSettings(){
@@ -83,7 +81,7 @@ function setButtonFunctionality(){
 	//$("#createHiveButton").click(createHiveClicked);
 	$("#editHiveButton").click(editHiveClicked);
 	$("#requestToHiveButton").click(requestToHiveClicked);
-	//$("#addBrandButton").click(addBrandClicked);
+	$("#addBrandButton").click(addBrandClicked);
 }
 
 function changeProfilePicClicked(){
@@ -152,11 +150,11 @@ function editHiveClicked(){
 	friendSearchInput.appendTo(container);
 	var tempNames = ["Daniel Almquist", "Austin Helm", "Essi Huotari", "Pulkit Jaiswal", "Nishant Chemburkar"];
 	friendSearchInput.autocomplete({source: tempNames });
-    updateSideBoxSize(container);
 
     $("<div style='margin:15px 0px 0px 2px'>Send an email invitation</div>").appendTo(container);
     var emailInvitationInput = $("<input class='settingsSearchBar' type='text' placeholder='Send email invitation..' style='margin:2px 0px 0px 2px'></input>");
 	emailInvitationInput.appendTo(container);
+	updateSideBoxSize(container);
 }
 
 function requestToHiveClicked(){
@@ -167,6 +165,53 @@ function requestToHiveClicked(){
 	table.appendTo(div);
 	searchBox.keyup(function(){searchForHiveInput();});
 	updateSideBoxSize(table);
+}
+
+function addBrandClicked(){
+	var div = getCleanSideBox();
+	var container = $("<div id='hiveSettingsSideBoxContentContainer' class='settingSideBoxContent hiveOrangeText'></div>");
+	container.appendTo(div);
+	$('<div class="hiveHeader">Edit brands</div>').appendTo(container);
+	$("<div style='font-weight:bold;margin:20px 0px 5px 0px;'>Your favorits</div>").appendTo(container);
+
+	/**
+	 * CAROUSELL
+	 */
+	 var tempImagesWithText = [["img/tempImages/gapLogo.png", "Gap"], ["img/tempImages/hmLogo.png", "H&M"], ["img/tempImages/levisLogo.png", "Levis"], ["img/tempImages/poloLogo.png", "Polo"], ["img/tempImages/nikeLogo.png", "Nike"], ["img/tempImages/microsoftLogo.png", "Microsoft"]];
+
+ 	var carouselDiv = $("<div id='jcarouselContainerEditBrand' class='jcarousel'></div>")
+	var carouselUL = $("<ul></ul>");
+	carouselUL.appendTo(carouselDiv);
+	for(i = 0; i<6; i++){
+		var number = Math.floor(Math.random()*6);
+		var img = $("<li><img src='"+tempImagesWithText[number][0]+"' width='40' height='40' alt='"+ tempImagesWithText[number][1] +"' /><br /></li>").appendTo(carouselUL);
+		var removeButton = $("<div class='removeBrandButton'></div>").appendTo(img);
+		removeButton.click(function(event){
+			$(this).parent().remove();
+		});
+	}
+	carouselDiv.appendTo(container);
+	carouselDiv.jcarousel({
+	});
+	var leftCarouselButton = $("<div id='leftCarouselButton' class='carouselButton leftBlueCarouselButton'></div>");
+	var rightCarouselButton = $("<div id='rightCarouselButton' class='carouselButton rightBlueCarouselButton'></div>");
+	leftCarouselButton.appendTo(container);
+	rightCarouselButton.appendTo(container);
+	leftCarouselButton.css({"top": carouselDiv.position().top+20, "left": 5});
+	rightCarouselButton.css({"top": carouselDiv.position().top+20, "right": 5});
+	leftCarouselButton.click(function(){
+		carouselDiv.jcarousel('scroll', '-=1');
+	});
+	rightCarouselButton.click(function(){
+		carouselDiv.jcarousel('scroll', '+=1');
+	});
+	/*
+	END CAROUSEL
+	 */
+	
+	$("<div style='font-weight:bold;margin:10px 0px 5px 0px;'>Add brands</div>").appendTo(container);
+
+	updateSideBoxSize(container);
 }
 
 function getCleanSideBox(){
@@ -180,7 +225,6 @@ function addSideBoxIfNonExisting(){
 	if(div.length!=0){
 		return;
 	}
-	console.log("!");
 	var div = $("<div id='hiveSettingsSideBox'></div>");
 	div.appendTo($("#profileBoxSettings"));
 	div.css({"left": $("#mainInnerWindow").outerWidth(true)+10, "top": 20});
@@ -244,17 +288,9 @@ function updateHiveResultList(results){
 }
 
 function updateSideBoxSize(elementInBox){
-	if(elementInBox){
-		var newTableHeight = elementInBox.height();
-		var sizeToAdd = newTableHeight-previouslyAddedHeightToHiveResultBox;
-	}
-	else{
-		var newTableHeight = $("#hiveSettingsSideBoxContentContainer").height();
-    var sizeToAdd = newTableHeight-previouslyAddedHeightToHiveResultBox-$("#hiveSettingsSideBoxTop").height()-$("#hiveSettingsSideBoxBottom").height();
-	}
+	var newSize = elementInBox.height()-$("#hiveSettingsSideBoxBottom").height()+12;
     var middleBackgroundImage = $("#hiveSettingsSideBoxMiddle");
-    middleBackgroundImage.css("height", "+=" +sizeToAdd);
-    previouslyAddedHeightToHiveResultBox = newTableHeight;
+    middleBackgroundImage.css("height", newSize);
     var bottomBackgroundImage = $("#hiveSettingsSideBoxBottom");
     bottomBackgroundImage.css("top", (middleBackgroundImage.height()+middleBackgroundImage.position().top));
 }
