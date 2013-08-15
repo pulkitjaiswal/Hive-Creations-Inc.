@@ -97,6 +97,13 @@
 #hiveResultTable tbody tr span{
 	padding-left: 10px;
 }
+#searchBrandContainer{
+	height: 170px;
+	width: 192px;
+	position: relative;
+	margin: 4px 0px 0px 0px;
+	clear: both;
+}
 .settingsSearchBar{
 	background-image: url(../img/settings/search_field.png);
 	border: none;
@@ -168,11 +175,25 @@
 	position: absolute;
 	margin-left: 17px;
 }
+.addBrandButton{
+	background: url(../img/settings/add_brand_plus.png) no-repeat center center;
+	width: 8px;
+	height: 8px;
+	position: absolute;
+	margin: 0px 2px 2px 16px;
+	clear: both;
+}
+.brandSearchResultImage{
+	width: 40px;
+	height: 52px;
+	margin: 4px;
+	display: inline-block;
+}
 /*
 jCarousel
  */
 #jcarouselContainerEditBrand{
-	width: 172px;
+	width: 176px;
 	margin: 10px auto;
 }
 #jcarouselContainerHoverBox{

@@ -96,7 +96,7 @@ function changeProfilePicClicked(){
 	var pictureFileField = $('<input class="settingsSearchBar" placeholder="Browse for image.." type="text"></input>');
 	pictureFileField.appendTo(container);
 	fakeInput.change(function(){
-		pictureFileField.val((fakeInput.val()));
+		pictureFileField.val(fakeInput.val());
 		$(".loaderDiv").show();
 	});
 	browseButton.click(function(){
@@ -177,7 +177,7 @@ function addBrandClicked(){
 	/**
 	 * CAROUSELL
 	 */
-	 var tempImagesWithText = [["img/tempImages/gapLogo.png", "Gap"], ["img/tempImages/hmLogo.png", "H&M"], ["img/tempImages/levisLogo.png", "Levis"], ["img/tempImages/poloLogo.png", "Polo"], ["img/tempImages/nikeLogo.png", "Nike"], ["img/tempImages/microsoftLogo.png", "Microsoft"]];
+	var tempImagesWithText = [["img/tempImages/gapLogo.png", "Gap"], ["img/tempImages/hmLogo.png", "H&M"], ["img/tempImages/levisLogo.png", "Levis"], ["img/tempImages/poloLogo.png", "Polo"], ["img/tempImages/nikeLogo.png", "Nike"], ["img/tempImages/microsoftLogo.png", "Microsoft"]];
 
  	var carouselDiv = $("<div id='jcarouselContainerEditBrand' class='jcarousel'></div>")
 	var carouselUL = $("<ul></ul>");
@@ -187,7 +187,7 @@ function addBrandClicked(){
 		var img = $("<li><img src='"+tempImagesWithText[number][0]+"' width='40' height='40' alt='"+ tempImagesWithText[number][1] +"' /><br /></li>").appendTo(carouselUL);
 		var removeButton = $("<div class='removeBrandButton'></div>").appendTo(img);
 		removeButton.click(function(event){
-			$(this).parent().remove();
+			$(this).parent().fadeOut(300, function(){$(this).remove();});
 		});
 	}
 	carouselDiv.appendTo(container);
@@ -210,8 +210,73 @@ function addBrandClicked(){
 	 */
 	
 	$("<div style='font-weight:bold;margin:10px 0px 5px 0px;'>Add brands</div>").appendTo(container);
+	var searchBrandInput = $('<input class="settingsSearchBar" placeholder="Search for a brand" type="text"></input>');
+	searchBrandInput.appendTo(container);
+	var brandContainer = $("<div id='searchBrandContainer'></div>");
+	brandContainer.appendTo(container);
+	$("<div style='clear:both;position:absolute;width:100%;height:1px;'></div>").appendTo(container);
+	var delayServerQuery = false;
+	var changeWhileDelayed = false;
+	searchBrandInput.keyup(function(){
+		if(!delayServerQuery){
+			searchForBrand(searchBrandInput.val());
+			delayServerQuery = true;
+			setTimeout(function(){
+				delayServerQuery = false;
+				if(changeWhileDelayed){
+					changeWhileDelayed = false;
+					searchForBrand(searchBrandInput.val());
+				}
+			}, 1000);
+		}
+		else{
+			changeWhileDelayed = true;
+		}
+	});
 
 	updateSideBoxSize(container);
+}
+
+function searchForBrand(brand){
+	var container = $("#searchBrandContainer");
+	container.children().remove();
+	var tempImagesWithText = [["img/tempImages/gapLogo.png", "Gap"], ["img/tempImages/hmLogo.png", "H&M"], ["img/tempImages/levisLogo.png", "Levis"], ["img/tempImages/poloLogo.png", "Polo"], ["img/tempImages/nikeLogo.png", "Nike"], ["img/tempImages/microsoftLogo.png", "Microsoft"]];
+	var results = Math.floor(Math.random()*12+1);
+	var resultArray = new Array(results);
+	for(i=0;i<12; i++){
+		var image = Math.floor(Math.random()*6);
+		resultArray[i] = tempImagesWithText[image];
+	}
+	showBrandResult(resultArray, container);
+}
+
+function showBrandResult(array, container){
+	for(i in array){
+		var object = array[i]
+		image = $("<div class='brandSearchResultImage'></div>");
+		image.appendTo(container);
+		image.data("data", object);
+		$("<img src='"+ object[0] +"'></img>").appendTo(image);
+		var addButton = $("<div class='addBrandButton'></div>");
+		addButton.appendTo(image);
+		addButton.click(function(){
+			addBrandAsFavourite($(this).parent());
+		});
+	}
+}
+
+function addBrandAsFavourite(brand){
+	var data = brand.data("data");
+	var img = $("<li><img src='"+data[0]+"' width='40' height='40' alt='"+ data[1] +"' /><br /></li>");
+	$('.jcarousel ul').append(img);
+	var removeButton = $("<div class='removeBrandButton'></div>").appendTo(img);
+	removeButton.click(function(event){
+		$(this).parent().fadeOut(300, function(){$(this).remove();});
+	});
+	brand.fadeOut(300, function(){
+		$(this).remove();
+	});
+	$('.jcarousel').jcarousel('reload');
 }
 
 function getCleanSideBox(){
